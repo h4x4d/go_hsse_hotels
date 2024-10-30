@@ -115,6 +115,11 @@ paths:
       responses:
         200:
           description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "integer"
         403:
           description: "No access"
         405:
@@ -139,6 +144,12 @@ paths:
       responses:
         200:
           description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "integer"
+
         403:
           description: "No access"
         405:
@@ -233,6 +244,11 @@ paths:
       responses:
         200:
           description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "integer"
         403:
           description: "No access"
         405:
@@ -257,6 +273,11 @@ paths:
       responses:
         200:
           description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "integer"
         403:
           description: "No access"
         405:
