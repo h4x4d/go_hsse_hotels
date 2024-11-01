@@ -2,7 +2,7 @@
 swagger: "2.0"
 info:
   description: "Swagger for MTS HSSE Golang project | Hotel svc"
-  version: "0.1.0"
+  version: "0.2.0"
   title: "H(SSE)OTELS | Hotel svc"
 # host: "127.0.0.1:8889"
 # basePath: "/v2"
@@ -38,6 +38,43 @@ paths:
         404:
           description: "Hotel not found"
 
+    put:
+      tags:
+        - "hotel"
+      summary: "Update hotel"
+      operationId: "update_hotel"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "hotel_id"
+          in: "path"
+          description: "ID of hotel to change"
+          required: true
+          type: "integer"
+          format: "int64"
+        - name: "object"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/Hotel"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "integer"
+                format: "int64"
+        403:
+          description: "No access"
+        405:
+          description: "Incorrect data"
+      security:
+        - api_key: [ ]
+
     delete:
       tags:
         - "hotel"
@@ -59,7 +96,6 @@ paths:
           description: "Hotel not found"
       security:
         - api_key: []
-
 
   /hotel:
     get:
@@ -97,6 +133,7 @@ paths:
               $ref: "#/definitions/Hotel"
         404:
           description: "Hotel not found"
+
     post:
       tags:
         - "hotel"
@@ -120,36 +157,7 @@ paths:
             properties:
               id:
                 type: "integer"
-        403:
-          description: "No access"
-        405:
-          description: "Incorrect data"
-      security:
-        - api_key: []
-    put:
-      tags:
-        - "hotel"
-      summary: "Update hotel"
-      operationId: "update_hotel"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "object"
-          in: "body"
-          required: true
-          schema:
-            $ref: "#/definitions/Hotel"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "object"
-            properties:
-              id:
-                type: "integer"
-
+                format: "int64"
         403:
           description: "No access"
         405:
@@ -157,8 +165,7 @@ paths:
       security:
         - api_key: []
 
-
-  /room/{room_id}:
+  /hotel/room/{room_id}:
     get:
       tags:
         - "room"
@@ -180,6 +187,42 @@ paths:
             $ref: "#/definitions/Room"
         404:
           description: "room not found"
+
+    put:
+      tags:
+        - "room"
+      summary: "Update room"
+      operationId: "update_room"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "room_id"
+          in: "path"
+          description: "ID of room to change"
+          required: true
+          type: "integer"
+          format: "int64"
+        - name: "object"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/Room"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              id:
+                type: "integer"
+        403:
+          description: "No access"
+        405:
+          description: "Incorrect data"
+      security:
+        - api_key: [ ]
 
     delete:
       tags:
@@ -204,7 +247,7 @@ paths:
         - api_key: []
 
 
-  /room:
+  /hotel/room:
     get:
       tags:
         - "room"
@@ -217,6 +260,9 @@ paths:
           in: "query"
           type: "integer"
           format: "int64"
+        - name: "tag"
+          in: "query"
+          type: "string"
       responses:
         200:
           description: "successful operation"
@@ -249,43 +295,13 @@ paths:
             properties:
               id:
                 type: "integer"
+                format: "int64"
         403:
           description: "No access"
         405:
           description: "Incorrect data"
       security:
         - api_key: []
-    put:
-      tags:
-        - "room"
-      summary: "Update room"
-      operationId: "update_room"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "object"
-          in: "body"
-          required: true
-          schema:
-            $ref: "#/definitions/Room"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "object"
-            properties:
-              id:
-                type: "integer"
-        403:
-          description: "No access"
-        405:
-          description: "Incorrect data"
-      security:
-        - api_key: []
-
-
 
 securityDefinitions:
   api_key:
@@ -356,4 +372,3 @@ definitions:
     properties:
       name:
         type: "string"
-
