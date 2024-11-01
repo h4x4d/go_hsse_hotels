@@ -121,11 +121,9 @@ paths:
             - 3
             - 4
             - 5
-        - name: "tags"
+        - name: "tag"
           in: "query"
-          type: "array"
-          items:
-            type: "string"
+          type: "string"
       responses:
         200:
           description: "successful operation"
@@ -262,11 +260,9 @@ paths:
           in: "query"
           type: "integer"
           format: "int64"
-        - name: "tags"
+        - name: "tag"
           in: "query"
-          type: "array"
-          items:
-            type: "string"
+          type: "string"
       responses:
         200:
           description: "successful operation"
