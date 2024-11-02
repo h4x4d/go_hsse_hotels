@@ -12,7 +12,7 @@ tags:
   - name: "hotelier"
     description: "Hotelier operations"
 schemes:
-  - "https"
+#  - "https"
   - "http"
 paths:
   /booking/{booking_id}:

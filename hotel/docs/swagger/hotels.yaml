@@ -12,7 +12,7 @@ tags:
   - name: "hotel"
     description: "Hotel operations"
 schemes:
-  - "https"
+#  - "https"
   - "http"
 paths:
   /hotel/{hotel_id}:
