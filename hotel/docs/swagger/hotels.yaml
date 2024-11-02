@@ -322,6 +322,12 @@ definitions:
       name:
         type: "string"
         example: "Radisson"
+      city:
+        type: "string"
+        example: "Moscow"
+      address:
+        type: "string"
+        example: "Red Square №1"
       photos:
         description: "list of photo urls"
         type: "array"
