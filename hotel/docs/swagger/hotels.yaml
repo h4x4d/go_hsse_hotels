@@ -1,9 +1,9 @@
 ---
 swagger: "2.0"
 info:
-  description: "Swagger for MTS HSSE Golang project | Hotel svc"
-  version: "0.2.0"
-  title: "H(SSE)OTELS | Hotel svc"
+  description: "MTS HSSE Go project | Hotel svc"
+  version: "0.2.1"
+  title: "hotels.hotel"
 # host: "127.0.0.1:8889"
 # basePath: "/v2"
 tags:
@@ -12,7 +12,7 @@ tags:
   - name: "hotel"
     description: "Hotel operations"
 schemes:
-  - "https"
+#  - "https"
   - "http"
 paths:
   /hotel/{hotel_id}:
