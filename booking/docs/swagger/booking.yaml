@@ -1,9 +1,9 @@
 ---
 swagger: "2.0"
 info:
-  description: "Swagger for MTS HSSE Golang project | Booking svc"
-  version: "0.2.0"
-  title: "H(SSE)OTELS | Booking svc"
+  description: "MTS HSSE Go project | Booking svc"
+  version: "0.2.1"
+  title: "hotels.booking"
 # host: "127.0.0.1:8889"
 # basePath: "/v2"
 tags:
