@@ -110,6 +110,7 @@ paths:
   /booking:
     get:
       tags:
+        - "customer"
         - "hotelier"
       summary: "Get suitable bookings"
       operationId: "get_booking"
