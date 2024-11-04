@@ -23,6 +23,13 @@ services:
       - db
     ports:
       - "8888:8888"
+  booking:
+    container_name: booking-svc
+    build: ./booking
+    depends_on:
+      - db
+    ports:
+      - "8880:8880"
 
 volumes:
   postgres_data:
