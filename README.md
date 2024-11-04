@@ -1,17 +1,19 @@
 # MTS HSSE Go project. Booking system
 --------
 * Scheme of project
-[https://github.com/Sinord/final-project/raw/master/components-diagram.png]
+
+![scheme](https://github.com/Sinord/final-project/raw/master/components-diagram.png)
 
 * Stack of technology
- - Docker
- - PostgreSQL
- - Golang
+  - Docker
+  - PostgreSQL
+  - Golang
+
 In project REST API is used to ensure user interaction with the system.
 
 * API
- - Hotel information: ```/hotel/docks/swagger/hotels.yaml```
- - Booking: ```/booking/docks/swagger/booking.yaml```
+  - Hotel information: ```/hotel/docks/swagger/hotels.yaml```
+  - Booking: ```/booking/docks/swagger/booking.yaml```
 
 * Get started
 
