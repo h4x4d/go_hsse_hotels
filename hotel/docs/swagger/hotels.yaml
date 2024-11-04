@@ -2,9 +2,9 @@
 swagger: "2.0"
 info:
   description: "MTS HSSE Go project | Hotel svc"
-  version: "0.2.1"
+  version: "0.2.2"
   title: "hotels.hotel"
-# host: "127.0.0.1:8889"
+# host: example.com
 # basePath: "/v2"
 tags:
   - name: "room"

@@ -25,7 +25,7 @@ func init() {
   "info": {
     "description": "MTS HSSE Go project | Hotel svc",
     "title": "hotels.hotel",
-    "version": "0.2.1"
+    "version": "0.2.2"
   },
   "paths": {
     "/hotel": {
@@ -585,7 +585,7 @@ func init() {
   "info": {
     "description": "MTS HSSE Go project | Hotel svc",
     "title": "hotels.hotel",
-    "version": "0.2.1"
+    "version": "0.2.2"
   },
   "paths": {
     "/hotel": {

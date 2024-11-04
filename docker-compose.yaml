@@ -1,0 +1,39 @@
+services:
+  db:
+    image: postgres:16.4-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+      - ./scripts/:/docker-entrypoint-initdb.d/
+    env_file:
+      - .env
+    expose:
+      - ${POSTGRES_PORT}
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    command: -p ${POSTGRES_PORT}
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  hotel:
+    container_name: hotel-svc
+    env_file:
+      - .env
+    build: ./hotel
+    depends_on:
+      - db
+    ports:
+      - "8888:8888"
+  booking:
+    container_name: booking-svc
+    build: ./booking
+    env_file:
+      - .env
+    depends_on:
+      - db
+    ports:
+      - "8880:8880"
+
+volumes:
+  postgres_data:
