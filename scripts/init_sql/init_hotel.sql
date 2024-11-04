@@ -1,0 +1,4 @@
+CREATE TABLE hotels
+(
+    id    SERIAL PRIMARY KEY
+);

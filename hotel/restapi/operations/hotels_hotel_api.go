@@ -85,7 +85,7 @@ func NewHotelsHotelAPI(spec *loads.Document) *HotelsHotelAPI {
 	}
 }
 
-/*HotelsHotelAPI MTS HSSE Go project | Hotel svc */
+/*HotelsHotelAPI MTS HSSE Go project 228 | Hotel svc */
 type HotelsHotelAPI struct {
 	spec            *loads.Document
 	context         *middleware.Context

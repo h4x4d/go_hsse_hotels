@@ -2,12 +2,12 @@
 
 // Package restapi hotels.hotel
 //
-//	MTS HSSE Go project | Hotel svc
+//	MTS HSSE Go project 228 | Hotel svc
 //	Schemes:
 //	  http
-//	Host: localhost
+//	Host: example.com
 //	BasePath: /
-//	Version: 0.2.1
+//	Version: 0.2.2
 //
 //	Consumes:
 //	  - application/json
