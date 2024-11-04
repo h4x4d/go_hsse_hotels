@@ -1,6 +1,11 @@
-.PHONY: update
-update:
+.PHONY: pull
+pull:
 	git pull
+
+
+.PHONY: update
+update: pull
+	docker compose up -d --build
 
 .PHONY: down
 down:
