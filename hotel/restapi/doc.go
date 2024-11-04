@@ -5,7 +5,7 @@
 //	MTS HSSE Go project | Hotel svc
 //	Schemes:
 //	  http
-//	Host: example.com
+//	Host: localhost
 //	BasePath: /
 //	Version: 0.2.2
 //

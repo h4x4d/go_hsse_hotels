@@ -27,7 +27,6 @@ func init() {
     "title": "hotels.hotel",
     "version": "0.2.2"
   },
-  "host": "example.com",
   "paths": {
     "/hotel": {
       "get": {
@@ -588,7 +587,6 @@ func init() {
     "title": "hotels.hotel",
     "version": "0.2.2"
   },
-  "host": "example.com",
   "paths": {
     "/hotel": {
       "get": {

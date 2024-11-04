@@ -4,7 +4,7 @@ info:
   description: "MTS HSSE Go project | Hotel svc"
   version: "0.2.2"
   title: "hotels.hotel"
-host: example.com
+# host: example.com
 # basePath: "/v2"
 tags:
   - name: "room"
