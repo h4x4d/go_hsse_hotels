@@ -2,7 +2,7 @@
 
 // Package restapi hotels.hotel
 //
-//	MTS HSSE Go project 228 | Hotel svc
+//	MTS HSSE Go project | Hotel svc
 //	Schemes:
 //	  http
 //	Host: example.com

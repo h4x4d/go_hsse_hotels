@@ -23,7 +23,7 @@ func init() {
   ],
   "swagger": "2.0",
   "info": {
-    "description": "MTS HSSE Go project 228 | Hotel svc",
+    "description": "MTS HSSE Go project | Hotel svc",
     "title": "hotels.hotel",
     "version": "0.2.2"
   },
@@ -584,7 +584,7 @@ func init() {
   ],
   "swagger": "2.0",
   "info": {
-    "description": "MTS HSSE Go project 228 | Hotel svc",
+    "description": "MTS HSSE Go project | Hotel svc",
     "title": "hotels.hotel",
     "version": "0.2.2"
   },
