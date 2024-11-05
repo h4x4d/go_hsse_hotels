@@ -7,5 +7,6 @@ RUN go build -o hotel cmd/hotels-hotel-server/main.go
 
 EXPOSE 8888
 
-ENTRYPOINT ["./wait_and_start.sh"]
+ENTRYPOINT ["sh", "wait_and_start.sh"]
+
 
