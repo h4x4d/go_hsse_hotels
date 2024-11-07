@@ -25,7 +25,7 @@ func init() {
   "info": {
     "description": "MTS HSSE Go project | Hotel svc",
     "title": "hotels.hotel",
-    "version": "0.2.2"
+    "version": "0.2.3"
   },
   "paths": {
     "/hotel": {
@@ -483,6 +483,7 @@ func init() {
           "description": "number of stars of hotel",
           "type": "integer",
           "enum": [
+            0,
             1,
             2,
             3,
@@ -497,13 +498,6 @@ func init() {
         "name": {
           "type": "string",
           "example": "Radisson"
-        },
-        "photos": {
-          "description": "list of photo urls",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
         },
         "rooms": {
           "type": "array",
@@ -585,7 +579,7 @@ func init() {
   "info": {
     "description": "MTS HSSE Go project | Hotel svc",
     "title": "hotels.hotel",
-    "version": "0.2.2"
+    "version": "0.2.3"
   },
   "paths": {
     "/hotel": {
@@ -1043,6 +1037,7 @@ func init() {
           "description": "number of stars of hotel",
           "type": "integer",
           "enum": [
+            0,
             1,
             2,
             3,
@@ -1057,13 +1052,6 @@ func init() {
         "name": {
           "type": "string",
           "example": "Radisson"
-        },
-        "photos": {
-          "description": "list of photo urls",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
         },
         "rooms": {
           "type": "array",

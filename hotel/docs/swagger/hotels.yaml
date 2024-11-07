@@ -66,7 +66,7 @@ paths:
             type: "object"
             properties:
               id:
-                tyorigin/developpe: "integer"
+                type: "integer"
                 format: "int64"
         403:
           description: "No access"

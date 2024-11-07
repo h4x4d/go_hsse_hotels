@@ -32,7 +32,7 @@ type Hotel struct {
 	City *string `json:"city"`
 
 	// number of stars of hotel
-	// Enum: [1,2,3,4,5]
+	// Enum: [0,1,2,3,4,5]
 	HotelClass int64 `json:"hotel_class,omitempty"`
 
 	// id
@@ -42,9 +42,6 @@ type Hotel struct {
 	// Example: Radisson
 	// Required: true
 	Name *string `json:"name"`
-
-	// list of photo urls
-	Photos []string `json:"photos"`
 
 	// rooms
 	Rooms []*Room `json:"rooms"`
@@ -102,7 +99,7 @@ var hotelTypeHotelClassPropEnum []interface{}
 
 func init() {
 	var res []int64
-	if err := json.Unmarshal([]byte(`[1,2,3,4,5]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`[0,1,2,3,4,5]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {
