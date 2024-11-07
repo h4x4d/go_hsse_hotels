@@ -2,7 +2,7 @@
 swagger: "2.0"
 info:
   description: "MTS HSSE Go project | Hotel svc"
-  version: "0.2.2"
+  version: "0.2.3"
   title: "hotels.hotel"
 # host: example.com
 # basePath: "/v2"
@@ -66,7 +66,7 @@ paths:
             type: "object"
             properties:
               id:
-                type: "integer"
+                tyorigin/developpe: "integer"
                 format: "int64"
         403:
           description: "No access"
@@ -328,11 +328,11 @@ definitions:
       address:
         type: "string"
         example: "Red Square №1"
-      photos:
-        description: "list of photo urls"
-        type: "array"
-        items:
-          type: "string"
+#      photos:
+#        description: "list of photo urls"
+#        type: "array"
+#        items:
+#          type: "string"
       rooms:
         type: "array"
         items:
@@ -341,6 +341,7 @@ definitions:
         type: "integer"
         description: "number of stars of hotel"
         enum:
+          - 0
           - 1
           - 2
           - 3
