@@ -25,7 +25,7 @@ func init() {
   "info": {
     "description": "MTS HSSE Go project | Booking svc",
     "title": "hotels.booking",
-    "version": "0.2.1"
+    "version": "0.2.2"
   },
   "paths": {
     "/booking": {
@@ -312,6 +312,13 @@ func init() {
         },
         "name": {
           "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "customer",
+            "hotelier"
+          ]
         },
         "telegram": {
           "type": "string"
@@ -345,7 +352,7 @@ func init() {
   "info": {
     "description": "MTS HSSE Go project | Booking svc",
     "title": "hotels.booking",
-    "version": "0.2.1"
+    "version": "0.2.2"
   },
   "paths": {
     "/booking": {
@@ -632,6 +639,13 @@ func init() {
         },
         "name": {
           "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "customer",
+            "hotelier"
+          ]
         },
         "telegram": {
           "type": "string"
