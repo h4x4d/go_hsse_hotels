@@ -2,7 +2,7 @@
 swagger: "2.0"
 info:
   description: "MTS HSSE Go project | Booking svc"
-  version: "0.2.1"
+  version: "0.2.2"
   title: "hotels.booking"
 # host: "127.0.0.1:8889"
 # basePath: "/v2"
@@ -214,6 +214,11 @@ definitions:
       id:
         type: "integer"
         format: "int64"
+      role:
+        type: "string"
+        enum:
+          - "customer"
+          - "hotelier"
       name:
         type: "string"
       telegram:
