@@ -8,7 +8,12 @@ package operations
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
+
+	"context"
+	"github.com/h4x4d/go_hsse_hotels/hotel/models"
+	"github.com/jackc/pgx/v5"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/loads"
@@ -45,9 +50,34 @@ func NewHotelsHotelAPI(spec *loads.Document) *HotelsHotelAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
-		HotelCreateHotelHandler: hotel.CreateHotelHandlerFunc(func(params hotel.CreateHotelParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation hotel.CreateHotel has not yet been implemented")
+		HotelCreateHotelHandler: hotel.CreateHotelHandlerFunc(func(params hotel.CreateHotelParams, principal interface{}) (responder middleware.Responder) {
+			// catching panic
+			defer func() {
+				if err := recover(); err != nil {
+					responder = middleware.Error(http.StatusInternalServerError, err)
+				}
+			}()
+
+			// connecting to database hotel
+			connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", os.Getenv("POSTGRES_USER"),
+				os.Getenv("POSTGRES_PASSWORD"), "db", os.Getenv("POSTGRES_PORT"), "hotel")
+			conn, err := pgx.Connect(context.Background(), connStr)
+			if err != nil {
+				return middleware.Error(http.StatusInternalServerError, err.Error())
+			}
+			defer conn.Close(context.Background())
+
+			// executing insertion of hotel
+			_, errInsertHotel := conn.Exec(context.Background(), "INSERT INTO hotels (id, name, city, address, hotel_class) VALUES ($1, $2, $3, $4, $5)",
+				params.Object.ID, params.Object.Name, params.Object.City, params.Object.Address, params.Object.HotelClass)
+			if errInsertHotel != nil {
+				return middleware.Error(http.StatusInternalServerError, errInsertHotel.Error())
+			}
+
+			result := new(hotel.CreateHotelOK)
+			return result
 		}),
+
 		RoomCreateRoomHandler: room.CreateRoomHandlerFunc(func(params room.CreateRoomParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation room.CreateRoom has not yet been implemented")
 		}),
@@ -60,9 +90,101 @@ func NewHotelsHotelAPI(spec *loads.Document) *HotelsHotelAPI {
 		HotelGetHotelByIDHandler: hotel.GetHotelByIDHandlerFunc(func(params hotel.GetHotelByIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation hotel.GetHotelByID has not yet been implemented")
 		}),
-		HotelGetHotelsHandler: hotel.GetHotelsHandlerFunc(func(params hotel.GetHotelsParams) middleware.Responder {
-			return middleware.NotImplemented("operation hotel.GetHotels has not yet been implemented")
+		HotelGetHotelsHandler: hotel.GetHotelsHandlerFunc(func(params hotel.GetHotelsParams) (responder middleware.Responder) {
+			// catching panic
+			defer func() {
+				if err := recover(); err != nil {
+					responder = middleware.Error(http.StatusInternalServerError, err)
+				}
+			}()
+
+			// connecting to database hotel
+			connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", os.Getenv("POSTGRES_USER"),
+				os.Getenv("POSTGRES_PASSWORD"), "db", os.Getenv("POSTGRES_PORT"), "hotel")
+			conn, err := pgx.Connect(context.Background(), connStr)
+			if err != nil {
+				return middleware.Error(http.StatusInternalServerError, err.Error())
+			}
+			defer conn.Close(context.Background())
+
+			// getting query for hotels
+			rowsHotels, errQueryHotels := conn.Query(context.Background(), "SELECT * FROM hotels")
+			if errQueryHotels != nil {
+				return middleware.Error(http.StatusInternalServerError, errQueryHotels.Error())
+			}
+
+			// getting hotels information
+			result := new(hotel.GetHotelsOK)
+			result = result.WithPayload(make([]*models.Hotel, 0))
+			for rowsHotels.Next() {
+				// init currHotel
+				currHotel := new(models.Hotel)
+				currHotel.Name = new(string)
+				currHotel.City = new(string)
+				currHotel.Address = new(string)
+				currHotel.Rooms = make([]*models.Room, 0)
+
+				// scaning currHotel
+				errHotel := rowsHotels.Scan(&currHotel.ID, currHotel.Name, currHotel.City,
+					currHotel.Address, &currHotel.HotelClass)
+				if errHotel != nil {
+					return middleware.Error(http.StatusInternalServerError, errHotel.Error())
+				}
+				result.Payload = append(result.Payload, currHotel)
+			}
+			rowsHotels.Close()
+			// getting rooms information
+			for _, currHotel := range result.Payload {
+				// getting query for rooms
+				rowsRooms, errQueryRooms := conn.Query(context.Background(),
+					"SELECT * FROM rooms WHERE hotel_id = $1", currHotel.ID)
+				if errQueryRooms != nil {
+					return middleware.Error(http.StatusInternalServerError, errQueryRooms.Error())
+				}
+				// reading rooms
+				for rowsRooms.Next() {
+					currRoom := new(models.Room)
+					currRoom.Cost = new(int64)
+					currRoom.HotelID = new(int64)
+					currRoom.PersonCount = new(int64)
+
+					// scanning room
+					errRoom := rowsRooms.Scan(&currRoom.ID, currRoom.HotelID, currRoom.Cost, currRoom.PersonCount)
+					if errRoom != nil {
+						return middleware.Error(http.StatusInternalServerError, errRoom.Error())
+					}
+					currHotel.Rooms = append(currHotel.Rooms, currRoom)
+				}
+				rowsRooms.Close()
+			}
+			// getting tags information
+			for _, currHotel := range result.Payload {
+				for _, currRoom := range currHotel.Rooms {
+					// getting query for tags
+					rowsTags, errQueryTags := conn.Query(context.Background(),
+						"SELECT * FROM tags WHERE room_id = $1", currRoom.ID)
+					if errQueryTags != nil {
+						return middleware.Error(http.StatusInternalServerError, errQueryTags.Error())
+					}
+					// reading rooms
+					for rowsTags.Next() {
+						currTag := new(models.Tag)
+						currTag.Name = new(string)
+						var currTagId int
+
+						// scanning tag
+						errTag := rowsTags.Scan(&currTagId, currTag.Name)
+						if errTag != nil {
+							return middleware.Error(http.StatusInternalServerError, errTag.Error())
+						}
+						currRoom.Tags = append(currRoom.Tags, currTag)
+					}
+					rowsTags.Close()
+				}
+			}
+			return result
 		}),
+
 		RoomGetRoomByIDHandler: room.GetRoomByIDHandlerFunc(func(params room.GetRoomByIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation room.GetRoomByID has not yet been implemented")
 		}),
