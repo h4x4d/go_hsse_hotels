@@ -59,16 +59,13 @@ func configureAPI(api *operations.HotelsHotelAPI) http.Handler {
 			return middleware.NotImplemented("operation room.CreateRoom has not yet been implemented")
 		})
 	}
-	if api.HotelDeleteHotelByIDHandler == nil {
-		api.HotelDeleteHotelByIDHandler = hotel.DeleteHotelByIDHandlerFunc(func(params hotel.DeleteHotelByIDParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation hotel.DeleteHotelByID has not yet been implemented")
-		})
-	}
+	api.HotelDeleteHotelByIDHandler = hotel.DeleteHotelByIDHandlerFunc(handlers.DeleteHotelByIDHandler)
 	if api.RoomDeleteRoomByIDHandler == nil {
 		api.RoomDeleteRoomByIDHandler = room.DeleteRoomByIDHandlerFunc(func(params room.DeleteRoomByIDParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation room.DeleteRoomByID has not yet been implemented")
 		})
 	}
+	api.HotelGetHotelByIDHandler = hotel.GetHotelByIDHandlerFunc(handlers.GetHotelByIDHandler)
 	if api.HotelGetHotelByIDHandler == nil {
 		api.HotelGetHotelByIDHandler = hotel.GetHotelByIDHandlerFunc(func(params hotel.GetHotelByIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation hotel.GetHotelByID has not yet been implemented")

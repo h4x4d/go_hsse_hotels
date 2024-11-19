@@ -8,21 +8,19 @@ import (
 	"net/http"
 )
 
-func GetHotelsHandler(params hotel.GetHotelsParams) (responder middleware.Responder) {
-	// catching panic
+func GetHotelByIDHandler(params hotel.GetHotelByIDParams) (responder middleware.Responder) {
 	defer utils.CatchPanic(&responder)
 
-	payload, err := services.GetHotels(params.City, params.HotelClass, params.Name, params.Tag)
+	hotelByID, err := services.GetHotelByID(params.HotelID)
+
 	if err != nil {
 		return middleware.Error(http.StatusInternalServerError, err.Error())
 	}
-
-	if len(payload) == 0 {
-		return new(hotel.GetHotelsNotFound)
+	if hotelByID == nil {
+		return new(hotel.GetHotelByIDNotFound)
 	}
 
-	result := new(hotel.GetHotelsOK)
-	result = result.WithPayload(payload)
-
+	result := new(hotel.GetHotelByIDOK)
+	result.Payload = hotelByID
 	return result
 }
