@@ -2,14 +2,14 @@ package room
 
 import (
 	"context"
-	grpc_booking "github.com/h4x4d/go_hsse_hotels/booking/grpc_gen"
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/grpc/gen"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 type GRPCServer struct {
-	grpc_booking.UnimplementedBookingServer
+	booking.UnimplementedBookingServer
 	booking Booking
 }
 
@@ -27,17 +27,17 @@ type Booking interface {
 	) (Room, error)
 }
 
-func Register(gRPCServer *grpc.Server, booking Booking) {
-	grpc_booking.RegisterBookingServer(gRPCServer, &GRPCServer{booking: booking})
+func Register(gRPCServer *grpc.Server, book Booking) {
+	booking.RegisterBookingServer(gRPCServer, &GRPCServer{booking: book})
 }
 
 func (serverApi *GRPCServer) GetRoom(
-	ctx context.Context, in *grpc_booking.RoomRequest) (*grpc_booking.RoomResponse, error) {
+	ctx context.Context, in *booking.RoomRequest) (*booking.RoomResponse, error) {
 	room, err := serverApi.booking.GetRoom(ctx, in.Id)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "internal error: %v", err)
 	}
-	return &grpc_booking.RoomResponse{
+	return &booking.RoomResponse{
 		Id:          room.Id,
 		HotelId:     room.HotelId,
 		Cost:        room.Cost,

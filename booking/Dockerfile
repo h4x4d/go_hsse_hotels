@@ -7,5 +7,5 @@ RUN go build -o booking cmd/hotels-booking-server/main.go
 
 EXPOSE 8880
 
-ENTRYPOINT ["sh", "wait_and_start.sh"]
+ENTRYPOINT ["sh", "scripts/wait_and_start.sh"]
 

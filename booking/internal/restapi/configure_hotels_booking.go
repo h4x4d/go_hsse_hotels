@@ -4,14 +4,13 @@ package restapi
 
 import (
 	"crypto/tls"
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations"
+	customer2 "github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/customer"
 	"net/http"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
-
-	"github.com/h4x4d/go_hsse_hotels/booking/restapi/operations"
-	"github.com/h4x4d/go_hsse_hotels/booking/restapi/operations/customer"
 )
 
 //go:generate swagger generate server --target ../../booking --name HotelsBooking --spec ../docs/swagger/booking.yaml --principal interface{}
@@ -52,27 +51,27 @@ func configureAPI(api *operations.HotelsBookingAPI) http.Handler {
 	// api.APIAuthorizer = security.Authorized()
 
 	if api.CustomerCreateBookingHandler == nil {
-		api.CustomerCreateBookingHandler = customer.CreateBookingHandlerFunc(func(params customer.CreateBookingParams, principal interface{}) middleware.Responder {
+		api.CustomerCreateBookingHandler = customer2.CreateBookingHandlerFunc(func(params customer2.CreateBookingParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation customer.CreateBooking has not yet been implemented")
 		})
 	}
 	if api.CustomerDeleteBookingByIDHandler == nil {
-		api.CustomerDeleteBookingByIDHandler = customer.DeleteBookingByIDHandlerFunc(func(params customer.DeleteBookingByIDParams, principal interface{}) middleware.Responder {
+		api.CustomerDeleteBookingByIDHandler = customer2.DeleteBookingByIDHandlerFunc(func(params customer2.DeleteBookingByIDParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation customer.DeleteBookingByID has not yet been implemented")
 		})
 	}
 	if api.CustomerGetBookingHandler == nil {
-		api.CustomerGetBookingHandler = customer.GetBookingHandlerFunc(func(params customer.GetBookingParams) middleware.Responder {
+		api.CustomerGetBookingHandler = customer2.GetBookingHandlerFunc(func(params customer2.GetBookingParams) middleware.Responder {
 			return middleware.NotImplemented("operation customer.GetBooking has not yet been implemented")
 		})
 	}
 	if api.CustomerGetBookingByIDHandler == nil {
-		api.CustomerGetBookingByIDHandler = customer.GetBookingByIDHandlerFunc(func(params customer.GetBookingByIDParams, principal interface{}) middleware.Responder {
+		api.CustomerGetBookingByIDHandler = customer2.GetBookingByIDHandlerFunc(func(params customer2.GetBookingByIDParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation customer.GetBookingByID has not yet been implemented")
 		})
 	}
 	if api.CustomerUpdateBookingHandler == nil {
-		api.CustomerUpdateBookingHandler = customer.UpdateBookingHandlerFunc(func(params customer.UpdateBookingParams, principal interface{}) middleware.Responder {
+		api.CustomerUpdateBookingHandler = customer2.UpdateBookingHandlerFunc(func(params customer2.UpdateBookingParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation customer.UpdateBooking has not yet been implemented")
 		})
 	}
