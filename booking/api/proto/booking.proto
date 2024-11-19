@@ -1,0 +1,18 @@
+syntax="proto3";
+package booking;
+option go_package="github.com/h4x4d/go_hsse_hotels/booking";
+
+service Booking {
+  rpc GetRoom (RoomRequest) returns (RoomResponse);
+}
+
+message RoomRequest {
+  int64 id = 1;
+}
+
+message RoomResponse {
+  int64 id = 1;
+  int64 hotel_id = 2;
+  int32 cost = 3;
+  int32 person_count = 4;
+}

@@ -12,8 +12,8 @@
 In project REST API is used to ensure user interaction with the system.
 
 ## API
-  - [Hotel information](/hotel/docs/swagger/hotels.yaml)
-  - [Booking](/booking/docs/swagger/booking.yaml)
+  - [Hotel information](/hotel/api/swagger/hotels.yaml)
+  - [Booking](/booking/api/swagger/booking.yaml)
 
 ## Get started
 
