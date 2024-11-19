@@ -6,6 +6,7 @@ package customer
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -65,6 +66,11 @@ UpdateBookingForbidden No access
 swagger:response updateBookingForbidden
 */
 type UpdateBookingForbidden struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewUpdateBookingForbidden creates UpdateBookingForbidden with default headers values
@@ -73,12 +79,27 @@ func NewUpdateBookingForbidden() *UpdateBookingForbidden {
 	return &UpdateBookingForbidden{}
 }
 
+// WithPayload adds the payload to the update booking forbidden response
+func (o *UpdateBookingForbidden) WithPayload(payload *models.Error) *UpdateBookingForbidden {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the update booking forbidden response
+func (o *UpdateBookingForbidden) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *UpdateBookingForbidden) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(403)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }
 
 // UpdateBookingMethodNotAllowedCode is the HTTP code returned for type UpdateBookingMethodNotAllowed
@@ -90,6 +111,11 @@ UpdateBookingMethodNotAllowed Incorrect data
 swagger:response updateBookingMethodNotAllowed
 */
 type UpdateBookingMethodNotAllowed struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewUpdateBookingMethodNotAllowed creates UpdateBookingMethodNotAllowed with default headers values
@@ -98,10 +124,25 @@ func NewUpdateBookingMethodNotAllowed() *UpdateBookingMethodNotAllowed {
 	return &UpdateBookingMethodNotAllowed{}
 }
 
+// WithPayload adds the payload to the update booking method not allowed response
+func (o *UpdateBookingMethodNotAllowed) WithPayload(payload *models.Error) *UpdateBookingMethodNotAllowed {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the update booking method not allowed response
+func (o *UpdateBookingMethodNotAllowed) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *UpdateBookingMethodNotAllowed) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(405)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

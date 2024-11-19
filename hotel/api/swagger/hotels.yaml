@@ -37,6 +37,8 @@ paths:
             $ref: "#/definitions/Hotel"
         404:
           description: "Hotel not found"
+          schema:
+            $ref: "#/definitions/Error"
 
     put:
       tags:
@@ -70,8 +72,12 @@ paths:
                 format: "int64"
         403:
           description: "No access"
+          schema:
+            $ref: "#/definitions/Error"
         405:
           description: "Incorrect data"
+          schema:
+            $ref: "#/definitions/Error"
       security:
         - api_key: [ ]
 
@@ -94,6 +100,8 @@ paths:
           description: "successful operation"
         404:
           description: "Hotel not found"
+          schema:
+            $ref: "#/definitions/Error"
       security:
         - api_key: []
 
@@ -133,6 +141,8 @@ paths:
               $ref: "#/definitions/Hotel"
         404:
           description: "Hotel not found"
+          schema:
+            $ref: "#/definitions/Error"
 
     post:
       tags:
@@ -160,8 +170,12 @@ paths:
                 format: "int64"
         403:
           description: "No access"
+          schema:
+            $ref: "#/definitions/Error"
         405:
           description: "Incorrect data"
+          schema:
+            $ref: "#/definitions/Error"
       security:
         - api_key: []
 
@@ -187,6 +201,8 @@ paths:
             $ref: "#/definitions/Room"
         404:
           description: "room not found"
+          schema:
+            $ref: "#/definitions/Error"
 
     put:
       tags:
@@ -219,8 +235,12 @@ paths:
                 type: "integer"
         403:
           description: "No access"
+          schema:
+            $ref: "#/definitions/Error"
         405:
           description: "Incorrect data"
+          schema:
+            $ref: "#/definitions/Error"
       security:
         - api_key: [ ]
 
@@ -243,6 +263,8 @@ paths:
           description: "successful operation"
         404:
           description: "room not found"
+          schema:
+            $ref: "#/definitions/Error"
       security:
         - api_key: []
 
@@ -272,6 +294,8 @@ paths:
               $ref: "#/definitions/Room"
         404:
           description: "Hotel not found"
+          schema:
+            $ref: "#/definitions/Error"
     post:
       tags:
         - "room"
@@ -298,8 +322,12 @@ paths:
                 format: "int64"
         403:
           description: "No access"
+          schema:
+            $ref: "#/definitions/Error"
         405:
           description: "Incorrect data"
+          schema:
+            $ref: "#/definitions/Error"
       security:
         - api_key: []
 
@@ -379,3 +407,13 @@ definitions:
     properties:
       name:
         type: "string"
+  Error:
+    type: "object"
+    required:
+      - "error_status_code"
+    properties:
+      error_message:
+        type: "string"
+      error_status_code:
+        type: integer
+

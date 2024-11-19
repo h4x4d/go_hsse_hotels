@@ -6,6 +6,7 @@ package hotel
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -65,6 +66,11 @@ UpdateHotelForbidden No access
 swagger:response updateHotelForbidden
 */
 type UpdateHotelForbidden struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewUpdateHotelForbidden creates UpdateHotelForbidden with default headers values
@@ -73,12 +79,27 @@ func NewUpdateHotelForbidden() *UpdateHotelForbidden {
 	return &UpdateHotelForbidden{}
 }
 
+// WithPayload adds the payload to the update hotel forbidden response
+func (o *UpdateHotelForbidden) WithPayload(payload *models.Error) *UpdateHotelForbidden {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the update hotel forbidden response
+func (o *UpdateHotelForbidden) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *UpdateHotelForbidden) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(403)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }
 
 // UpdateHotelMethodNotAllowedCode is the HTTP code returned for type UpdateHotelMethodNotAllowed
@@ -90,6 +111,11 @@ UpdateHotelMethodNotAllowed Incorrect data
 swagger:response updateHotelMethodNotAllowed
 */
 type UpdateHotelMethodNotAllowed struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewUpdateHotelMethodNotAllowed creates UpdateHotelMethodNotAllowed with default headers values
@@ -98,10 +124,25 @@ func NewUpdateHotelMethodNotAllowed() *UpdateHotelMethodNotAllowed {
 	return &UpdateHotelMethodNotAllowed{}
 }
 
+// WithPayload adds the payload to the update hotel method not allowed response
+func (o *UpdateHotelMethodNotAllowed) WithPayload(payload *models.Error) *UpdateHotelMethodNotAllowed {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the update hotel method not allowed response
+func (o *UpdateHotelMethodNotAllowed) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *UpdateHotelMethodNotAllowed) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(405)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

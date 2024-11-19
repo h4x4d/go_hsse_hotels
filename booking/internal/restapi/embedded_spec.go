@@ -64,10 +64,16 @@ func init() {
             }
           },
           "403": {
-            "description": "No access"
+            "description": "No access",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           },
           "404": {
-            "description": "Booking not found"
+            "description": "Booking not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       },
@@ -112,7 +118,10 @@ func init() {
             }
           },
           "405": {
-            "description": "Incorrect data"
+            "description": "Incorrect data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
@@ -151,10 +160,16 @@ func init() {
             }
           },
           "403": {
-            "description": "No access"
+            "description": "No access",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           },
           "404": {
-            "description": "Booking not found"
+            "description": "Booking not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       },
@@ -208,10 +223,16 @@ func init() {
             }
           },
           "403": {
-            "description": "No access"
+            "description": "No access",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           },
           "405": {
-            "description": "Incorrect data"
+            "description": "Incorrect data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       },
@@ -245,10 +266,16 @@ func init() {
             "description": "successful operation"
           },
           "403": {
-            "description": "No access"
+            "description": "No access",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           },
           "404": {
-            "description": "Booking not found"
+            "description": "Booking not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
@@ -300,6 +327,20 @@ func init() {
         "user_id": {
           "type": "integer",
           "format": "int64"
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "required": [
+        "error_status_code"
+      ],
+      "properties": {
+        "error_message": {
+          "type": "string"
+        },
+        "error_status_code": {
+          "type": "integer"
         }
       }
     },
@@ -391,10 +432,16 @@ func init() {
             }
           },
           "403": {
-            "description": "No access"
+            "description": "No access",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           },
           "404": {
-            "description": "Booking not found"
+            "description": "Booking not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       },
@@ -439,7 +486,10 @@ func init() {
             }
           },
           "405": {
-            "description": "Incorrect data"
+            "description": "Incorrect data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
@@ -478,10 +528,16 @@ func init() {
             }
           },
           "403": {
-            "description": "No access"
+            "description": "No access",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           },
           "404": {
-            "description": "Booking not found"
+            "description": "Booking not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       },
@@ -535,10 +591,16 @@ func init() {
             }
           },
           "403": {
-            "description": "No access"
+            "description": "No access",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           },
           "405": {
-            "description": "Incorrect data"
+            "description": "Incorrect data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       },
@@ -572,10 +634,16 @@ func init() {
             "description": "successful operation"
           },
           "403": {
-            "description": "No access"
+            "description": "No access",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           },
           "404": {
-            "description": "Booking not found"
+            "description": "Booking not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
@@ -627,6 +695,20 @@ func init() {
         "user_id": {
           "type": "integer",
           "format": "int64"
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "required": [
+        "error_status_code"
+      ],
+      "properties": {
+        "error_message": {
+          "type": "string"
+        },
+        "error_status_code": {
+          "type": "integer"
         }
       }
     },

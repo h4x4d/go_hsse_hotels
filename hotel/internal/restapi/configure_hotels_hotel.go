@@ -5,16 +5,18 @@ package restapi
 import (
 	"crypto/tls"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/handlers"
-	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations"
-	hotel "github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/hotel"
-	room "github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/room"
 	"net/http"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/runtime/middleware"
+
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations"
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/hotel"
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/room"
 )
 
-//go:generate swagger generate server --target ../../hotel --name HotelsHotel --spec ../docs/swagger/hotels.yaml --principal interface{}
+//go:generate swagger generate server --target ../../hotel --name HotelsHotel --spec ../api/swagger/hotels.yaml --principal interface{}
 
 func configureFlags(api *operations.HotelsHotelAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
@@ -39,8 +41,10 @@ func configureAPI(api *operations.HotelsHotelAPI) http.Handler {
 	api.JSONProducer = runtime.JSONProducer()
 
 	// Applies when the "api_key" header is set
-	api.APIKeyAuth = func(token string) (interface{}, error) {
-		return "OK", nil
+	if api.APIKeyAuth == nil {
+		api.APIKeyAuth = func(token string) (interface{}, error) {
+			return nil, errors.NotImplemented("api key auth (api_key) api_key from header param [api_key] has not yet been implemented")
+		}
 	}
 
 	// Set your custom authorizer if needed. Default one is security.Authorized()
