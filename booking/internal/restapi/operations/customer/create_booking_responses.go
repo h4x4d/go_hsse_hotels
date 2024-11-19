@@ -6,6 +6,7 @@ package customer
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -65,6 +66,11 @@ CreateBookingMethodNotAllowed Incorrect data
 swagger:response createBookingMethodNotAllowed
 */
 type CreateBookingMethodNotAllowed struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewCreateBookingMethodNotAllowed creates CreateBookingMethodNotAllowed with default headers values
@@ -73,10 +79,25 @@ func NewCreateBookingMethodNotAllowed() *CreateBookingMethodNotAllowed {
 	return &CreateBookingMethodNotAllowed{}
 }
 
+// WithPayload adds the payload to the create booking method not allowed response
+func (o *CreateBookingMethodNotAllowed) WithPayload(payload *models.Error) *CreateBookingMethodNotAllowed {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the create booking method not allowed response
+func (o *CreateBookingMethodNotAllowed) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *CreateBookingMethodNotAllowed) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(405)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

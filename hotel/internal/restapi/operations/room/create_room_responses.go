@@ -6,6 +6,7 @@ package room
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -65,6 +66,11 @@ CreateRoomForbidden No access
 swagger:response createRoomForbidden
 */
 type CreateRoomForbidden struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewCreateRoomForbidden creates CreateRoomForbidden with default headers values
@@ -73,12 +79,27 @@ func NewCreateRoomForbidden() *CreateRoomForbidden {
 	return &CreateRoomForbidden{}
 }
 
+// WithPayload adds the payload to the create room forbidden response
+func (o *CreateRoomForbidden) WithPayload(payload *models.Error) *CreateRoomForbidden {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the create room forbidden response
+func (o *CreateRoomForbidden) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *CreateRoomForbidden) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(403)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }
 
 // CreateRoomMethodNotAllowedCode is the HTTP code returned for type CreateRoomMethodNotAllowed
@@ -90,6 +111,11 @@ CreateRoomMethodNotAllowed Incorrect data
 swagger:response createRoomMethodNotAllowed
 */
 type CreateRoomMethodNotAllowed struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewCreateRoomMethodNotAllowed creates CreateRoomMethodNotAllowed with default headers values
@@ -98,10 +124,25 @@ func NewCreateRoomMethodNotAllowed() *CreateRoomMethodNotAllowed {
 	return &CreateRoomMethodNotAllowed{}
 }
 
+// WithPayload adds the payload to the create room method not allowed response
+func (o *CreateRoomMethodNotAllowed) WithPayload(payload *models.Error) *CreateRoomMethodNotAllowed {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the create room method not allowed response
+func (o *CreateRoomMethodNotAllowed) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *CreateRoomMethodNotAllowed) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(405)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

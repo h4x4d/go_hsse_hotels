@@ -6,6 +6,7 @@ package customer
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -45,6 +46,11 @@ DeleteBookingByIDForbidden No access
 swagger:response deleteBookingByIdForbidden
 */
 type DeleteBookingByIDForbidden struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewDeleteBookingByIDForbidden creates DeleteBookingByIDForbidden with default headers values
@@ -53,12 +59,27 @@ func NewDeleteBookingByIDForbidden() *DeleteBookingByIDForbidden {
 	return &DeleteBookingByIDForbidden{}
 }
 
+// WithPayload adds the payload to the delete booking by Id forbidden response
+func (o *DeleteBookingByIDForbidden) WithPayload(payload *models.Error) *DeleteBookingByIDForbidden {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the delete booking by Id forbidden response
+func (o *DeleteBookingByIDForbidden) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *DeleteBookingByIDForbidden) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(403)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }
 
 // DeleteBookingByIDNotFoundCode is the HTTP code returned for type DeleteBookingByIDNotFound
@@ -70,6 +91,11 @@ DeleteBookingByIDNotFound Booking not found
 swagger:response deleteBookingByIdNotFound
 */
 type DeleteBookingByIDNotFound struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewDeleteBookingByIDNotFound creates DeleteBookingByIDNotFound with default headers values
@@ -78,10 +104,25 @@ func NewDeleteBookingByIDNotFound() *DeleteBookingByIDNotFound {
 	return &DeleteBookingByIDNotFound{}
 }
 
+// WithPayload adds the payload to the delete booking by Id not found response
+func (o *DeleteBookingByIDNotFound) WithPayload(payload *models.Error) *DeleteBookingByIDNotFound {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the delete booking by Id not found response
+func (o *DeleteBookingByIDNotFound) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *DeleteBookingByIDNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(404)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

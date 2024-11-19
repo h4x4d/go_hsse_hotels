@@ -6,7 +6,7 @@ package customer
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
+	models2 "github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -25,7 +25,7 @@ type GetBookingByIDOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Booking `json:"body,omitempty"`
+	Payload *models2.Booking `json:"body,omitempty"`
 }
 
 // NewGetBookingByIDOK creates GetBookingByIDOK with default headers values
@@ -35,13 +35,13 @@ func NewGetBookingByIDOK() *GetBookingByIDOK {
 }
 
 // WithPayload adds the payload to the get booking by Id o k response
-func (o *GetBookingByIDOK) WithPayload(payload *models.Booking) *GetBookingByIDOK {
+func (o *GetBookingByIDOK) WithPayload(payload *models2.Booking) *GetBookingByIDOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get booking by Id o k response
-func (o *GetBookingByIDOK) SetPayload(payload *models.Booking) {
+func (o *GetBookingByIDOK) SetPayload(payload *models2.Booking) {
 	o.Payload = payload
 }
 
@@ -66,6 +66,11 @@ GetBookingByIDForbidden No access
 swagger:response getBookingByIdForbidden
 */
 type GetBookingByIDForbidden struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models2.Error `json:"body,omitempty"`
 }
 
 // NewGetBookingByIDForbidden creates GetBookingByIDForbidden with default headers values
@@ -74,12 +79,27 @@ func NewGetBookingByIDForbidden() *GetBookingByIDForbidden {
 	return &GetBookingByIDForbidden{}
 }
 
+// WithPayload adds the payload to the get booking by Id forbidden response
+func (o *GetBookingByIDForbidden) WithPayload(payload *models2.Error) *GetBookingByIDForbidden {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the get booking by Id forbidden response
+func (o *GetBookingByIDForbidden) SetPayload(payload *models2.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *GetBookingByIDForbidden) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(403)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }
 
 // GetBookingByIDNotFoundCode is the HTTP code returned for type GetBookingByIDNotFound
@@ -91,6 +111,11 @@ GetBookingByIDNotFound Booking not found
 swagger:response getBookingByIdNotFound
 */
 type GetBookingByIDNotFound struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models2.Error `json:"body,omitempty"`
 }
 
 // NewGetBookingByIDNotFound creates GetBookingByIDNotFound with default headers values
@@ -99,10 +124,25 @@ func NewGetBookingByIDNotFound() *GetBookingByIDNotFound {
 	return &GetBookingByIDNotFound{}
 }
 
+// WithPayload adds the payload to the get booking by Id not found response
+func (o *GetBookingByIDNotFound) WithPayload(payload *models2.Error) *GetBookingByIDNotFound {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the get booking by Id not found response
+func (o *GetBookingByIDNotFound) SetPayload(payload *models2.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *GetBookingByIDNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(404)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

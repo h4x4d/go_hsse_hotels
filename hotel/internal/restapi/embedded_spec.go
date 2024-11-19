@@ -78,7 +78,10 @@ func init() {
             }
           },
           "404": {
-            "description": "Hotel not found"
+            "description": "Hotel not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       },
@@ -123,10 +126,16 @@ func init() {
             }
           },
           "403": {
-            "description": "No access"
+            "description": "No access",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           },
           "405": {
-            "description": "Incorrect data"
+            "description": "Incorrect data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
@@ -165,7 +174,10 @@ func init() {
             }
           },
           "404": {
-            "description": "Hotel not found"
+            "description": "Hotel not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       },
@@ -210,10 +222,16 @@ func init() {
             }
           },
           "403": {
-            "description": "No access"
+            "description": "No access",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           },
           "405": {
-            "description": "Incorrect data"
+            "description": "Incorrect data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
@@ -246,7 +264,10 @@ func init() {
             }
           },
           "404": {
-            "description": "room not found"
+            "description": "room not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       },
@@ -298,10 +319,16 @@ func init() {
             }
           },
           "403": {
-            "description": "No access"
+            "description": "No access",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           },
           "405": {
-            "description": "Incorrect data"
+            "description": "Incorrect data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       },
@@ -334,7 +361,10 @@ func init() {
             "description": "successful operation"
           },
           "404": {
-            "description": "room not found"
+            "description": "room not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
@@ -367,7 +397,10 @@ func init() {
             }
           },
           "404": {
-            "description": "Hotel not found"
+            "description": "Hotel not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       },
@@ -420,10 +453,16 @@ func init() {
             }
           },
           "403": {
-            "description": "No access"
+            "description": "No access",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           },
           "405": {
-            "description": "Incorrect data"
+            "description": "Incorrect data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       },
@@ -456,13 +495,30 @@ func init() {
             "description": "successful operation"
           },
           "404": {
-            "description": "Hotel not found"
+            "description": "Hotel not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
     }
   },
   "definitions": {
+    "Error": {
+      "type": "object",
+      "required": [
+        "error_status_code"
+      ],
+      "properties": {
+        "error_message": {
+          "type": "string"
+        },
+        "error_status_code": {
+          "type": "integer"
+        }
+      }
+    },
     "Hotel": {
       "type": "object",
       "required": [
@@ -632,7 +688,10 @@ func init() {
             }
           },
           "404": {
-            "description": "Hotel not found"
+            "description": "Hotel not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       },
@@ -677,10 +736,16 @@ func init() {
             }
           },
           "403": {
-            "description": "No access"
+            "description": "No access",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           },
           "405": {
-            "description": "Incorrect data"
+            "description": "Incorrect data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
@@ -719,7 +784,10 @@ func init() {
             }
           },
           "404": {
-            "description": "Hotel not found"
+            "description": "Hotel not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       },
@@ -764,10 +832,16 @@ func init() {
             }
           },
           "403": {
-            "description": "No access"
+            "description": "No access",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           },
           "405": {
-            "description": "Incorrect data"
+            "description": "Incorrect data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
@@ -800,7 +874,10 @@ func init() {
             }
           },
           "404": {
-            "description": "room not found"
+            "description": "room not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       },
@@ -852,10 +929,16 @@ func init() {
             }
           },
           "403": {
-            "description": "No access"
+            "description": "No access",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           },
           "405": {
-            "description": "Incorrect data"
+            "description": "Incorrect data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       },
@@ -888,7 +971,10 @@ func init() {
             "description": "successful operation"
           },
           "404": {
-            "description": "room not found"
+            "description": "room not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
@@ -921,7 +1007,10 @@ func init() {
             }
           },
           "404": {
-            "description": "Hotel not found"
+            "description": "Hotel not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       },
@@ -974,10 +1063,16 @@ func init() {
             }
           },
           "403": {
-            "description": "No access"
+            "description": "No access",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           },
           "405": {
-            "description": "Incorrect data"
+            "description": "Incorrect data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       },
@@ -1010,13 +1105,30 @@ func init() {
             "description": "successful operation"
           },
           "404": {
-            "description": "Hotel not found"
+            "description": "Hotel not found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
     }
   },
   "definitions": {
+    "Error": {
+      "type": "object",
+      "required": [
+        "error_status_code"
+      ],
+      "properties": {
+        "error_message": {
+          "type": "string"
+        },
+        "error_status_code": {
+          "type": "integer"
+        }
+      }
+    },
     "Hotel": {
       "type": "object",
       "required": [

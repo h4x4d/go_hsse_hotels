@@ -6,6 +6,7 @@ package room
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -45,6 +46,11 @@ DeleteRoomByIDNotFound room not found
 swagger:response deleteRoomByIdNotFound
 */
 type DeleteRoomByIDNotFound struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewDeleteRoomByIDNotFound creates DeleteRoomByIDNotFound with default headers values
@@ -53,10 +59,25 @@ func NewDeleteRoomByIDNotFound() *DeleteRoomByIDNotFound {
 	return &DeleteRoomByIDNotFound{}
 }
 
+// WithPayload adds the payload to the delete room by Id not found response
+func (o *DeleteRoomByIDNotFound) WithPayload(payload *models.Error) *DeleteRoomByIDNotFound {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the delete room by Id not found response
+func (o *DeleteRoomByIDNotFound) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *DeleteRoomByIDNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(404)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

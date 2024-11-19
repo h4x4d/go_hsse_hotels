@@ -6,7 +6,7 @@ package room
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
+	models2 "github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -25,7 +25,7 @@ type GetRoomsOK struct {
 	/*
 	  In: Body
 	*/
-	Payload []*models.Room `json:"body,omitempty"`
+	Payload []*models2.Room `json:"body,omitempty"`
 }
 
 // NewGetRoomsOK creates GetRoomsOK with default headers values
@@ -35,13 +35,13 @@ func NewGetRoomsOK() *GetRoomsOK {
 }
 
 // WithPayload adds the payload to the get rooms o k response
-func (o *GetRoomsOK) WithPayload(payload []*models.Room) *GetRoomsOK {
+func (o *GetRoomsOK) WithPayload(payload []*models2.Room) *GetRoomsOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get rooms o k response
-func (o *GetRoomsOK) SetPayload(payload []*models.Room) {
+func (o *GetRoomsOK) SetPayload(payload []*models2.Room) {
 	o.Payload = payload
 }
 
@@ -52,7 +52,7 @@ func (o *GetRoomsOK) WriteResponse(rw http.ResponseWriter, producer runtime.Prod
 	payload := o.Payload
 	if payload == nil {
 		// return empty array
-		payload = make([]*models.Room, 0, 50)
+		payload = make([]*models2.Room, 0, 50)
 	}
 
 	if err := producer.Produce(rw, payload); err != nil {
@@ -69,6 +69,11 @@ GetRoomsNotFound Hotel not found
 swagger:response getRoomsNotFound
 */
 type GetRoomsNotFound struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models2.Error `json:"body,omitempty"`
 }
 
 // NewGetRoomsNotFound creates GetRoomsNotFound with default headers values
@@ -77,10 +82,25 @@ func NewGetRoomsNotFound() *GetRoomsNotFound {
 	return &GetRoomsNotFound{}
 }
 
+// WithPayload adds the payload to the get rooms not found response
+func (o *GetRoomsNotFound) WithPayload(payload *models2.Error) *GetRoomsNotFound {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the get rooms not found response
+func (o *GetRoomsNotFound) SetPayload(payload *models2.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *GetRoomsNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(404)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }
