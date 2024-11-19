@@ -21,6 +21,6 @@ func GetHotelByIDHandler(params hotel.GetHotelByIDParams) (responder middleware.
 	}
 
 	result := new(hotel.GetHotelByIDOK)
-	result.Payload = hotelByID
+	result = result.WithPayload(hotelByID)
 	return result
 }

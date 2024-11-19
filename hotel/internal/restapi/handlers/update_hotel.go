@@ -12,16 +12,19 @@ func UpdateHotelHandler(params hotel.UpdateHotelParams, _ interface{}) (responde
 	defer utils.CatchPanic(&responder)
 
 	newHotel := params.Object
+	newHotel.ID = params.HotelID
 	updatedHotel, errGet := services.GetHotelByID(params.HotelID)
 	if errGet != nil {
 		return middleware.Error(http.StatusInternalServerError, errGet.Error())
 	}
 	if updatedHotel != nil {
+		// adding new rooms or deleting them otherwise
 		if len(newHotel.Rooms) == 0 {
-			newHotel.Rooms = updatedHotel.Rooms
+			newHotel.Rooms = append(newHotel.Rooms, updatedHotel.Rooms...)
 		}
+
 		// deleting old hotel
-		errDelete := services.DeleteHotelByID(params.HotelID)
+		_, errDelete := services.DeleteHotelByID(params.HotelID)
 		if errDelete != nil {
 			return middleware.Error(http.StatusInternalServerError, errDelete.Error())
 		}

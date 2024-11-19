@@ -11,18 +11,12 @@ import (
 func DeleteHotelByIDHandler(params hotel.DeleteHotelByIDParams, _ interface{}) (responder middleware.Responder) {
 	defer utils.CatchPanic(&responder)
 
-	deletedHotel, errGet := services.GetHotelByID(params.HotelID)
-	if errGet != nil {
-		return middleware.Error(http.StatusInternalServerError, errGet.Error())
-	}
-	if deletedHotel == nil {
-		return new(hotel.DeleteHotelByIDNotFound)
-	}
-
-	errDelete := services.DeleteHotelByID(params.HotelID)
-
+	deletedHotelId, errDelete := services.DeleteHotelByID(params.HotelID)
 	if errDelete != nil {
 		return middleware.Error(http.StatusInternalServerError, errDelete.Error())
+	}
+	if deletedHotelId == nil {
+		return new(hotel.DeleteHotelByIDNotFound)
 	}
 	result := new(hotel.DeleteHotelByIDOK)
 	return result

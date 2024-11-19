@@ -12,7 +12,6 @@ import (
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/runtime/middleware"
 )
 
 //go:generate swagger generate server --target ../../hotel --name HotelsHotel --spec ../docs/swagger/hotels.yaml --principal interface{}
@@ -50,45 +49,22 @@ func configureAPI(api *operations.HotelsHotelAPI) http.Handler {
 	// Example:
 	// api.APIAuthorizer = security.Authorized()
 
+	// catch cases when error is nil but the first argument returning from function is nil TODO
+	// maybe this have been already caught, I dont remember clearly
+
+	// hotel handlers
 	api.HotelCreateHotelHandler = hotel.CreateHotelHandlerFunc(handlers.CreateHotelHandler)
-	if api.RoomCreateRoomHandler == nil {
-		api.RoomCreateRoomHandler = room.CreateRoomHandlerFunc(func(params room.CreateRoomParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation room.CreateRoom has not yet been implemented")
-		})
-	}
 	api.HotelDeleteHotelByIDHandler = hotel.DeleteHotelByIDHandlerFunc(handlers.DeleteHotelByIDHandler)
-	if api.RoomDeleteRoomByIDHandler == nil {
-		api.RoomDeleteRoomByIDHandler = room.DeleteRoomByIDHandlerFunc(func(params room.DeleteRoomByIDParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation room.DeleteRoomByID has not yet been implemented")
-		})
-	}
-	api.HotelGetHotelByIDHandler = hotel.GetHotelByIDHandlerFunc(handlers.GetHotelByIDHandler)
-	if api.HotelGetHotelByIDHandler == nil {
-		api.HotelGetHotelByIDHandler = hotel.GetHotelByIDHandlerFunc(func(params hotel.GetHotelByIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation hotel.GetHotelByID has not yet been implemented")
-		})
-	}
 	api.HotelGetHotelsHandler = hotel.GetHotelsHandlerFunc(handlers.GetHotelsHandler)
-	if api.RoomGetRoomByIDHandler == nil {
-		api.RoomGetRoomByIDHandler = room.GetRoomByIDHandlerFunc(func(params room.GetRoomByIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation room.GetRoomByID has not yet been implemented")
-		})
-	}
-	if api.RoomGetRoomsHandler == nil {
-		api.RoomGetRoomsHandler = room.GetRoomsHandlerFunc(func(params room.GetRoomsParams) middleware.Responder {
-			return middleware.NotImplemented("operation room.GetRooms has not yet been implemented")
-		})
-	}
-	if api.HotelUpdateHotelHandler == nil {
-		api.HotelUpdateHotelHandler = hotel.UpdateHotelHandlerFunc(func(params hotel.UpdateHotelParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation hotel.UpdateHotel has not yet been implemented")
-		})
-	}
-	if api.RoomUpdateRoomHandler == nil {
-		api.RoomUpdateRoomHandler = room.UpdateRoomHandlerFunc(func(params room.UpdateRoomParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation room.UpdateRoom has not yet been implemented")
-		})
-	}
+	api.HotelGetHotelByIDHandler = hotel.GetHotelByIDHandlerFunc(handlers.GetHotelByIDHandler)
+	api.HotelUpdateHotelHandler = hotel.UpdateHotelHandlerFunc(handlers.UpdateHotelHandler)
+
+	// rooms handlers
+	api.RoomCreateRoomHandler = room.CreateRoomHandlerFunc(handlers.CreateRoomHandler)
+	api.RoomDeleteRoomByIDHandler = room.DeleteRoomByIDHandlerFunc(handlers.DeleteRoomByIDHandler)
+	api.RoomGetRoomByIDHandler = room.GetRoomByIDHandlerFunc(handlers.GetRoomByIDHandler)
+	api.RoomGetRoomsHandler = room.GetRoomsHandlerFunc(handlers.GetRoomsHandler)
+	api.RoomUpdateRoomHandler = room.UpdateRoomHandlerFunc(handlers.UpdateRoomHandler)
 
 	api.PreServerShutdown = func() {}
 

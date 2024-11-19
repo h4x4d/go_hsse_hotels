@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-func GetHotelByID(HotelID int64) (*models.Hotel, error) {
+func GetRoomByID(RoomID int64) (*models.Room, error) {
 	// connecting to database hotel
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", os.Getenv("POSTGRES_USER"),
 		os.Getenv("POSTGRES_PASSWORD"), "db", os.Getenv("POSTGRES_PORT"), "hotel")
@@ -18,23 +18,21 @@ func GetHotelByID(HotelID int64) (*models.Hotel, error) {
 	}
 	defer pool.Close()
 
-	hotelRow, errGet := pool.Query(context.Background(),
-		"SELECT * FROM hotels WHERE id = $1", HotelID)
+	roomRow, errGet := pool.Query(context.Background(),
+		"SELECT * FROM rooms WHERE id = $1", RoomID)
 	if errGet != nil {
 		return nil, errGet
 	}
-	if !hotelRow.Next() {
+	if !roomRow.Next() {
 		return nil, nil
 	}
 
-	hotel := new(models.Hotel)
-	hotel.Name = new(string)
-	hotel.City = new(string)
-	hotel.Address = new(string)
-	hotel.Rooms = make([]*models.Room, 0)
+	room := new(models.Room)
+	room.PersonCount = new(int64)
+	room.Cost = new(int64)
+	room.HotelID = new(int64)
 
-	// scaning hotel object
-	errHotel := hotelRow.Scan(&hotel.ID, hotel.Name, hotel.City,
-		hotel.Address, &hotel.HotelClass)
-	return hotel, errHotel
+	// scaning room
+	errRoom := roomRow.Scan(&room.ID, room.HotelID, room.Cost, room.PersonCount)
+	return room, errRoom
 }

@@ -23,6 +23,5 @@ func GetHotelsHandler(params hotel.GetHotelsParams) (responder middleware.Respon
 
 	result := new(hotel.GetHotelsOK)
 	result = result.WithPayload(payload)
-
 	return result
 }
