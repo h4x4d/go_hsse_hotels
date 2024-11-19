@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func CreateHotelHandler(params hotel.CreateHotelParams, principal interface{}) (responder middleware.Responder) {
+func CreateHotelHandler(params hotel.CreateHotelParams, _ interface{}) (responder middleware.Responder) {
 	defer utils.CatchPanic(&responder)
 
 	err := services.CreateHotel(params.Object)

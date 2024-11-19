@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"os"
 	"strings"
 )
@@ -12,11 +12,11 @@ import (
 func GetHotels(city *string, hotel_class *int64, name *string, tag *string) ([]*models.Hotel, error) {
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", os.Getenv("POSTGRES_USER"),
 		os.Getenv("POSTGRES_PASSWORD"), "db", os.Getenv("POSTGRES_PORT"), "hotel")
-	conn, err := pgx.Connect(context.Background(), connStr)
+	pool, err := pgxpool.New(context.Background(), connStr)
 	if err != nil {
 		return nil, err
 	}
-	defer conn.Close(context.Background())
+	defer pool.Close()
 
 	query := `SELECT * FROM hotels`
 	clauses := []string{}
@@ -37,7 +37,7 @@ func GetHotels(city *string, hotel_class *int64, name *string, tag *string) ([]*
 		query += " WHERE " + strings.Join(clauses, " AND ")
 	}
 
-	rowsHotels, errQueryHotels := conn.Query(context.Background(), query, args...)
+	rowsHotels, errQueryHotels := pool.Query(context.Background(), query, args...)
 	if errQueryHotels != nil {
 		return nil, err
 	}
@@ -64,7 +64,7 @@ func GetHotels(city *string, hotel_class *int64, name *string, tag *string) ([]*
 	// getting rooms information
 	for _, currHotel := range result {
 		// getting query for rooms
-		rowsRooms, errQueryRooms := conn.Query(context.Background(),
+		rowsRooms, errQueryRooms := pool.Query(context.Background(),
 			"SELECT * FROM rooms WHERE hotel_id = $1", currHotel.ID)
 		if errQueryRooms != nil {
 			return nil, err
@@ -93,7 +93,7 @@ func GetHotels(city *string, hotel_class *int64, name *string, tag *string) ([]*
 		for index < len(currHotel.Rooms) {
 			currRoom := currHotel.Rooms[index]
 			// getting query for tags
-			rowsTags, errQueryTags := conn.Query(context.Background(),
+			rowsTags, errQueryTags := pool.Query(context.Background(),
 				"SELECT * FROM tags WHERE room_id = $1", currRoom.ID)
 			if errQueryTags != nil {
 				return nil, err
