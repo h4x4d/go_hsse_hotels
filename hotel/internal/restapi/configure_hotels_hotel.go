@@ -4,15 +4,14 @@ package restapi
 
 import (
 	"crypto/tls"
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations"
+	hotel2 "github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/hotel"
+	room2 "github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/room"
 	"net/http"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
-
-	"github.com/h4x4d/go_hsse_hotels/hotel/restapi/operations"
-	"github.com/h4x4d/go_hsse_hotels/hotel/restapi/operations/hotel"
-	"github.com/h4x4d/go_hsse_hotels/hotel/restapi/operations/room"
 )
 
 //go:generate swagger generate server --target ../../hotel --name HotelsHotel --spec ../docs/swagger/hotels.yaml --principal interface{}
@@ -53,52 +52,52 @@ func configureAPI(api *operations.HotelsHotelAPI) http.Handler {
 	// api.APIAuthorizer = security.Authorized()
 
 	if api.HotelCreateHotelHandler == nil {
-		api.HotelCreateHotelHandler = hotel.CreateHotelHandlerFunc(func(params hotel.CreateHotelParams, principal interface{}) middleware.Responder {
+		api.HotelCreateHotelHandler = hotel2.CreateHotelHandlerFunc(func(params hotel2.CreateHotelParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation hotel.CreateHotel has not yet been implemented")
 		})
 	}
 	if api.RoomCreateRoomHandler == nil {
-		api.RoomCreateRoomHandler = room.CreateRoomHandlerFunc(func(params room.CreateRoomParams, principal interface{}) middleware.Responder {
+		api.RoomCreateRoomHandler = room2.CreateRoomHandlerFunc(func(params room2.CreateRoomParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation room.CreateRoom has not yet been implemented")
 		})
 	}
 	if api.HotelDeleteHotelByIDHandler == nil {
-		api.HotelDeleteHotelByIDHandler = hotel.DeleteHotelByIDHandlerFunc(func(params hotel.DeleteHotelByIDParams, principal interface{}) middleware.Responder {
+		api.HotelDeleteHotelByIDHandler = hotel2.DeleteHotelByIDHandlerFunc(func(params hotel2.DeleteHotelByIDParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation hotel.DeleteHotelByID has not yet been implemented")
 		})
 	}
 	if api.RoomDeleteRoomByIDHandler == nil {
-		api.RoomDeleteRoomByIDHandler = room.DeleteRoomByIDHandlerFunc(func(params room.DeleteRoomByIDParams, principal interface{}) middleware.Responder {
+		api.RoomDeleteRoomByIDHandler = room2.DeleteRoomByIDHandlerFunc(func(params room2.DeleteRoomByIDParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation room.DeleteRoomByID has not yet been implemented")
 		})
 	}
 	if api.HotelGetHotelByIDHandler == nil {
-		api.HotelGetHotelByIDHandler = hotel.GetHotelByIDHandlerFunc(func(params hotel.GetHotelByIDParams) middleware.Responder {
+		api.HotelGetHotelByIDHandler = hotel2.GetHotelByIDHandlerFunc(func(params hotel2.GetHotelByIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation hotel.GetHotelByID has not yet been implemented")
 		})
 	}
 	if api.HotelGetHotelsHandler == nil {
-		api.HotelGetHotelsHandler = hotel.GetHotelsHandlerFunc(func(params hotel.GetHotelsParams) middleware.Responder {
+		api.HotelGetHotelsHandler = hotel2.GetHotelsHandlerFunc(func(params hotel2.GetHotelsParams) middleware.Responder {
 			return middleware.NotImplemented("operation hotel.GetHotels has not yet been implemented")
 		})
 	}
 	if api.RoomGetRoomByIDHandler == nil {
-		api.RoomGetRoomByIDHandler = room.GetRoomByIDHandlerFunc(func(params room.GetRoomByIDParams) middleware.Responder {
+		api.RoomGetRoomByIDHandler = room2.GetRoomByIDHandlerFunc(func(params room2.GetRoomByIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation room.GetRoomByID has not yet been implemented")
 		})
 	}
 	if api.RoomGetRoomsHandler == nil {
-		api.RoomGetRoomsHandler = room.GetRoomsHandlerFunc(func(params room.GetRoomsParams) middleware.Responder {
+		api.RoomGetRoomsHandler = room2.GetRoomsHandlerFunc(func(params room2.GetRoomsParams) middleware.Responder {
 			return middleware.NotImplemented("operation room.GetRooms has not yet been implemented")
 		})
 	}
 	if api.HotelUpdateHotelHandler == nil {
-		api.HotelUpdateHotelHandler = hotel.UpdateHotelHandlerFunc(func(params hotel.UpdateHotelParams, principal interface{}) middleware.Responder {
+		api.HotelUpdateHotelHandler = hotel2.UpdateHotelHandlerFunc(func(params hotel2.UpdateHotelParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation hotel.UpdateHotel has not yet been implemented")
 		})
 	}
 	if api.RoomUpdateRoomHandler == nil {
-		api.RoomUpdateRoomHandler = room.UpdateRoomHandlerFunc(func(params room.UpdateRoomParams, principal interface{}) middleware.Responder {
+		api.RoomUpdateRoomHandler = room2.UpdateRoomHandlerFunc(func(params room2.UpdateRoomParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation room.UpdateRoom has not yet been implemented")
 		})
 	}

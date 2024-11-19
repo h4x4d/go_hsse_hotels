@@ -12,7 +12,7 @@ import (
 	"strings"
 
 	"context"
-	"github.com/h4x4d/go_hsse_hotels/hotel/models"
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"github.com/jackc/pgx/v5"
 
 	"github.com/go-openapi/errors"
@@ -24,8 +24,8 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"github.com/h4x4d/go_hsse_hotels/hotel/restapi/operations/hotel"
-	"github.com/h4x4d/go_hsse_hotels/hotel/restapi/operations/room"
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/hotel"
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/room"
 )
 
 // NewHotelsHotelAPI creates a new HotelsHotel instance
