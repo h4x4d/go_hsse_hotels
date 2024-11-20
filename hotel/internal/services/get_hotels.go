@@ -62,13 +62,14 @@ func GetHotels(city *string, hotel_class *int64, name *string, tag *string) ([]*
 		}
 
 		// getting rooms for current hotel
-		currRooms, errRooms := GetRooms(&currHotel.ID, nil)
+		currRooms, errRooms := GetRooms(&currHotel.ID, tag)
 		if errRooms != nil {
 			return nil, errRooms
 		}
 		currHotel.Rooms = currRooms
-
-		result = append(result, currHotel)
+		if len(currRooms) > 0 {
+			result = append(result, currHotel)
+		}
 	}
 	rowsHotels.Close()
 	return result, nil
