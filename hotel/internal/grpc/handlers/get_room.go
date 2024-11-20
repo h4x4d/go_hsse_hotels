@@ -28,7 +28,7 @@ func Register(gRPCServer *grpc.Server, hotel HotelServer) {
 
 func (serverApi *GRPCServer) GetRoom(
 	ctx context.Context, in *gen.RoomRequest) (*gen.RoomResponse, error) {
-	room, err := services.GetRoom(int(in.Id))
+	room, err := services.GetRoomByID(in.Id)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "internal error: %v", err)
 	}
