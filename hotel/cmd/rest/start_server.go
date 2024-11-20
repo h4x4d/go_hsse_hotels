@@ -5,6 +5,7 @@ import (
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations"
 	"log"
 	"os"
+	"strconv"
 	"sync"
 
 	"github.com/go-openapi/loads"
@@ -48,6 +49,15 @@ func StartServer(group *sync.WaitGroup) {
 	}
 
 	server.ConfigureAPI()
+
+	server.Port, err = strconv.Atoi(os.Getenv("HOTEL_REST_PORT"))
+	server.Host = os.Getenv("HOTEL_HOST")
+	if err != nil {
+		server.Port = 8888
+	}
+	if server.Host == "" {
+		server.Host = "0.0.0.0"
+	}
 
 	if err := server.Serve(); err != nil {
 		log.Fatalln(err)

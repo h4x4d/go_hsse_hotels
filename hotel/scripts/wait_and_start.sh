@@ -6,6 +6,4 @@ done
 
 echo "POSTGRES Started"
 
-exec ./hotel --port=$HOTEL_REST_PORT --host=$HOTEL_HOST
-
-exec "$@"
+exec ./hotel
