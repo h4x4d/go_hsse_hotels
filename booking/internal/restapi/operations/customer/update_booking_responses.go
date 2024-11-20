@@ -57,6 +57,51 @@ func (o *UpdateBookingOK) WriteResponse(rw http.ResponseWriter, producer runtime
 	}
 }
 
+// UpdateBookingBadRequestCode is the HTTP code returned for type UpdateBookingBadRequest
+const UpdateBookingBadRequestCode int = 400
+
+/*
+UpdateBookingBadRequest Incorrect data
+
+swagger:response updateBookingBadRequest
+*/
+type UpdateBookingBadRequest struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
+}
+
+// NewUpdateBookingBadRequest creates UpdateBookingBadRequest with default headers values
+func NewUpdateBookingBadRequest() *UpdateBookingBadRequest {
+
+	return &UpdateBookingBadRequest{}
+}
+
+// WithPayload adds the payload to the update booking bad request response
+func (o *UpdateBookingBadRequest) WithPayload(payload *models.Error) *UpdateBookingBadRequest {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the update booking bad request response
+func (o *UpdateBookingBadRequest) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *UpdateBookingBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(400)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}
+
 // UpdateBookingForbiddenCode is the HTTP code returned for type UpdateBookingForbidden
 const UpdateBookingForbiddenCode int = 403
 
@@ -94,51 +139,6 @@ func (o *UpdateBookingForbidden) SetPayload(payload *models.Error) {
 func (o *UpdateBookingForbidden) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
 	rw.WriteHeader(403)
-	if o.Payload != nil {
-		payload := o.Payload
-		if err := producer.Produce(rw, payload); err != nil {
-			panic(err) // let the recovery middleware deal with this
-		}
-	}
-}
-
-// UpdateBookingMethodNotAllowedCode is the HTTP code returned for type UpdateBookingMethodNotAllowed
-const UpdateBookingMethodNotAllowedCode int = 405
-
-/*
-UpdateBookingMethodNotAllowed Incorrect data
-
-swagger:response updateBookingMethodNotAllowed
-*/
-type UpdateBookingMethodNotAllowed struct {
-
-	/*
-	  In: Body
-	*/
-	Payload *models.Error `json:"body,omitempty"`
-}
-
-// NewUpdateBookingMethodNotAllowed creates UpdateBookingMethodNotAllowed with default headers values
-func NewUpdateBookingMethodNotAllowed() *UpdateBookingMethodNotAllowed {
-
-	return &UpdateBookingMethodNotAllowed{}
-}
-
-// WithPayload adds the payload to the update booking method not allowed response
-func (o *UpdateBookingMethodNotAllowed) WithPayload(payload *models.Error) *UpdateBookingMethodNotAllowed {
-	o.Payload = payload
-	return o
-}
-
-// SetPayload sets the payload to the update booking method not allowed response
-func (o *UpdateBookingMethodNotAllowed) SetPayload(payload *models.Error) {
-	o.Payload = payload
-}
-
-// WriteResponse to the client
-func (o *UpdateBookingMethodNotAllowed) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
-	rw.WriteHeader(405)
 	if o.Payload != nil {
 		payload := o.Payload
 		if err := producer.Produce(rw, payload); err != nil {

@@ -117,7 +117,7 @@ func init() {
               }
             }
           },
-          "405": {
+          "400": {
             "description": "Incorrect data",
             "schema": {
               "$ref": "#/definitions/Error"
@@ -222,14 +222,14 @@ func init() {
               }
             }
           },
-          "403": {
-            "description": "No access",
+          "400": {
+            "description": "Incorrect data",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
-          "405": {
-            "description": "Incorrect data",
+          "403": {
+            "description": "No access",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -485,7 +485,7 @@ func init() {
               }
             }
           },
-          "405": {
+          "400": {
             "description": "Incorrect data",
             "schema": {
               "$ref": "#/definitions/Error"
@@ -590,14 +590,14 @@ func init() {
               }
             }
           },
-          "403": {
-            "description": "No access",
+          "400": {
+            "description": "Incorrect data",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
-          "405": {
-            "description": "Incorrect data",
+          "403": {
+            "description": "No access",
             "schema": {
               "$ref": "#/definitions/Error"
             }

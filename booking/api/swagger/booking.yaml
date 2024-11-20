@@ -82,7 +82,7 @@ paths:
           description: "No access"
           schema:
             $ref: "#/definitions/Error"
-        405:
+        400:
           description: "Incorrect data"
           schema:
             $ref: "#/definitions/Error"
@@ -176,7 +176,7 @@ paths:
               booking_id:
                 type: "integer"
                 format: "int64"
-        405:
+        400:
           description: "Incorrect data"
           schema:
             $ref: "#/definitions/Error"

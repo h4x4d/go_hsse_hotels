@@ -57,15 +57,15 @@ func (o *CreateBookingOK) WriteResponse(rw http.ResponseWriter, producer runtime
 	}
 }
 
-// CreateBookingMethodNotAllowedCode is the HTTP code returned for type CreateBookingMethodNotAllowed
-const CreateBookingMethodNotAllowedCode int = 405
+// CreateBookingBadRequestCode is the HTTP code returned for type CreateBookingBadRequest
+const CreateBookingBadRequestCode int = 400
 
 /*
-CreateBookingMethodNotAllowed Incorrect data
+CreateBookingBadRequest Incorrect data
 
-swagger:response createBookingMethodNotAllowed
+swagger:response createBookingBadRequest
 */
-type CreateBookingMethodNotAllowed struct {
+type CreateBookingBadRequest struct {
 
 	/*
 	  In: Body
@@ -73,27 +73,27 @@ type CreateBookingMethodNotAllowed struct {
 	Payload *models.Error `json:"body,omitempty"`
 }
 
-// NewCreateBookingMethodNotAllowed creates CreateBookingMethodNotAllowed with default headers values
-func NewCreateBookingMethodNotAllowed() *CreateBookingMethodNotAllowed {
+// NewCreateBookingBadRequest creates CreateBookingBadRequest with default headers values
+func NewCreateBookingBadRequest() *CreateBookingBadRequest {
 
-	return &CreateBookingMethodNotAllowed{}
+	return &CreateBookingBadRequest{}
 }
 
-// WithPayload adds the payload to the create booking method not allowed response
-func (o *CreateBookingMethodNotAllowed) WithPayload(payload *models.Error) *CreateBookingMethodNotAllowed {
+// WithPayload adds the payload to the create booking bad request response
+func (o *CreateBookingBadRequest) WithPayload(payload *models.Error) *CreateBookingBadRequest {
 	o.Payload = payload
 	return o
 }
 
-// SetPayload sets the payload to the create booking method not allowed response
-func (o *CreateBookingMethodNotAllowed) SetPayload(payload *models.Error) {
+// SetPayload sets the payload to the create booking bad request response
+func (o *CreateBookingBadRequest) SetPayload(payload *models.Error) {
 	o.Payload = payload
 }
 
 // WriteResponse to the client
-func (o *CreateBookingMethodNotAllowed) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+func (o *CreateBookingBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.WriteHeader(405)
+	rw.WriteHeader(400)
 	if o.Payload != nil {
 		payload := o.Payload
 		if err := producer.Produce(rw, payload); err != nil {
