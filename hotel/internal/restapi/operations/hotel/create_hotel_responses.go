@@ -57,6 +57,51 @@ func (o *CreateHotelOK) WriteResponse(rw http.ResponseWriter, producer runtime.P
 	}
 }
 
+// CreateHotelBadRequestCode is the HTTP code returned for type CreateHotelBadRequest
+const CreateHotelBadRequestCode int = 400
+
+/*
+CreateHotelBadRequest Incorrect data
+
+swagger:response createHotelBadRequest
+*/
+type CreateHotelBadRequest struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
+}
+
+// NewCreateHotelBadRequest creates CreateHotelBadRequest with default headers values
+func NewCreateHotelBadRequest() *CreateHotelBadRequest {
+
+	return &CreateHotelBadRequest{}
+}
+
+// WithPayload adds the payload to the create hotel bad request response
+func (o *CreateHotelBadRequest) WithPayload(payload *models.Error) *CreateHotelBadRequest {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the create hotel bad request response
+func (o *CreateHotelBadRequest) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *CreateHotelBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(400)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}
+
 // CreateHotelForbiddenCode is the HTTP code returned for type CreateHotelForbidden
 const CreateHotelForbiddenCode int = 403
 
@@ -94,51 +139,6 @@ func (o *CreateHotelForbidden) SetPayload(payload *models.Error) {
 func (o *CreateHotelForbidden) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
 	rw.WriteHeader(403)
-	if o.Payload != nil {
-		payload := o.Payload
-		if err := producer.Produce(rw, payload); err != nil {
-			panic(err) // let the recovery middleware deal with this
-		}
-	}
-}
-
-// CreateHotelMethodNotAllowedCode is the HTTP code returned for type CreateHotelMethodNotAllowed
-const CreateHotelMethodNotAllowedCode int = 405
-
-/*
-CreateHotelMethodNotAllowed Incorrect data
-
-swagger:response createHotelMethodNotAllowed
-*/
-type CreateHotelMethodNotAllowed struct {
-
-	/*
-	  In: Body
-	*/
-	Payload *models.Error `json:"body,omitempty"`
-}
-
-// NewCreateHotelMethodNotAllowed creates CreateHotelMethodNotAllowed with default headers values
-func NewCreateHotelMethodNotAllowed() *CreateHotelMethodNotAllowed {
-
-	return &CreateHotelMethodNotAllowed{}
-}
-
-// WithPayload adds the payload to the create hotel method not allowed response
-func (o *CreateHotelMethodNotAllowed) WithPayload(payload *models.Error) *CreateHotelMethodNotAllowed {
-	o.Payload = payload
-	return o
-}
-
-// SetPayload sets the payload to the create hotel method not allowed response
-func (o *CreateHotelMethodNotAllowed) SetPayload(payload *models.Error) {
-	o.Payload = payload
-}
-
-// WriteResponse to the client
-func (o *CreateHotelMethodNotAllowed) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
-	rw.WriteHeader(405)
 	if o.Payload != nil {
 		payload := o.Payload
 		if err := producer.Produce(rw, payload); err != nil {

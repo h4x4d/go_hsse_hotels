@@ -74,7 +74,7 @@ paths:
           description: "No access"
           schema:
             $ref: "#/definitions/Error"
-        405:
+        400:
           description: "Incorrect data"
           schema:
             $ref: "#/definitions/Error"
@@ -172,7 +172,7 @@ paths:
           description: "No access"
           schema:
             $ref: "#/definitions/Error"
-        405:
+        400:
           description: "Incorrect data"
           schema:
             $ref: "#/definitions/Error"
@@ -237,7 +237,7 @@ paths:
           description: "No access"
           schema:
             $ref: "#/definitions/Error"
-        405:
+        400:
           description: "Incorrect data"
           schema:
             $ref: "#/definitions/Error"
@@ -324,7 +324,7 @@ paths:
           description: "No access"
           schema:
             $ref: "#/definitions/Error"
-        405:
+        400:
           description: "Incorrect data"
           schema:
             $ref: "#/definitions/Error"

@@ -19,7 +19,7 @@ import (
 // Hotel hotel
 //
 // swagger:model Hotel
-type  Hotel struct {
+type Hotel struct {
 
 	// address
 	// Example: Red Square №1

@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations"
+	restapi2 "github.com/h4x4d/go_hsse_hotels/hotel/restapi"
 	"log"
 	"net"
 	"net/http"
@@ -53,14 +54,14 @@ func NewServer(api *operations.HotelsHotelAPI) *Server {
 // ConfigureAPI configures the API and handlers.
 func (s *Server) ConfigureAPI() {
 	if s.api != nil {
-		s.handler = configureAPI(s.api)
+		s.handler = restapi2.configureAPI(s.api)
 	}
 }
 
 // ConfigureFlags configures the additional flags defined by the handlers. Needs to be called before the parser.Parse
 func (s *Server) ConfigureFlags() {
 	if s.api != nil {
-		configureFlags(s.api)
+		restapi2.configureFlags(s.api)
 	}
 }
 
@@ -131,7 +132,7 @@ func (s *Server) SetAPI(api *operations.HotelsHotelAPI) {
 	}
 
 	s.api = api
-	s.handler = configureAPI(api)
+	s.handler = restapi2.configureAPI(api)
 }
 
 func (s *Server) hasScheme(scheme string) bool {
@@ -180,7 +181,7 @@ func (s *Server) Serve() (err error) {
 			domainSocket.IdleTimeout = s.CleanupTimeout
 		}
 
-		configureServer(domainSocket, "unix", string(s.SocketPath))
+		restapi2.configureServer(domainSocket, "unix", string(s.SocketPath))
 
 		servers = append(servers, domainSocket)
 		wg.Add(1)
@@ -210,7 +211,7 @@ func (s *Server) Serve() (err error) {
 
 		httpServer.Handler = s.handler
 
-		configureServer(httpServer, "http", s.httpServerL.Addr().String())
+		restapi2.configureServer(httpServer, "http", s.httpServerL.Addr().String())
 
 		servers = append(servers, httpServer)
 		wg.Add(1)
@@ -286,7 +287,7 @@ func (s *Server) Serve() (err error) {
 		}
 
 		// call custom TLS configurator
-		configureTLS(httpsServer.TLSConfig)
+		restapi2.configureTLS(httpsServer.TLSConfig)
 
 		if len(httpsServer.TLSConfig.Certificates) == 0 && httpsServer.TLSConfig.GetCertificate == nil {
 			// after standard and custom config are passed, this ends up with no certificate
@@ -303,7 +304,7 @@ func (s *Server) Serve() (err error) {
 			s.Fatalf("no certificate was configured for TLS")
 		}
 
-		configureServer(httpsServer, "https", s.httpsServerL.Addr().String())
+		restapi2.configureServer(httpsServer, "https", s.httpsServerL.Addr().String())
 
 		servers = append(servers, httpsServer)
 		wg.Add(1)

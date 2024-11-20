@@ -1,7 +1,9 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/go-openapi/runtime/middleware"
+	models2 "github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/room"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/utils"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/services"
@@ -17,7 +19,11 @@ func GetRoomByIDHandler(params room.GetRoomByIDParams) (responder middleware.Res
 		return middleware.Error(http.StatusInternalServerError, err.Error())
 	}
 	if roomByID == nil {
-		return new(room.GetRoomByIDNotFound)
+		notFound := int64(http.StatusNotFound)
+		return new(room.GetRoomByIDNotFound).WithPayload(&models2.Error{
+			ErrorMessage:    fmt.Sprintf("Room with id %d not found", params.RoomID),
+			ErrorStatusCode: &notFound,
+		})
 	}
 
 	result := new(room.GetRoomByIDOK)

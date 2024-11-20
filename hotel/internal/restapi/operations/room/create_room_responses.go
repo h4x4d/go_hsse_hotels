@@ -57,6 +57,51 @@ func (o *CreateRoomOK) WriteResponse(rw http.ResponseWriter, producer runtime.Pr
 	}
 }
 
+// CreateRoomBadRequestCode is the HTTP code returned for type CreateRoomBadRequest
+const CreateRoomBadRequestCode int = 400
+
+/*
+CreateRoomBadRequest Incorrect data
+
+swagger:response createRoomBadRequest
+*/
+type CreateRoomBadRequest struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
+}
+
+// NewCreateRoomBadRequest creates CreateRoomBadRequest with default headers values
+func NewCreateRoomBadRequest() *CreateRoomBadRequest {
+
+	return &CreateRoomBadRequest{}
+}
+
+// WithPayload adds the payload to the create room bad request response
+func (o *CreateRoomBadRequest) WithPayload(payload *models.Error) *CreateRoomBadRequest {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the create room bad request response
+func (o *CreateRoomBadRequest) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *CreateRoomBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(400)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}
+
 // CreateRoomForbiddenCode is the HTTP code returned for type CreateRoomForbidden
 const CreateRoomForbiddenCode int = 403
 
@@ -94,51 +139,6 @@ func (o *CreateRoomForbidden) SetPayload(payload *models.Error) {
 func (o *CreateRoomForbidden) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
 	rw.WriteHeader(403)
-	if o.Payload != nil {
-		payload := o.Payload
-		if err := producer.Produce(rw, payload); err != nil {
-			panic(err) // let the recovery middleware deal with this
-		}
-	}
-}
-
-// CreateRoomMethodNotAllowedCode is the HTTP code returned for type CreateRoomMethodNotAllowed
-const CreateRoomMethodNotAllowedCode int = 405
-
-/*
-CreateRoomMethodNotAllowed Incorrect data
-
-swagger:response createRoomMethodNotAllowed
-*/
-type CreateRoomMethodNotAllowed struct {
-
-	/*
-	  In: Body
-	*/
-	Payload *models.Error `json:"body,omitempty"`
-}
-
-// NewCreateRoomMethodNotAllowed creates CreateRoomMethodNotAllowed with default headers values
-func NewCreateRoomMethodNotAllowed() *CreateRoomMethodNotAllowed {
-
-	return &CreateRoomMethodNotAllowed{}
-}
-
-// WithPayload adds the payload to the create room method not allowed response
-func (o *CreateRoomMethodNotAllowed) WithPayload(payload *models.Error) *CreateRoomMethodNotAllowed {
-	o.Payload = payload
-	return o
-}
-
-// SetPayload sets the payload to the create room method not allowed response
-func (o *CreateRoomMethodNotAllowed) SetPayload(payload *models.Error) {
-	o.Payload = payload
-}
-
-// WriteResponse to the client
-func (o *CreateRoomMethodNotAllowed) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
-	rw.WriteHeader(405)
 	if o.Payload != nil {
 		payload := o.Payload
 		if err := producer.Produce(rw, payload); err != nil {
