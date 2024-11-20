@@ -25,6 +25,7 @@ services:
       - db
     ports:
       - "8888:8888"
+      - "8889:8889"
   booking:
     container_name: booking-svc
     build: ./booking
