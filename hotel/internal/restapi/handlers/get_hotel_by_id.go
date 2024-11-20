@@ -5,7 +5,6 @@ import (
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/hotel"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/utils"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/services"
-	"net/http"
 )
 
 func GetHotelByIDHandler(params hotel.GetHotelByIDParams) (responder middleware.Responder) {
@@ -14,7 +13,7 @@ func GetHotelByIDHandler(params hotel.GetHotelByIDParams) (responder middleware.
 	hotelByID, err := services.GetHotelByID(params.HotelID)
 
 	if err != nil {
-		return middleware.Error(http.StatusInternalServerError, err.Error())
+		return utils.HandleInternalError(err)
 	}
 	if hotelByID == nil {
 		return new(hotel.GetHotelByIDNotFound)

@@ -5,7 +5,6 @@ import (
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/hotel"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/utils"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/services"
-	"net/http"
 )
 
 func UpdateHotelHandler(params hotel.UpdateHotelParams, _ interface{}) (responder middleware.Responder) {
@@ -15,7 +14,7 @@ func UpdateHotelHandler(params hotel.UpdateHotelParams, _ interface{}) (responde
 	newHotel.ID = params.HotelID
 	updatedHotel, errGet := services.GetHotelByID(params.HotelID)
 	if errGet != nil {
-		return middleware.Error(http.StatusInternalServerError, errGet.Error())
+		return utils.HandleInternalError(errGet)
 	}
 	if updatedHotel != nil {
 		// adding new rooms or deleting them otherwise
@@ -26,13 +25,13 @@ func UpdateHotelHandler(params hotel.UpdateHotelParams, _ interface{}) (responde
 		// deleting old hotel
 		_, errDelete := services.DeleteHotelByID(params.HotelID)
 		if errDelete != nil {
-			return middleware.Error(http.StatusInternalServerError, errDelete.Error())
+			return utils.HandleInternalError(errDelete)
 		}
 	}
 	// creating new Hotel
 	createErr := services.CreateHotel(newHotel)
 	if createErr != nil {
-		return middleware.Error(http.StatusInternalServerError, createErr.Error())
+		return utils.HandleInternalError(createErr)
 	}
 	result := new(hotel.UpdateHotelOK)
 	return result

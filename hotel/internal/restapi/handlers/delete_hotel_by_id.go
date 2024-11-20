@@ -1,7 +1,9 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/go-openapi/runtime/middleware"
+	models2 "github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/hotel"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/utils"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/services"
@@ -13,10 +15,14 @@ func DeleteHotelByIDHandler(params hotel.DeleteHotelByIDParams, _ interface{}) (
 
 	deletedHotelId, errDelete := services.DeleteHotelByID(params.HotelID)
 	if errDelete != nil {
-		return middleware.Error(http.StatusInternalServerError, errDelete.Error())
+		return utils.HandleInternalError(errDelete)
 	}
 	if deletedHotelId == nil {
-		return new(hotel.DeleteHotelByIDNotFound)
+		notFound := int64(http.StatusNotFound)
+		return new(hotel.DeleteHotelByIDNotFound).WithPayload(&models2.Error{
+			ErrorMessage:    fmt.Sprintf("Hotel with id %d not found", params.HotelID),
+			ErrorStatusCode: &notFound,
+		})
 	}
 	result := new(hotel.DeleteHotelByIDOK)
 	return result

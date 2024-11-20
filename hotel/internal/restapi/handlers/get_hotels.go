@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"github.com/go-openapi/runtime/middleware"
+	models2 "github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/hotel"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/utils"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/services"
@@ -14,11 +15,15 @@ func GetHotelsHandler(params hotel.GetHotelsParams) (responder middleware.Respon
 
 	payload, err := services.GetHotels(params.City, params.HotelClass, params.Name, params.Tag)
 	if err != nil {
-		return middleware.Error(http.StatusInternalServerError, err.Error())
+		return utils.HandleInternalError(err)
 	}
 
 	if len(payload) == 0 {
-		return new(hotel.GetHotelsNotFound)
+		notFound := int64(http.StatusNotFound)
+		return new(hotel.GetHotelsNotFound).WithPayload(&models2.Error{
+			ErrorMessage:    "Suitable hotels not found",
+			ErrorStatusCode: &notFound,
+		})
 	}
 
 	result := new(hotel.GetHotelsOK)

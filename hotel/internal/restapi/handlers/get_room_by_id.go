@@ -16,7 +16,7 @@ func GetRoomByIDHandler(params room.GetRoomByIDParams) (responder middleware.Res
 	roomByID, err := services.GetRoomByID(params.RoomID)
 
 	if err != nil {
-		return middleware.Error(http.StatusInternalServerError, err.Error())
+		return utils.HandleInternalError(err)
 	}
 	if roomByID == nil {
 		notFound := int64(http.StatusNotFound)
