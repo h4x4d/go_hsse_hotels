@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v5.28.3
-// source: booking.proto
+// source: room.proto
 
-package booking
+package room
 
 import (
 	context "context"
@@ -19,103 +19,103 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Booking_GetRoom_FullMethodName = "/booking.Booking/GetRoom"
+	Room_GetRoom_FullMethodName = "/booking.Room/GetRoom"
 )
 
-// BookingClient is the client API for Booking service.
+// RoomClient is the client API for Room service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type BookingClient interface {
+type RoomClient interface {
 	GetRoom(ctx context.Context, in *RoomRequest, opts ...grpc.CallOption) (*RoomResponse, error)
 }
 
-type bookingClient struct {
+type roomClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewBookingClient(cc grpc.ClientConnInterface) BookingClient {
-	return &bookingClient{cc}
+func NewRoomClient(cc grpc.ClientConnInterface) RoomClient {
+	return &roomClient{cc}
 }
 
-func (c *bookingClient) GetRoom(ctx context.Context, in *RoomRequest, opts ...grpc.CallOption) (*RoomResponse, error) {
+func (c *roomClient) GetRoom(ctx context.Context, in *RoomRequest, opts ...grpc.CallOption) (*RoomResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(RoomResponse)
-	err := c.cc.Invoke(ctx, Booking_GetRoom_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Room_GetRoom_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// BookingServer is the server API for Booking service.
-// All implementations must embed UnimplementedBookingServer
+// RoomServer is the server API for Room service.
+// All implementations must embed UnimplementedRoomServer
 // for forward compatibility.
-type BookingServer interface {
+type RoomServer interface {
 	GetRoom(context.Context, *RoomRequest) (*RoomResponse, error)
-	mustEmbedUnimplementedBookingServer()
+	mustEmbedUnimplementedRoomServer()
 }
 
-// UnimplementedBookingServer must be embedded to have
+// UnimplementedRoomServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedBookingServer struct{}
+type UnimplementedRoomServer struct{}
 
-func (UnimplementedBookingServer) GetRoom(context.Context, *RoomRequest) (*RoomResponse, error) {
+func (UnimplementedRoomServer) GetRoom(context.Context, *RoomRequest) (*RoomResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetRoom not implemented")
 }
-func (UnimplementedBookingServer) mustEmbedUnimplementedBookingServer() {}
-func (UnimplementedBookingServer) testEmbeddedByValue()                 {}
+func (UnimplementedRoomServer) mustEmbedUnimplementedRoomServer() {}
+func (UnimplementedRoomServer) testEmbeddedByValue()              {}
 
-// UnsafeBookingServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to BookingServer will
+// UnsafeRoomServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to RoomServer will
 // result in compilation errors.
-type UnsafeBookingServer interface {
-	mustEmbedUnimplementedBookingServer()
+type UnsafeRoomServer interface {
+	mustEmbedUnimplementedRoomServer()
 }
 
-func RegisterBookingServer(s grpc.ServiceRegistrar, srv BookingServer) {
-	// If the following call pancis, it indicates UnimplementedBookingServer was
+func RegisterRoomServer(s grpc.ServiceRegistrar, srv RoomServer) {
+	// If the following call pancis, it indicates UnimplementedRoomServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&Booking_ServiceDesc, srv)
+	s.RegisterService(&Room_ServiceDesc, srv)
 }
 
-func _Booking_GetRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Room_GetRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RoomRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BookingServer).GetRoom(ctx, in)
+		return srv.(RoomServer).GetRoom(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Booking_GetRoom_FullMethodName,
+		FullMethod: Room_GetRoom_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BookingServer).GetRoom(ctx, req.(*RoomRequest))
+		return srv.(RoomServer).GetRoom(ctx, req.(*RoomRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Booking_ServiceDesc is the grpc.ServiceDesc for Booking service.
+// Room_ServiceDesc is the grpc.ServiceDesc for Room service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Booking_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "booking.Booking",
-	HandlerType: (*BookingServer)(nil),
+var Room_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "booking.Room",
+	HandlerType: (*RoomServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "GetRoom",
-			Handler:    _Booking_GetRoom_Handler,
+			Handler:    _Room_GetRoom_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "booking.proto",
+	Metadata: "room.proto",
 }
