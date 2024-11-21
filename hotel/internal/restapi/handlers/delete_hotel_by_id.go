@@ -25,5 +25,6 @@ func DeleteHotelByIDHandler(params hotel.DeleteHotelByIDParams, _ interface{}) (
 		})
 	}
 	result := new(hotel.DeleteHotelByIDOK)
+	result.SetPayload(&models2.Result{Status: "success"})
 	return result
 }

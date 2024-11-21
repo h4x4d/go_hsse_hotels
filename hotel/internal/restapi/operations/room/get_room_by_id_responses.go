@@ -6,10 +6,11 @@ package room
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	models2 "github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
+
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 )
 
 // GetRoomByIDOKCode is the HTTP code returned for type GetRoomByIDOK
@@ -25,7 +26,7 @@ type GetRoomByIDOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models2.Room `json:"body,omitempty"`
+	Payload *models.Room `json:"body,omitempty"`
 }
 
 // NewGetRoomByIDOK creates GetRoomByIDOK with default headers values
@@ -35,13 +36,13 @@ func NewGetRoomByIDOK() *GetRoomByIDOK {
 }
 
 // WithPayload adds the payload to the get room by Id o k response
-func (o *GetRoomByIDOK) WithPayload(payload *models2.Room) *GetRoomByIDOK {
+func (o *GetRoomByIDOK) WithPayload(payload *models.Room) *GetRoomByIDOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get room by Id o k response
-func (o *GetRoomByIDOK) SetPayload(payload *models2.Room) {
+func (o *GetRoomByIDOK) SetPayload(payload *models.Room) {
 	o.Payload = payload
 }
 
@@ -70,7 +71,7 @@ type GetRoomByIDNotFound struct {
 	/*
 	  In: Body
 	*/
-	Payload *models2.Error `json:"body,omitempty"`
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewGetRoomByIDNotFound creates GetRoomByIDNotFound with default headers values
@@ -80,13 +81,13 @@ func NewGetRoomByIDNotFound() *GetRoomByIDNotFound {
 }
 
 // WithPayload adds the payload to the get room by Id not found response
-func (o *GetRoomByIDNotFound) WithPayload(payload *models2.Error) *GetRoomByIDNotFound {
+func (o *GetRoomByIDNotFound) WithPayload(payload *models.Error) *GetRoomByIDNotFound {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get room by Id not found response
-func (o *GetRoomByIDNotFound) SetPayload(payload *models2.Error) {
+func (o *GetRoomByIDNotFound) SetPayload(payload *models.Error) {
 	o.Payload = payload
 }
 

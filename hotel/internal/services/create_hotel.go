@@ -8,17 +8,17 @@ import (
 	"strings"
 )
 
-func CreateHotel(hotel *models.Hotel) error {
+func CreateHotel(hotel *models.Hotel) (*int64, error) {
 	pool, err := utils.NewConnection()
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer pool.Close()
 
 	query := `INSERT INTO hotels`
-	fieldNames := []string{}
-	fields := []string{}
-	values := []interface{}{}
+	var fieldNames []string
+	var fields []string
+	var values []interface{}
 
 	if hotel.Address != nil {
 		fieldNames = append(fieldNames, "address")
@@ -32,25 +32,30 @@ func CreateHotel(hotel *models.Hotel) error {
 		fieldNames = append(fieldNames, "name")
 		values = append(values, hotel.Name)
 	}
-
-	fieldNames = append(fieldNames, "id")
-	values = append(values, hotel.ID)
+	if hotel.ID != 0 {
+		fieldNames = append(fieldNames, "id")
+		values = append(values, hotel.ID)
+	}
 	fieldNames = append(fieldNames, "hotel_class")
 	values = append(values, hotel.HotelClass)
 
 	for ind := 0; ind < len(fieldNames); ind++ {
 		fields = append(fields, fmt.Sprintf("$%d", ind+1))
 	}
-	query += fmt.Sprintf(" (%s) VALUES (%s)", strings.Join(fieldNames, ", "),
+	query += fmt.Sprintf(" (%s) VALUES (%s) RETURNING id", strings.Join(fieldNames, ", "),
 		strings.Join(fields, ", "))
+	errInsertHotel := pool.QueryRow(context.Background(), query, values...).Scan(&hotel.ID)
+	if errInsertHotel != nil {
+		return nil, errInsertHotel
+	}
 
 	for _, room := range hotel.Rooms {
-		errCreateRoom := CreateRoom(room)
+		room.HotelID = &hotel.ID
+		_, errCreateRoom := CreateRoom(room)
 		if errCreateRoom != nil {
-			return errCreateRoom
+			return nil, errCreateRoom
 		}
 	}
 
-	_, errInsertHotel := pool.Exec(context.Background(), query, values...)
-	return errInsertHotel
+	return &hotel.ID, errInsertHotel
 }

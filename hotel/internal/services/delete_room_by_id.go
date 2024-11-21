@@ -22,28 +22,12 @@ func DeleteRoomByID(RoomID int64) (*int64, error) {
 		return nil, nil
 	}
 
-	// actually TAGS are deleting TODO
-	isTagDeleted, errDeleteTag := DeleteTag(RoomID, nil)
-	if errDeleteTag != nil {
-		return nil, errDeleteTag
-	}
-	if !isTagDeleted {
-		return nil, nil
-	}
-
 	// deleting room itself
-	queryDeleted, errDeleteRoom := pool.Query(context.Background(),
-		"DELETE FROM rooms WHERE id = $1 RETURNING id", RoomID)
+	deletedId := new(int64)
+	errDeleteRoom := pool.QueryRow(context.Background(),
+		"DELETE FROM rooms WHERE id = $1 RETURNING id", RoomID).Scan(&deletedId)
 	if errDeleteRoom != nil {
 		return nil, errDeleteRoom
-	}
-	if !queryDeleted.Next() {
-		return nil, nil
-	}
-	deletedId := new(int64)
-	errScan := queryDeleted.Scan(&deletedId)
-	if errScan != nil {
-		return nil, errScan
 	}
 	return deletedId, nil
 }

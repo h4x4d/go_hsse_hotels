@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS rooms
 
 CREATE TABLE IF NOT EXISTS tags
 (
-    room_id SERIAL REFERENCES rooms (id),
+    room_id SERIAL REFERENCES rooms (id) ON DELETE CASCADE,
     tag     TEXT NOT NULL,
     UNIQUE (room_id, tag)
 );

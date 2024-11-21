@@ -31,5 +31,13 @@ func GetHotelByID(HotelID int64) (*models.Hotel, error) {
 	// scaning hotel object
 	errHotel := hotelRow.Scan(&hotel.ID, hotel.Name, hotel.City,
 		hotel.Address, &hotel.HotelClass)
+	hotelRow.Close()
+
+	currRooms, errRooms := GetRooms(&hotel.ID, nil)
+	if errRooms != nil {
+		return nil, errRooms
+	}
+	hotel.Rooms = currRooms
+
 	return hotel, errHotel
 }

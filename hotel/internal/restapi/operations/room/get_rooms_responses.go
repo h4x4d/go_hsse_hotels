@@ -6,10 +6,11 @@ package room
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	models2 "github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
+
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 )
 
 // GetRoomsOKCode is the HTTP code returned for type GetRoomsOK
@@ -25,7 +26,7 @@ type GetRoomsOK struct {
 	/*
 	  In: Body
 	*/
-	Payload []*models2.Room `json:"body,omitempty"`
+	Payload []*models.Room `json:"body,omitempty"`
 }
 
 // NewGetRoomsOK creates GetRoomsOK with default headers values
@@ -35,13 +36,13 @@ func NewGetRoomsOK() *GetRoomsOK {
 }
 
 // WithPayload adds the payload to the get rooms o k response
-func (o *GetRoomsOK) WithPayload(payload []*models2.Room) *GetRoomsOK {
+func (o *GetRoomsOK) WithPayload(payload []*models.Room) *GetRoomsOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get rooms o k response
-func (o *GetRoomsOK) SetPayload(payload []*models2.Room) {
+func (o *GetRoomsOK) SetPayload(payload []*models.Room) {
 	o.Payload = payload
 }
 
@@ -52,7 +53,7 @@ func (o *GetRoomsOK) WriteResponse(rw http.ResponseWriter, producer runtime.Prod
 	payload := o.Payload
 	if payload == nil {
 		// return empty array
-		payload = make([]*models2.Room, 0, 50)
+		payload = make([]*models.Room, 0, 50)
 	}
 
 	if err := producer.Produce(rw, payload); err != nil {
@@ -73,7 +74,7 @@ type GetRoomsNotFound struct {
 	/*
 	  In: Body
 	*/
-	Payload *models2.Error `json:"body,omitempty"`
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewGetRoomsNotFound creates GetRoomsNotFound with default headers values
@@ -83,13 +84,13 @@ func NewGetRoomsNotFound() *GetRoomsNotFound {
 }
 
 // WithPayload adds the payload to the get rooms not found response
-func (o *GetRoomsNotFound) WithPayload(payload *models2.Error) *GetRoomsNotFound {
+func (o *GetRoomsNotFound) WithPayload(payload *models.Error) *GetRoomsNotFound {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get rooms not found response
-func (o *GetRoomsNotFound) SetPayload(payload *models2.Error) {
+func (o *GetRoomsNotFound) SetPayload(payload *models.Error) {
 	o.Payload = payload
 }
 

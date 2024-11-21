@@ -12,7 +12,7 @@ tags:
   - name: "hotel"
     description: "Hotel operations"
 schemes:
-#  - "https"
+  #  - "https"
   - "http"
 paths:
   /hotel/{hotel_id}:
@@ -97,13 +97,15 @@ paths:
           format: "int64"
       responses:
         200:
+          schema:
+            $ref: "#/definitions/Result"
           description: "successful operation"
         404:
           description: "Hotel not found"
           schema:
             $ref: "#/definitions/Error"
       security:
-        - api_key: []
+        - api_key: [ ]
 
   /hotel:
     get:
@@ -177,7 +179,7 @@ paths:
           schema:
             $ref: "#/definitions/Error"
       security:
-        - api_key: []
+        - api_key: [ ]
 
   /hotel/room/{room_id}:
     get:
@@ -261,12 +263,14 @@ paths:
       responses:
         200:
           description: "successful operation"
+          schema:
+            $ref: "#/definitions/Result"
         404:
           description: "room not found"
           schema:
             $ref: "#/definitions/Error"
       security:
-        - api_key: []
+        - api_key: [ ]
 
 
   /hotel/room:
@@ -329,7 +333,7 @@ paths:
           schema:
             $ref: "#/definitions/Error"
       security:
-        - api_key: []
+        - api_key: [ ]
 
 securityDefinitions:
   api_key:
@@ -356,11 +360,11 @@ definitions:
       address:
         type: "string"
         example: "Red Square №1"
-#      photos:
-#        description: "list of photo urls"
-#        type: "array"
-#        items:
-#          type: "string"
+      #      photos:
+      #        description: "list of photo urls"
+      #        type: "array"
+      #        items:
+      #          type: "string"
       rooms:
         type: "array"
         items:
@@ -416,4 +420,11 @@ definitions:
         type: "string"
       error_status_code:
         type: integer
+  Result:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+      message:
+        type: "string"
 

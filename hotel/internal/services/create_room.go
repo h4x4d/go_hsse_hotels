@@ -8,10 +8,10 @@ import (
 	"strings"
 )
 
-func CreateRoom(room *models.Room) error {
+func CreateRoom(room *models.Room) (*int64, error) {
 	pool, err := utils.NewConnection()
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer pool.Close()
 
@@ -34,23 +34,25 @@ func CreateRoom(room *models.Room) error {
 		fieldNames = append(fieldNames, "person_count")
 		values = append(values, room.PersonCount)
 	}
-
-	fieldNames = append(fieldNames, "id")
-	values = append(values, room.ID)
+	if room.ID != 0 {
+		fieldNames = append(fieldNames, "id")
+		values = append(values, room.ID)
+	}
 
 	for ind := 0; ind < len(fieldNames); ind++ {
 		fields = append(fields, fmt.Sprintf("$%d", ind+1))
 	}
-	query += fmt.Sprintf(" (%s) VALUES (%s)", strings.Join(fieldNames, ", "),
+	query += fmt.Sprintf(" (%s) VALUES (%s) RETURNING id", strings.Join(fieldNames, ", "),
 		strings.Join(fields, ", "))
-
+	errInsertRoom := pool.QueryRow(context.Background(), query, values...).Scan(&room.ID)
+	if errInsertRoom != nil {
+		return nil, errInsertRoom
+	}
 	for _, tag := range room.Tags {
 		errCreateTag := CreateTag(room.ID, tag)
 		if errCreateTag != nil {
-			return errCreateTag
+			return nil, errCreateTag
 		}
 	}
-
-	_, errInsertRoom := pool.Exec(context.Background(), query, values...)
-	return errInsertRoom
+	return &room.ID, nil
 }

@@ -10,11 +10,11 @@ import (
 func CreateRoomHandler(params room.CreateRoomParams, _ interface{}) (responder middleware.Responder) {
 	defer utils.CatchPanic(&responder)
 
-	err := services.CreateRoom(params.Object)
+	id, err := services.CreateRoom(params.Object)
 
 	if err != nil {
 		return utils.HandleInternalError(err)
 	}
-	result := new(room.CreateRoomOK)
+	result := new(room.CreateRoomOK).WithPayload(&room.CreateRoomOKBody{ID: *id})
 	return result
 }

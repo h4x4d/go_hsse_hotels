@@ -358,7 +358,10 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "successful operation"
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Result"
+            }
           },
           "404": {
             "description": "room not found",
@@ -492,7 +495,10 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "successful operation"
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Result"
+            }
           },
           "404": {
             "description": "Hotel not found",
@@ -560,6 +566,17 @@ func init() {
           "items": {
             "$ref": "#/definitions/Room"
           }
+        }
+      }
+    },
+    "Result": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
         }
       }
     },
@@ -968,7 +985,10 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "successful operation"
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Result"
+            }
           },
           "404": {
             "description": "room not found",
@@ -1102,7 +1122,10 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "successful operation"
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Result"
+            }
           },
           "404": {
             "description": "Hotel not found",
@@ -1170,6 +1193,17 @@ func init() {
           "items": {
             "$ref": "#/definitions/Room"
           }
+        }
+      }
+    },
+    "Result": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
         }
       }
     },

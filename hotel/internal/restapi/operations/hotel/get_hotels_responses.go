@@ -6,10 +6,11 @@ package hotel
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	models2 "github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
+
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 )
 
 // GetHotelsOKCode is the HTTP code returned for type GetHotelsOK
@@ -25,7 +26,7 @@ type GetHotelsOK struct {
 	/*
 	  In: Body
 	*/
-	Payload []*models2.Hotel `json:"body,omitempty"`
+	Payload []*models.Hotel `json:"body,omitempty"`
 }
 
 // NewGetHotelsOK creates GetHotelsOK with default headers values
@@ -35,13 +36,13 @@ func NewGetHotelsOK() *GetHotelsOK {
 }
 
 // WithPayload adds the payload to the get hotels o k response
-func (o *GetHotelsOK) WithPayload(payload []*models2.Hotel) *GetHotelsOK {
+func (o *GetHotelsOK) WithPayload(payload []*models.Hotel) *GetHotelsOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get hotels o k response
-func (o *GetHotelsOK) SetPayload(payload []*models2.Hotel) {
+func (o *GetHotelsOK) SetPayload(payload []*models.Hotel) {
 	o.Payload = payload
 }
 
@@ -52,7 +53,7 @@ func (o *GetHotelsOK) WriteResponse(rw http.ResponseWriter, producer runtime.Pro
 	payload := o.Payload
 	if payload == nil {
 		// return empty array
-		payload = make([]*models2.Hotel, 0, 50)
+		payload = make([]*models.Hotel, 0, 50)
 	}
 
 	if err := producer.Produce(rw, payload); err != nil {
@@ -73,7 +74,7 @@ type GetHotelsNotFound struct {
 	/*
 	  In: Body
 	*/
-	Payload *models2.Error `json:"body,omitempty"`
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewGetHotelsNotFound creates GetHotelsNotFound with default headers values
@@ -83,13 +84,13 @@ func NewGetHotelsNotFound() *GetHotelsNotFound {
 }
 
 // WithPayload adds the payload to the get hotels not found response
-func (o *GetHotelsNotFound) WithPayload(payload *models2.Error) *GetHotelsNotFound {
+func (o *GetHotelsNotFound) WithPayload(payload *models.Error) *GetHotelsNotFound {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get hotels not found response
-func (o *GetHotelsNotFound) SetPayload(payload *models2.Error) {
+func (o *GetHotelsNotFound) SetPayload(payload *models.Error) {
 	o.Payload = payload
 }
 

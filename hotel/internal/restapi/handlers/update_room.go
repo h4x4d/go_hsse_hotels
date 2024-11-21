@@ -29,10 +29,11 @@ func UpdateRoomHandler(params room.UpdateRoomParams, _ interface{}) (responder m
 		}
 	}
 	// creating new Room
-	createErr := services.CreateRoom(newRoom)
+	id, createErr := services.CreateRoom(newRoom)
 	if createErr != nil {
 		return utils.HandleInternalError(createErr)
 	}
 	result := new(room.UpdateRoomOK)
+	result.SetPayload(&room.UpdateRoomOKBody{ID: *id})
 	return result
 }

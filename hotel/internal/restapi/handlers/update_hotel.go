@@ -29,10 +29,11 @@ func UpdateHotelHandler(params hotel.UpdateHotelParams, _ interface{}) (responde
 		}
 	}
 	// creating new Hotel
-	createErr := services.CreateHotel(newHotel)
+	id, createErr := services.CreateHotel(newHotel)
 	if createErr != nil {
 		return utils.HandleInternalError(createErr)
 	}
 	result := new(hotel.UpdateHotelOK)
+	result.SetPayload(&hotel.UpdateHotelOKBody{ID: *id})
 	return result
 }

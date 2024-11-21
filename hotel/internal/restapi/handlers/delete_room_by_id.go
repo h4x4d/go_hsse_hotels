@@ -25,5 +25,6 @@ func DeleteRoomByIDHandler(params room.DeleteRoomByIDParams, _ interface{}) (res
 		})
 	}
 	result := new(room.DeleteRoomByIDOK)
+	result.SetPayload(&models2.Result{Status: "success"})
 	return result
 }

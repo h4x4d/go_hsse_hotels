@@ -6,7 +6,6 @@ package hotel
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"io"
 	"net/http"
 
@@ -14,6 +13,8 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/validate"
+
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 )
 
 // NewCreateHotelParams creates a new CreateHotelParams object

@@ -6,10 +6,11 @@ package hotel
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	models2 "github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
+
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 )
 
 // GetHotelByIDOKCode is the HTTP code returned for type GetHotelByIDOK
@@ -25,7 +26,7 @@ type GetHotelByIDOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models2.Hotel `json:"body,omitempty"`
+	Payload *models.Hotel `json:"body,omitempty"`
 }
 
 // NewGetHotelByIDOK creates GetHotelByIDOK with default headers values
@@ -35,13 +36,13 @@ func NewGetHotelByIDOK() *GetHotelByIDOK {
 }
 
 // WithPayload adds the payload to the get hotel by Id o k response
-func (o *GetHotelByIDOK) WithPayload(payload *models2.Hotel) *GetHotelByIDOK {
+func (o *GetHotelByIDOK) WithPayload(payload *models.Hotel) *GetHotelByIDOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get hotel by Id o k response
-func (o *GetHotelByIDOK) SetPayload(payload *models2.Hotel) {
+func (o *GetHotelByIDOK) SetPayload(payload *models.Hotel) {
 	o.Payload = payload
 }
 
@@ -70,7 +71,7 @@ type GetHotelByIDNotFound struct {
 	/*
 	  In: Body
 	*/
-	Payload *models2.Error `json:"body,omitempty"`
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewGetHotelByIDNotFound creates GetHotelByIDNotFound with default headers values
@@ -80,13 +81,13 @@ func NewGetHotelByIDNotFound() *GetHotelByIDNotFound {
 }
 
 // WithPayload adds the payload to the get hotel by Id not found response
-func (o *GetHotelByIDNotFound) WithPayload(payload *models2.Error) *GetHotelByIDNotFound {
+func (o *GetHotelByIDNotFound) WithPayload(payload *models.Error) *GetHotelByIDNotFound {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get hotel by Id not found response
-func (o *GetHotelByIDNotFound) SetPayload(payload *models2.Error) {
+func (o *GetHotelByIDNotFound) SetPayload(payload *models.Error) {
 	o.Payload = payload
 }
 

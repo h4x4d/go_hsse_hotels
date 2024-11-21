@@ -39,18 +39,11 @@ func DeleteHotelByID(HotelID int64) (*int64, error) {
 	// delete information from booking TODO
 
 	// deleting hotel
-	queryDeleted, errDeleteHotel := pool.Query(context.Background(),
-		"DELETE FROM hotels WHERE id = $1 RETURNING id", HotelID)
+	deletedId := new(int64)
+	errDeleteHotel := pool.QueryRow(context.Background(),
+		"DELETE FROM hotels WHERE id = $1 RETURNING id", HotelID).Scan(&deletedId)
 	if errDeleteHotel != nil {
 		return nil, errDeleteHotel
-	}
-	if !queryDeleted.Next() {
-		return nil, nil
-	}
-	deletedId := new(int64)
-	errScan := queryDeleted.Scan(&deletedId)
-	if errScan != nil {
-		return nil, errScan
 	}
 	return deletedId, nil
 }

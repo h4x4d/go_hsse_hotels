@@ -8,7 +8,6 @@ import (
 	"crypto/x509"
 	"errors"
 	"fmt"
-	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations"
 	"log"
 	"net"
 	"net/http"
@@ -24,6 +23,8 @@ import (
 	"github.com/go-openapi/swag"
 	flags "github.com/jessevdk/go-flags"
 	"golang.org/x/net/netutil"
+
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations"
 )
 
 const (

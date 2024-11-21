@@ -17,8 +17,7 @@ func HotelExists(HotelID int64) (bool, error) {
 	if errGet != nil {
 		return false, errGet
 	}
-	if !hotelRow.Next() {
-		return true, nil
-	}
-	return false, nil
+	status := hotelRow.Next()
+	hotelRow.Close()
+	return status, nil
 }

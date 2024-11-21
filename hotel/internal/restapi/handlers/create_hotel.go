@@ -10,11 +10,12 @@ import (
 func CreateHotelHandler(params hotel.CreateHotelParams, _ interface{}) (responder middleware.Responder) {
 	defer utils.CatchPanic(&responder)
 
-	err := services.CreateHotel(params.Object)
+	id, err := services.CreateHotel(params.Object)
 
 	if err != nil {
 		return utils.HandleInternalError(err)
 	}
 	result := new(hotel.CreateHotelOK)
+	result.SetPayload(&hotel.CreateHotelOKBody{ID: *id})
 	return result
 }

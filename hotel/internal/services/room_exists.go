@@ -17,8 +17,7 @@ func RoomExists(RoomID int64) (bool, error) {
 	if errGet != nil {
 		return false, errGet
 	}
-	if !roomRow.Next() {
-		return true, nil
-	}
-	return false, nil
+	status := roomRow.Next()
+	roomRow.Close()
+	return status, nil
 }

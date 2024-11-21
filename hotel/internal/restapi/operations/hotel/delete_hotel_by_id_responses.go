@@ -6,10 +6,11 @@ package hotel
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
+
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 )
 
 // DeleteHotelByIDOKCode is the HTTP code returned for type DeleteHotelByIDOK
@@ -21,6 +22,11 @@ DeleteHotelByIDOK successful operation
 swagger:response deleteHotelByIdOK
 */
 type DeleteHotelByIDOK struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Result `json:"body,omitempty"`
 }
 
 // NewDeleteHotelByIDOK creates DeleteHotelByIDOK with default headers values
@@ -29,12 +35,27 @@ func NewDeleteHotelByIDOK() *DeleteHotelByIDOK {
 	return &DeleteHotelByIDOK{}
 }
 
+// WithPayload adds the payload to the delete hotel by Id o k response
+func (o *DeleteHotelByIDOK) WithPayload(payload *models.Result) *DeleteHotelByIDOK {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the delete hotel by Id o k response
+func (o *DeleteHotelByIDOK) SetPayload(payload *models.Result) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *DeleteHotelByIDOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(200)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }
 
 // DeleteHotelByIDNotFoundCode is the HTTP code returned for type DeleteHotelByIDNotFound
