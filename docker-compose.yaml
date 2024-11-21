@@ -22,19 +22,59 @@ services:
       - .env
     build: ./hotel
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
-      - "8888:8888"
-      - "8889:8889"
+      - "${HOTEL_REST_PORT}:${HOTEL_REST_PORT}"
+      - "${HOTEL_GRPC_PORT}:${HOTEL_GRPC_PORT}"
   booking:
     container_name: booking-svc
     build: ./booking
     env_file:
       - .env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
-      - "8880:8880"
+      - "${BOOKING_REST_PORT}:${BOOKING_REST_PORT}"
+  notification:
+    container_name: notification-svc
+    build: ./notification
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.0
+    container_name: zookeeper
+    ports:
+      - "${ZOOKEEPER_PORT}:${ZOOKEEPER_PORT}"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: ${ZOOKEEPER_PORT}
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    image: confluentinc/cp-kafka:7.3.0
+    container_name: kafka
+    ports:
+      - "${KAFKA_PORT}:${KAFKA_PORT}"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:${ZOOKEEPER_PORT}
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:${KAFKA_PORT}
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+    tmpfs:
+      - /kafka
+    healthcheck:
+      test: [ "CMD", "kafka-topics", "--list", "--bootstrap-server", "kafka:9092" ]
+      interval: 10s
+      timeout: 10s
+      retries: 10
 
 volumes:
   postgres_data:
