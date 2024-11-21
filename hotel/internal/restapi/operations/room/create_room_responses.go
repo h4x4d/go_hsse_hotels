@@ -6,6 +6,7 @@ package room
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -56,6 +57,51 @@ func (o *CreateRoomOK) WriteResponse(rw http.ResponseWriter, producer runtime.Pr
 	}
 }
 
+// CreateRoomBadRequestCode is the HTTP code returned for type CreateRoomBadRequest
+const CreateRoomBadRequestCode int = 400
+
+/*
+CreateRoomBadRequest Incorrect data
+
+swagger:response createRoomBadRequest
+*/
+type CreateRoomBadRequest struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
+}
+
+// NewCreateRoomBadRequest creates CreateRoomBadRequest with default headers values
+func NewCreateRoomBadRequest() *CreateRoomBadRequest {
+
+	return &CreateRoomBadRequest{}
+}
+
+// WithPayload adds the payload to the create room bad request response
+func (o *CreateRoomBadRequest) WithPayload(payload *models.Error) *CreateRoomBadRequest {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the create room bad request response
+func (o *CreateRoomBadRequest) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *CreateRoomBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(400)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}
+
 // CreateRoomForbiddenCode is the HTTP code returned for type CreateRoomForbidden
 const CreateRoomForbiddenCode int = 403
 
@@ -65,6 +111,11 @@ CreateRoomForbidden No access
 swagger:response createRoomForbidden
 */
 type CreateRoomForbidden struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewCreateRoomForbidden creates CreateRoomForbidden with default headers values
@@ -73,35 +124,25 @@ func NewCreateRoomForbidden() *CreateRoomForbidden {
 	return &CreateRoomForbidden{}
 }
 
+// WithPayload adds the payload to the create room forbidden response
+func (o *CreateRoomForbidden) WithPayload(payload *models.Error) *CreateRoomForbidden {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the create room forbidden response
+func (o *CreateRoomForbidden) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *CreateRoomForbidden) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(403)
-}
-
-// CreateRoomMethodNotAllowedCode is the HTTP code returned for type CreateRoomMethodNotAllowed
-const CreateRoomMethodNotAllowedCode int = 405
-
-/*
-CreateRoomMethodNotAllowed Incorrect data
-
-swagger:response createRoomMethodNotAllowed
-*/
-type CreateRoomMethodNotAllowed struct {
-}
-
-// NewCreateRoomMethodNotAllowed creates CreateRoomMethodNotAllowed with default headers values
-func NewCreateRoomMethodNotAllowed() *CreateRoomMethodNotAllowed {
-
-	return &CreateRoomMethodNotAllowed{}
-}
-
-// WriteResponse to the client
-func (o *CreateRoomMethodNotAllowed) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
-	rw.WriteHeader(405)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

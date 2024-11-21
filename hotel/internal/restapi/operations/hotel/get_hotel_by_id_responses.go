@@ -6,7 +6,7 @@ package hotel
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
+	models2 "github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -25,7 +25,7 @@ type GetHotelByIDOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Hotel `json:"body,omitempty"`
+	Payload *models2.Hotel `json:"body,omitempty"`
 }
 
 // NewGetHotelByIDOK creates GetHotelByIDOK with default headers values
@@ -35,13 +35,13 @@ func NewGetHotelByIDOK() *GetHotelByIDOK {
 }
 
 // WithPayload adds the payload to the get hotel by Id o k response
-func (o *GetHotelByIDOK) WithPayload(payload *models.Hotel) *GetHotelByIDOK {
+func (o *GetHotelByIDOK) WithPayload(payload *models2.Hotel) *GetHotelByIDOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get hotel by Id o k response
-func (o *GetHotelByIDOK) SetPayload(payload *models.Hotel) {
+func (o *GetHotelByIDOK) SetPayload(payload *models2.Hotel) {
 	o.Payload = payload
 }
 
@@ -66,6 +66,11 @@ GetHotelByIDNotFound Hotel not found
 swagger:response getHotelByIdNotFound
 */
 type GetHotelByIDNotFound struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models2.Error `json:"body,omitempty"`
 }
 
 // NewGetHotelByIDNotFound creates GetHotelByIDNotFound with default headers values
@@ -74,10 +79,25 @@ func NewGetHotelByIDNotFound() *GetHotelByIDNotFound {
 	return &GetHotelByIDNotFound{}
 }
 
+// WithPayload adds the payload to the get hotel by Id not found response
+func (o *GetHotelByIDNotFound) WithPayload(payload *models2.Error) *GetHotelByIDNotFound {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the get hotel by Id not found response
+func (o *GetHotelByIDNotFound) SetPayload(payload *models2.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *GetHotelByIDNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(404)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

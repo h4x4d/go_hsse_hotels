@@ -6,7 +6,7 @@ package hotel
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
+	models2 "github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -25,7 +25,7 @@ type GetHotelsOK struct {
 	/*
 	  In: Body
 	*/
-	Payload []*models.Hotel `json:"body,omitempty"`
+	Payload []*models2.Hotel `json:"body,omitempty"`
 }
 
 // NewGetHotelsOK creates GetHotelsOK with default headers values
@@ -35,13 +35,13 @@ func NewGetHotelsOK() *GetHotelsOK {
 }
 
 // WithPayload adds the payload to the get hotels o k response
-func (o *GetHotelsOK) WithPayload(payload []*models.Hotel) *GetHotelsOK {
+func (o *GetHotelsOK) WithPayload(payload []*models2.Hotel) *GetHotelsOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get hotels o k response
-func (o *GetHotelsOK) SetPayload(payload []*models.Hotel) {
+func (o *GetHotelsOK) SetPayload(payload []*models2.Hotel) {
 	o.Payload = payload
 }
 
@@ -52,7 +52,7 @@ func (o *GetHotelsOK) WriteResponse(rw http.ResponseWriter, producer runtime.Pro
 	payload := o.Payload
 	if payload == nil {
 		// return empty array
-		payload = make([]*models.Hotel, 0, 50)
+		payload = make([]*models2.Hotel, 0, 50)
 	}
 
 	if err := producer.Produce(rw, payload); err != nil {
@@ -69,6 +69,11 @@ GetHotelsNotFound Hotel not found
 swagger:response getHotelsNotFound
 */
 type GetHotelsNotFound struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models2.Error `json:"body,omitempty"`
 }
 
 // NewGetHotelsNotFound creates GetHotelsNotFound with default headers values
@@ -77,10 +82,25 @@ func NewGetHotelsNotFound() *GetHotelsNotFound {
 	return &GetHotelsNotFound{}
 }
 
+// WithPayload adds the payload to the get hotels not found response
+func (o *GetHotelsNotFound) WithPayload(payload *models2.Error) *GetHotelsNotFound {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the get hotels not found response
+func (o *GetHotelsNotFound) SetPayload(payload *models2.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *GetHotelsNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(404)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

@@ -6,6 +6,7 @@ package hotel
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -56,6 +57,51 @@ func (o *UpdateHotelOK) WriteResponse(rw http.ResponseWriter, producer runtime.P
 	}
 }
 
+// UpdateHotelBadRequestCode is the HTTP code returned for type UpdateHotelBadRequest
+const UpdateHotelBadRequestCode int = 400
+
+/*
+UpdateHotelBadRequest Incorrect data
+
+swagger:response updateHotelBadRequest
+*/
+type UpdateHotelBadRequest struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
+}
+
+// NewUpdateHotelBadRequest creates UpdateHotelBadRequest with default headers values
+func NewUpdateHotelBadRequest() *UpdateHotelBadRequest {
+
+	return &UpdateHotelBadRequest{}
+}
+
+// WithPayload adds the payload to the update hotel bad request response
+func (o *UpdateHotelBadRequest) WithPayload(payload *models.Error) *UpdateHotelBadRequest {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the update hotel bad request response
+func (o *UpdateHotelBadRequest) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *UpdateHotelBadRequest) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(400)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}
+
 // UpdateHotelForbiddenCode is the HTTP code returned for type UpdateHotelForbidden
 const UpdateHotelForbiddenCode int = 403
 
@@ -65,6 +111,11 @@ UpdateHotelForbidden No access
 swagger:response updateHotelForbidden
 */
 type UpdateHotelForbidden struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewUpdateHotelForbidden creates UpdateHotelForbidden with default headers values
@@ -73,35 +124,25 @@ func NewUpdateHotelForbidden() *UpdateHotelForbidden {
 	return &UpdateHotelForbidden{}
 }
 
+// WithPayload adds the payload to the update hotel forbidden response
+func (o *UpdateHotelForbidden) WithPayload(payload *models.Error) *UpdateHotelForbidden {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the update hotel forbidden response
+func (o *UpdateHotelForbidden) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *UpdateHotelForbidden) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(403)
-}
-
-// UpdateHotelMethodNotAllowedCode is the HTTP code returned for type UpdateHotelMethodNotAllowed
-const UpdateHotelMethodNotAllowedCode int = 405
-
-/*
-UpdateHotelMethodNotAllowed Incorrect data
-
-swagger:response updateHotelMethodNotAllowed
-*/
-type UpdateHotelMethodNotAllowed struct {
-}
-
-// NewUpdateHotelMethodNotAllowed creates UpdateHotelMethodNotAllowed with default headers values
-func NewUpdateHotelMethodNotAllowed() *UpdateHotelMethodNotAllowed {
-
-	return &UpdateHotelMethodNotAllowed{}
-}
-
-// WriteResponse to the client
-func (o *UpdateHotelMethodNotAllowed) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
-	rw.WriteHeader(405)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

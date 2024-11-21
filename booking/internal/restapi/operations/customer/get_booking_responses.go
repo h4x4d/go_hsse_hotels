@@ -6,7 +6,7 @@ package customer
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
+	models2 "github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -25,7 +25,7 @@ type GetBookingOK struct {
 	/*
 	  In: Body
 	*/
-	Payload []*models.Booking `json:"body,omitempty"`
+	Payload []*models2.Booking `json:"body,omitempty"`
 }
 
 // NewGetBookingOK creates GetBookingOK with default headers values
@@ -35,13 +35,13 @@ func NewGetBookingOK() *GetBookingOK {
 }
 
 // WithPayload adds the payload to the get booking o k response
-func (o *GetBookingOK) WithPayload(payload []*models.Booking) *GetBookingOK {
+func (o *GetBookingOK) WithPayload(payload []*models2.Booking) *GetBookingOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get booking o k response
-func (o *GetBookingOK) SetPayload(payload []*models.Booking) {
+func (o *GetBookingOK) SetPayload(payload []*models2.Booking) {
 	o.Payload = payload
 }
 
@@ -52,7 +52,7 @@ func (o *GetBookingOK) WriteResponse(rw http.ResponseWriter, producer runtime.Pr
 	payload := o.Payload
 	if payload == nil {
 		// return empty array
-		payload = make([]*models.Booking, 0, 50)
+		payload = make([]*models2.Booking, 0, 50)
 	}
 
 	if err := producer.Produce(rw, payload); err != nil {
@@ -69,6 +69,11 @@ GetBookingForbidden No access
 swagger:response getBookingForbidden
 */
 type GetBookingForbidden struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models2.Error `json:"body,omitempty"`
 }
 
 // NewGetBookingForbidden creates GetBookingForbidden with default headers values
@@ -77,12 +82,27 @@ func NewGetBookingForbidden() *GetBookingForbidden {
 	return &GetBookingForbidden{}
 }
 
+// WithPayload adds the payload to the get booking forbidden response
+func (o *GetBookingForbidden) WithPayload(payload *models2.Error) *GetBookingForbidden {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the get booking forbidden response
+func (o *GetBookingForbidden) SetPayload(payload *models2.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *GetBookingForbidden) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(403)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }
 
 // GetBookingNotFoundCode is the HTTP code returned for type GetBookingNotFound
@@ -94,6 +114,11 @@ GetBookingNotFound Booking not found
 swagger:response getBookingNotFound
 */
 type GetBookingNotFound struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models2.Error `json:"body,omitempty"`
 }
 
 // NewGetBookingNotFound creates GetBookingNotFound with default headers values
@@ -102,10 +127,25 @@ func NewGetBookingNotFound() *GetBookingNotFound {
 	return &GetBookingNotFound{}
 }
 
+// WithPayload adds the payload to the get booking not found response
+func (o *GetBookingNotFound) WithPayload(payload *models2.Error) *GetBookingNotFound {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the get booking not found response
+func (o *GetBookingNotFound) SetPayload(payload *models2.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *GetBookingNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(404)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

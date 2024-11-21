@@ -6,7 +6,7 @@ package room
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
+	models2 "github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
@@ -25,7 +25,7 @@ type GetRoomByIDOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models.Room `json:"body,omitempty"`
+	Payload *models2.Room `json:"body,omitempty"`
 }
 
 // NewGetRoomByIDOK creates GetRoomByIDOK with default headers values
@@ -35,13 +35,13 @@ func NewGetRoomByIDOK() *GetRoomByIDOK {
 }
 
 // WithPayload adds the payload to the get room by Id o k response
-func (o *GetRoomByIDOK) WithPayload(payload *models.Room) *GetRoomByIDOK {
+func (o *GetRoomByIDOK) WithPayload(payload *models2.Room) *GetRoomByIDOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get room by Id o k response
-func (o *GetRoomByIDOK) SetPayload(payload *models.Room) {
+func (o *GetRoomByIDOK) SetPayload(payload *models2.Room) {
 	o.Payload = payload
 }
 
@@ -66,6 +66,11 @@ GetRoomByIDNotFound room not found
 swagger:response getRoomByIdNotFound
 */
 type GetRoomByIDNotFound struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models2.Error `json:"body,omitempty"`
 }
 
 // NewGetRoomByIDNotFound creates GetRoomByIDNotFound with default headers values
@@ -74,10 +79,25 @@ func NewGetRoomByIDNotFound() *GetRoomByIDNotFound {
 	return &GetRoomByIDNotFound{}
 }
 
+// WithPayload adds the payload to the get room by Id not found response
+func (o *GetRoomByIDNotFound) WithPayload(payload *models2.Error) *GetRoomByIDNotFound {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the get room by Id not found response
+func (o *GetRoomByIDNotFound) SetPayload(payload *models2.Error) {
+	o.Payload = payload
+}
+
 // WriteResponse to the client
 func (o *GetRoomByIDNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
 
-	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
-
 	rw.WriteHeader(404)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }
