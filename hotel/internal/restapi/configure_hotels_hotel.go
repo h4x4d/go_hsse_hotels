@@ -39,10 +39,10 @@ func configureAPI(api *operations.HotelsHotelAPI) http.Handler {
 	api.JSONProducer = runtime.JSONProducer()
 
 	// Applies when the "api_key" header is set
-	if api.APIKeyAuth == nil {
-		api.APIKeyAuth = func(token string) (interface{}, error) {
-			return nil, errors.NotImplemented("api key auth (api_key) api_key from header param [api_key] has not yet been implemented")
-		}
+
+	// Applies when the "api_key" header is set
+	api.APIKeyAuth = func(token string) (interface{}, error) {
+		return "OK", nil
 	}
 
 	// Set your custom authorizer if needed. Default one is security.Authorized()
