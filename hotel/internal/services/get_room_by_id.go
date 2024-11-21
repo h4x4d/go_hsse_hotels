@@ -2,17 +2,12 @@ package services
 
 import (
 	"context"
-	"fmt"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
-	"github.com/jackc/pgx/v5/pgxpool"
-	"os"
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/utils"
 )
 
 func GetRoomByID(RoomID int64) (*models.Room, error) {
-	// connecting to database hotel
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", os.Getenv("POSTGRES_USER"),
-		os.Getenv("POSTGRES_PASSWORD"), "db", os.Getenv("POSTGRES_PORT"), "hotel")
-	pool, errPool := pgxpool.New(context.Background(), connStr)
+	pool, errPool := utils.NewConnection()
 	if errPool != nil {
 		return nil, errPool
 	}

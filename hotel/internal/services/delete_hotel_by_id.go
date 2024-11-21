@@ -2,16 +2,11 @@ package services
 
 import (
 	"context"
-	"fmt"
-	"github.com/jackc/pgx/v5/pgxpool"
-	"os"
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/utils"
 )
 
 func DeleteHotelByID(HotelID int64) (*int64, error) {
-	// connecting to database
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", os.Getenv("POSTGRES_USER"),
-		os.Getenv("POSTGRES_PASSWORD"), "db", os.Getenv("POSTGRES_PORT"), "hotel")
-	pool, errPool := pgxpool.New(context.Background(), connStr)
+	pool, errPool := utils.NewConnection()
 	if errPool != nil {
 		return nil, errPool
 	}
