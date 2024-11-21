@@ -9,14 +9,15 @@ CREATE TABLE IF NOT EXISTS hotels
 
 CREATE TABLE IF NOT EXISTS rooms
 (
-    id          SERIAL PRIMARY KEY,
-    hotel_id    SERIAL REFERENCES hotels (id),
-    cost        INTEGER NOT NULL CHECK ( cost >= 0 ),
+    id           SERIAL PRIMARY KEY,
+    hotel_id     SERIAL REFERENCES hotels (id),
+    cost         INTEGER NOT NULL CHECK ( cost >= 0 ),
     person_count INTEGER NOT NULL CHECK ( person_count > 0 )
 );
 
-CREATE TABLE IF NOT EXISTS Tags (
-    room_id    SERIAL REFERENCES rooms (id),
-    tag        TEXT NOT NULL,
+CREATE TABLE IF NOT EXISTS tags
+(
+    room_id SERIAL REFERENCES rooms (id),
+    tag     TEXT NOT NULL,
     UNIQUE (room_id, tag)
 );
