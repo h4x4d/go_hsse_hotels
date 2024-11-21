@@ -6,10 +6,11 @@ package customer
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	models2 "github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 	"net/http"
 
 	"github.com/go-openapi/runtime"
+
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 )
 
 // GetBookingByIDOKCode is the HTTP code returned for type GetBookingByIDOK
@@ -25,7 +26,7 @@ type GetBookingByIDOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *models2.Booking `json:"body,omitempty"`
+	Payload *models.Booking `json:"body,omitempty"`
 }
 
 // NewGetBookingByIDOK creates GetBookingByIDOK with default headers values
@@ -35,13 +36,13 @@ func NewGetBookingByIDOK() *GetBookingByIDOK {
 }
 
 // WithPayload adds the payload to the get booking by Id o k response
-func (o *GetBookingByIDOK) WithPayload(payload *models2.Booking) *GetBookingByIDOK {
+func (o *GetBookingByIDOK) WithPayload(payload *models.Booking) *GetBookingByIDOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get booking by Id o k response
-func (o *GetBookingByIDOK) SetPayload(payload *models2.Booking) {
+func (o *GetBookingByIDOK) SetPayload(payload *models.Booking) {
 	o.Payload = payload
 }
 
@@ -70,7 +71,7 @@ type GetBookingByIDForbidden struct {
 	/*
 	  In: Body
 	*/
-	Payload *models2.Error `json:"body,omitempty"`
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewGetBookingByIDForbidden creates GetBookingByIDForbidden with default headers values
@@ -80,13 +81,13 @@ func NewGetBookingByIDForbidden() *GetBookingByIDForbidden {
 }
 
 // WithPayload adds the payload to the get booking by Id forbidden response
-func (o *GetBookingByIDForbidden) WithPayload(payload *models2.Error) *GetBookingByIDForbidden {
+func (o *GetBookingByIDForbidden) WithPayload(payload *models.Error) *GetBookingByIDForbidden {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get booking by Id forbidden response
-func (o *GetBookingByIDForbidden) SetPayload(payload *models2.Error) {
+func (o *GetBookingByIDForbidden) SetPayload(payload *models.Error) {
 	o.Payload = payload
 }
 
@@ -115,7 +116,7 @@ type GetBookingByIDNotFound struct {
 	/*
 	  In: Body
 	*/
-	Payload *models2.Error `json:"body,omitempty"`
+	Payload *models.Error `json:"body,omitempty"`
 }
 
 // NewGetBookingByIDNotFound creates GetBookingByIDNotFound with default headers values
@@ -125,13 +126,13 @@ func NewGetBookingByIDNotFound() *GetBookingByIDNotFound {
 }
 
 // WithPayload adds the payload to the get booking by Id not found response
-func (o *GetBookingByIDNotFound) WithPayload(payload *models2.Error) *GetBookingByIDNotFound {
+func (o *GetBookingByIDNotFound) WithPayload(payload *models.Error) *GetBookingByIDNotFound {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the get booking by Id not found response
-func (o *GetBookingByIDNotFound) SetPayload(payload *models2.Error) {
+func (o *GetBookingByIDNotFound) SetPayload(payload *models.Error) {
 	o.Payload = payload
 }
 

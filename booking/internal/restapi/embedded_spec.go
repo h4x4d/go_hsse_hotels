@@ -263,7 +263,10 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "successful operation"
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Result"
+            }
           },
           "403": {
             "description": "No access",
@@ -341,6 +344,17 @@ func init() {
         },
         "error_status_code": {
           "type": "integer"
+        }
+      }
+    },
+    "Result": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
         }
       }
     },
@@ -631,7 +645,10 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "successful operation"
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Result"
+            }
           },
           "403": {
             "description": "No access",
@@ -709,6 +726,17 @@ func init() {
         },
         "error_status_code": {
           "type": "integer"
+        }
+      }
+    },
+    "Result": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
         }
       }
     },

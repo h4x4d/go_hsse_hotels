@@ -6,7 +6,6 @@ package customer
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 	"io"
 	"net/http"
 
@@ -16,6 +15,8 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
+
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 )
 
 // NewUpdateBookingParams creates a new UpdateBookingParams object

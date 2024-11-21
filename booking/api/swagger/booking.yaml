@@ -106,6 +106,8 @@ paths:
           format: "int64"
       responses:
         200:
+          schema:
+            $ref: "#/definitions/Result"
           description: "successful operation"
         404:
           description: "Booking not found"
@@ -250,3 +252,10 @@ definitions:
         type: "string"
       error_status_code:
         type: integer
+  Result:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+      message:
+        type: "string"
