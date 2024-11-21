@@ -11,6 +11,6 @@ RUN go mod download
 
 RUN go build -o notification cmd/main.go
 
-ENTRYPOINT ["sh", "scripts/wait_and_start.sh"]
+ENTRYPOINT ["./notification"]
 
 

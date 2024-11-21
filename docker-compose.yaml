@@ -72,8 +72,8 @@ services:
       - /kafka
     healthcheck:
       test: [ "CMD", "kafka-topics", "--list", "--bootstrap-server", "kafka:9092" ]
-      interval: 10s
-      timeout: 10s
+      interval: 5s
+      timeout: 5s
       retries: 10
 
 volumes:

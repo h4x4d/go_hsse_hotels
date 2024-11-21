@@ -12,5 +12,5 @@ RUN go build -o booking cmd/hotels-booking-server/main.go
 
 EXPOSE $BOOKING_REST_PORT
 
-ENTRYPOINT ["sh", "scripts/wait_and_start.sh"]
+ENTRYPOINT ["./booking", "--port=8880", "--host=0.0.0.0"]
 
