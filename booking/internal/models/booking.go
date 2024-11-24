@@ -35,6 +35,9 @@ type Booking struct {
 	// Pattern: ^\d{4}-\d{2}-\d{2}$
 	DateTo *string `json:"date_to"`
 
+	// final cost
+	FinalCost int64 `json:"final_cost,omitempty"`
+
 	// hotel id
 	// Required: true
 	HotelID *int64 `json:"hotel_id"`
@@ -45,7 +48,7 @@ type Booking struct {
 
 	// status of booking
 	// Required: true
-	// Enum: ["Unpayed","Confirming","Confirmed","Canceled"]
+	// Enum: ["Waiting","Payed","Confirmed","Finished"]
 	Status *string `json:"status"`
 
 	// user id
@@ -130,7 +133,7 @@ var bookingTypeStatusPropEnum []interface{}
 
 func init() {
 	var res []string
-	if err := json.Unmarshal([]byte(`["Unpayed","Confirming","Confirmed","Canceled"]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`["Waiting","Payed","Confirmed","Finished"]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {
@@ -140,17 +143,17 @@ func init() {
 
 const (
 
-	// BookingStatusUnpayed captures enum value "Unpayed"
-	BookingStatusUnpayed string = "Unpayed"
+	// BookingStatusWaiting captures enum value "Waiting"
+	BookingStatusWaiting string = "Waiting"
 
-	// BookingStatusConfirming captures enum value "Confirming"
-	BookingStatusConfirming string = "Confirming"
+	// BookingStatusPayed captures enum value "Payed"
+	BookingStatusPayed string = "Payed"
 
 	// BookingStatusConfirmed captures enum value "Confirmed"
 	BookingStatusConfirmed string = "Confirmed"
 
-	// BookingStatusCanceled captures enum value "Canceled"
-	BookingStatusCanceled string = "Canceled"
+	// BookingStatusFinished captures enum value "Finished"
+	BookingStatusFinished string = "Finished"
 )
 
 // prop value enum

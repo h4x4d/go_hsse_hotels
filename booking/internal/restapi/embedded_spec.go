@@ -25,7 +25,7 @@ func init() {
   "info": {
     "description": "MTS HSSE Go project | Booking svc",
     "title": "hotels.booking",
-    "version": "0.2.2"
+    "version": "0.3.0"
   },
   "paths": {
     "/booking": {
@@ -34,7 +34,6 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "customer",
           "hotelier"
         ],
         "summary": "Get suitable bookings",
@@ -44,12 +43,6 @@ func init() {
             "type": "integer",
             "format": "int64",
             "name": "hotel_id",
-            "in": "query"
-          },
-          {
-            "type": "integer",
-            "format": "int64",
-            "name": "room_id",
             "in": "query"
           }
         ],
@@ -235,52 +228,6 @@ func init() {
             }
           }
         }
-      },
-      "delete": {
-        "security": [
-          {
-            "api_key": []
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "customer",
-          "hotelier"
-        ],
-        "summary": "Delete booking info by id",
-        "operationId": "delete_booking_by_id",
-        "parameters": [
-          {
-            "type": "integer",
-            "format": "int64",
-            "description": "ID of booking to delete",
-            "name": "booking_id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/Result"
-            }
-          },
-          "403": {
-            "description": "No access",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "404": {
-            "description": "Booking not found",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
       }
     }
   },
@@ -309,6 +256,10 @@ func init() {
           "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
           "example": "2025-01-11"
         },
+        "final_cost": {
+          "type": "integer",
+          "format": "int64"
+        },
         "hotel_id": {
           "type": "integer",
           "format": "int64"
@@ -321,10 +272,10 @@ func init() {
           "description": "status of booking",
           "type": "string",
           "enum": [
-            "Unpayed",
-            "Confirming",
+            "Waiting",
+            "Payed",
             "Confirmed",
-            "Canceled"
+            "Finished"
           ]
         },
         "user_id": {
@@ -354,28 +305,6 @@ func init() {
           "type": "string"
         },
         "status": {
-          "type": "string"
-        }
-      }
-    },
-    "User": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "name": {
-          "type": "string"
-        },
-        "role": {
-          "type": "string",
-          "enum": [
-            "customer",
-            "hotelier"
-          ]
-        },
-        "telegram": {
           "type": "string"
         }
       }
@@ -407,7 +336,7 @@ func init() {
   "info": {
     "description": "MTS HSSE Go project | Booking svc",
     "title": "hotels.booking",
-    "version": "0.2.2"
+    "version": "0.3.0"
   },
   "paths": {
     "/booking": {
@@ -416,7 +345,6 @@ func init() {
           "application/json"
         ],
         "tags": [
-          "customer",
           "hotelier"
         ],
         "summary": "Get suitable bookings",
@@ -426,12 +354,6 @@ func init() {
             "type": "integer",
             "format": "int64",
             "name": "hotel_id",
-            "in": "query"
-          },
-          {
-            "type": "integer",
-            "format": "int64",
-            "name": "room_id",
             "in": "query"
           }
         ],
@@ -617,52 +539,6 @@ func init() {
             }
           }
         }
-      },
-      "delete": {
-        "security": [
-          {
-            "api_key": []
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "customer",
-          "hotelier"
-        ],
-        "summary": "Delete booking info by id",
-        "operationId": "delete_booking_by_id",
-        "parameters": [
-          {
-            "type": "integer",
-            "format": "int64",
-            "description": "ID of booking to delete",
-            "name": "booking_id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/Result"
-            }
-          },
-          "403": {
-            "description": "No access",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "404": {
-            "description": "Booking not found",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
       }
     }
   },
@@ -691,6 +567,10 @@ func init() {
           "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
           "example": "2025-01-11"
         },
+        "final_cost": {
+          "type": "integer",
+          "format": "int64"
+        },
         "hotel_id": {
           "type": "integer",
           "format": "int64"
@@ -703,10 +583,10 @@ func init() {
           "description": "status of booking",
           "type": "string",
           "enum": [
-            "Unpayed",
-            "Confirming",
+            "Waiting",
+            "Payed",
             "Confirmed",
-            "Canceled"
+            "Finished"
           ]
         },
         "user_id": {
@@ -736,28 +616,6 @@ func init() {
           "type": "string"
         },
         "status": {
-          "type": "string"
-        }
-      }
-    },
-    "User": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "name": {
-          "type": "string"
-        },
-        "role": {
-          "type": "string",
-          "enum": [
-            "customer",
-            "hotelier"
-          ]
-        },
-        "telegram": {
           "type": "string"
         }
       }

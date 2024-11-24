@@ -2,10 +2,8 @@
 swagger: "2.0"
 info:
   description: "MTS HSSE Go project | Booking svc"
-  version: "0.2.2"
+  version: "0.3.0"
   title: "hotels.booking"
-# host: "127.0.0.1:8889"
-# basePath: "/v2"
 tags:
   - name: "customer"
     description: "Customer operations"
@@ -89,42 +87,9 @@ paths:
       security:
         - api_key: [ ]
 
-    delete:
-      tags:
-        - "customer"
-        - "hotelier"
-      summary: "Delete booking info by id"
-      operationId: "delete_booking_by_id"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "booking_id"
-          in: "path"
-          description: "ID of booking to delete"
-          required: true
-          type: "integer"
-          format: "int64"
-      responses:
-        200:
-          schema:
-            $ref: "#/definitions/Result"
-          description: "successful operation"
-        404:
-          description: "Booking not found"
-          schema:
-            $ref: "#/definitions/Error"
-        403:
-          description: "No access"
-          schema:
-            $ref: "#/definitions/Error"
-      security:
-        - api_key: [ ]
-
-
   /booking:
     get:
       tags:
-        - "customer"
         - "hotelier"
       summary: "Get suitable bookings"
       operationId: "get_booking"
@@ -132,10 +97,6 @@ paths:
         - "application/json"
       parameters:
         - name: "hotel_id"
-          in: "query"
-          type: "integer"
-          format: "int64"
-        - name: "room_id"
           in: "query"
           type: "integer"
           format: "int64"
@@ -220,29 +181,17 @@ definitions:
       user_id:
         type: "integer"
         format: "int64"
+      final_cost:
+        type: "integer"
+        format: "int64"
       status:
         type: "string"
         description: "status of booking"
         enum:
-          - "Unpayed"
-          - "Confirming"
+          - "Waiting"
+          - "Payed"
           - "Confirmed"
-          - "Canceled"
-  User:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      role:
-        type: "string"
-        enum:
-          - "customer"
-          - "hotelier"
-      name:
-        type: "string"
-      telegram:
-        type: "string"
+          - "Finished"
   Error:
     type: "object"
     required:

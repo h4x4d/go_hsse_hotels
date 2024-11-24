@@ -20,6 +20,7 @@ import (
 	"github.com/go-openapi/swag"
 
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/customer"
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/hotelier"
 )
 
 // NewHotelsBookingAPI creates a new HotelsBooking instance
@@ -47,11 +48,8 @@ func NewHotelsBookingAPI(spec *loads.Document) *HotelsBookingAPI {
 		CustomerCreateBookingHandler: customer.CreateBookingHandlerFunc(func(params customer.CreateBookingParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation customer.CreateBooking has not yet been implemented")
 		}),
-		CustomerDeleteBookingByIDHandler: customer.DeleteBookingByIDHandlerFunc(func(params customer.DeleteBookingByIDParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation customer.DeleteBookingByID has not yet been implemented")
-		}),
-		CustomerGetBookingHandler: customer.GetBookingHandlerFunc(func(params customer.GetBookingParams) middleware.Responder {
-			return middleware.NotImplemented("operation customer.GetBooking has not yet been implemented")
+		HotelierGetBookingHandler: hotelier.GetBookingHandlerFunc(func(params hotelier.GetBookingParams) middleware.Responder {
+			return middleware.NotImplemented("operation hotelier.GetBooking has not yet been implemented")
 		}),
 		CustomerGetBookingByIDHandler: customer.GetBookingByIDHandlerFunc(func(params customer.GetBookingByIDParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation customer.GetBookingByID has not yet been implemented")
@@ -111,10 +109,8 @@ type HotelsBookingAPI struct {
 
 	// CustomerCreateBookingHandler sets the operation handler for the create booking operation
 	CustomerCreateBookingHandler customer.CreateBookingHandler
-	// CustomerDeleteBookingByIDHandler sets the operation handler for the delete booking by id operation
-	CustomerDeleteBookingByIDHandler customer.DeleteBookingByIDHandler
-	// CustomerGetBookingHandler sets the operation handler for the get booking operation
-	CustomerGetBookingHandler customer.GetBookingHandler
+	// HotelierGetBookingHandler sets the operation handler for the get booking operation
+	HotelierGetBookingHandler hotelier.GetBookingHandler
 	// CustomerGetBookingByIDHandler sets the operation handler for the get booking by id operation
 	CustomerGetBookingByIDHandler customer.GetBookingByIDHandler
 	// CustomerUpdateBookingHandler sets the operation handler for the update booking operation
@@ -203,11 +199,8 @@ func (o *HotelsBookingAPI) Validate() error {
 	if o.CustomerCreateBookingHandler == nil {
 		unregistered = append(unregistered, "customer.CreateBookingHandler")
 	}
-	if o.CustomerDeleteBookingByIDHandler == nil {
-		unregistered = append(unregistered, "customer.DeleteBookingByIDHandler")
-	}
-	if o.CustomerGetBookingHandler == nil {
-		unregistered = append(unregistered, "customer.GetBookingHandler")
+	if o.HotelierGetBookingHandler == nil {
+		unregistered = append(unregistered, "hotelier.GetBookingHandler")
 	}
 	if o.CustomerGetBookingByIDHandler == nil {
 		unregistered = append(unregistered, "customer.GetBookingByIDHandler")
@@ -316,14 +309,10 @@ func (o *HotelsBookingAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/booking"] = customer.NewCreateBooking(o.context, o.CustomerCreateBookingHandler)
-	if o.handlers["DELETE"] == nil {
-		o.handlers["DELETE"] = make(map[string]http.Handler)
-	}
-	o.handlers["DELETE"]["/booking/{booking_id}"] = customer.NewDeleteBookingByID(o.context, o.CustomerDeleteBookingByIDHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
-	o.handlers["GET"]["/booking"] = customer.NewGetBooking(o.context, o.CustomerGetBookingHandler)
+	o.handlers["GET"]["/booking"] = hotelier.NewGetBooking(o.context, o.HotelierGetBookingHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
