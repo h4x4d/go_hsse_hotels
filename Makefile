@@ -1,3 +1,5 @@
+DOCKER_COMPOSE := $(shell command -v docker-compose >/dev/null 2>&1 && echo docker-compose || echo docker compose)
+
 .PHONY: pull
 pull:
 	git pull
@@ -5,16 +7,16 @@ pull:
 
 .PHONY: update
 update: pull
-	docker compose up -d --build --force-recreate -V
+	$(DOCKER_COMPOSE) up -d --build --force-recreate -V
 
 .PHONY: down
 down:
-	docker compose down -v
+	$(DOCKER_COMPOSE) down -v
 
 .PHONY: build-action
 build: down
-	docker compose up -d --build --force-recreate -V
+	$(DOCKER_COMPOSE) up -d --build --force-recreate -V
 
 .PHONY: up
 up:
-	docker compose up -d --build --force-recreate -V
+	$(DOCKER_COMPOSE) up -d --build --force-recreate -V
