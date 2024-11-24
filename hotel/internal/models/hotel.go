@@ -8,7 +8,6 @@ package models
 import (
 	"context"
 	"encoding/json"
-	"strconv"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
@@ -42,9 +41,6 @@ type Hotel struct {
 	// Example: Radisson
 	// Required: true
 	Name *string `json:"name"`
-
-	// rooms
-	Rooms []*Room `json:"rooms"`
 }
 
 // Validate validates this hotel
@@ -64,10 +60,6 @@ func (m *Hotel) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateName(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateRooms(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -137,68 +129,8 @@ func (m *Hotel) validateName(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Hotel) validateRooms(formats strfmt.Registry) error {
-	if swag.IsZero(m.Rooms) { // not required
-		return nil
-	}
-
-	for i := 0; i < len(m.Rooms); i++ {
-		if swag.IsZero(m.Rooms[i]) { // not required
-			continue
-		}
-
-		if m.Rooms[i] != nil {
-			if err := m.Rooms[i].Validate(formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("rooms" + "." + strconv.Itoa(i))
-				} else if ce, ok := err.(*errors.CompositeError); ok {
-					return ce.ValidateName("rooms" + "." + strconv.Itoa(i))
-				}
-				return err
-			}
-		}
-
-	}
-
-	return nil
-}
-
-// ContextValidate validate this hotel based on the context it is used
+// ContextValidate validates this hotel based on context it is used
 func (m *Hotel) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
-	var res []error
-
-	if err := m.contextValidateRooms(ctx, formats); err != nil {
-		res = append(res, err)
-	}
-
-	if len(res) > 0 {
-		return errors.CompositeValidationError(res...)
-	}
-	return nil
-}
-
-func (m *Hotel) contextValidateRooms(ctx context.Context, formats strfmt.Registry) error {
-
-	for i := 0; i < len(m.Rooms); i++ {
-
-		if m.Rooms[i] != nil {
-
-			if swag.IsZero(m.Rooms[i]) { // not required
-				return nil
-			}
-
-			if err := m.Rooms[i].ContextValidate(ctx, formats); err != nil {
-				if ve, ok := err.(*errors.Validation); ok {
-					return ve.ValidateName("rooms" + "." + strconv.Itoa(i))
-				} else if ce, ok := err.(*errors.CompositeError); ok {
-					return ce.ValidateName("rooms" + "." + strconv.Itoa(i))
-				}
-				return err
-			}
-		}
-
-	}
-
 	return nil
 }
 

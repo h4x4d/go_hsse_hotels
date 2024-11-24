@@ -18,7 +18,6 @@ type GetHotelsURL struct {
 	City       *string
 	HotelClass *int64
 	Name       *string
-	Tag        *string
 
 	_basePath string
 	// avoid unkeyed usage
@@ -73,14 +72,6 @@ func (o *GetHotelsURL) Build() (*url.URL, error) {
 	}
 	if nameQ != "" {
 		qs.Set("name", nameQ)
-	}
-
-	var tagQ string
-	if o.Tag != nil {
-		tagQ = *o.Tag
-	}
-	if tagQ != "" {
-		qs.Set("tag", tagQ)
 	}
 
 	_result.RawQuery = qs.Encode()

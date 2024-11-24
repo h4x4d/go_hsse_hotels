@@ -65,7 +65,7 @@ func (o *GetHotelsOK) WriteResponse(rw http.ResponseWriter, producer runtime.Pro
 const GetHotelsNotFoundCode int = 404
 
 /*
-GetHotelsNotFound Hotel not found
+GetHotelsNotFound Suitable hotels not found
 
 swagger:response getHotelsNotFound
 */

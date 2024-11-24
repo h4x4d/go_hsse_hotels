@@ -20,7 +20,6 @@ import (
 	"github.com/go-openapi/swag"
 
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/hotel"
-	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/room"
 )
 
 // NewHotelsHotelAPI creates a new HotelsHotel instance
@@ -48,32 +47,14 @@ func NewHotelsHotelAPI(spec *loads.Document) *HotelsHotelAPI {
 		HotelCreateHotelHandler: hotel.CreateHotelHandlerFunc(func(params hotel.CreateHotelParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation hotel.CreateHotel has not yet been implemented")
 		}),
-		RoomCreateRoomHandler: room.CreateRoomHandlerFunc(func(params room.CreateRoomParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation room.CreateRoom has not yet been implemented")
-		}),
-		HotelDeleteHotelByIDHandler: hotel.DeleteHotelByIDHandlerFunc(func(params hotel.DeleteHotelByIDParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation hotel.DeleteHotelByID has not yet been implemented")
-		}),
-		RoomDeleteRoomByIDHandler: room.DeleteRoomByIDHandlerFunc(func(params room.DeleteRoomByIDParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation room.DeleteRoomByID has not yet been implemented")
-		}),
 		HotelGetHotelByIDHandler: hotel.GetHotelByIDHandlerFunc(func(params hotel.GetHotelByIDParams) middleware.Responder {
 			return middleware.NotImplemented("operation hotel.GetHotelByID has not yet been implemented")
 		}),
 		HotelGetHotelsHandler: hotel.GetHotelsHandlerFunc(func(params hotel.GetHotelsParams) middleware.Responder {
 			return middleware.NotImplemented("operation hotel.GetHotels has not yet been implemented")
 		}),
-		RoomGetRoomByIDHandler: room.GetRoomByIDHandlerFunc(func(params room.GetRoomByIDParams) middleware.Responder {
-			return middleware.NotImplemented("operation room.GetRoomByID has not yet been implemented")
-		}),
-		RoomGetRoomsHandler: room.GetRoomsHandlerFunc(func(params room.GetRoomsParams) middleware.Responder {
-			return middleware.NotImplemented("operation room.GetRooms has not yet been implemented")
-		}),
 		HotelUpdateHotelHandler: hotel.UpdateHotelHandlerFunc(func(params hotel.UpdateHotelParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation hotel.UpdateHotel has not yet been implemented")
-		}),
-		RoomUpdateRoomHandler: room.UpdateRoomHandlerFunc(func(params room.UpdateRoomParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation room.UpdateRoom has not yet been implemented")
 		}),
 
 		// Applies when the "api_key" header is set
@@ -127,24 +108,12 @@ type HotelsHotelAPI struct {
 
 	// HotelCreateHotelHandler sets the operation handler for the create hotel operation
 	HotelCreateHotelHandler hotel.CreateHotelHandler
-	// RoomCreateRoomHandler sets the operation handler for the create room operation
-	RoomCreateRoomHandler room.CreateRoomHandler
-	// HotelDeleteHotelByIDHandler sets the operation handler for the delete hotel by id operation
-	HotelDeleteHotelByIDHandler hotel.DeleteHotelByIDHandler
-	// RoomDeleteRoomByIDHandler sets the operation handler for the delete room by id operation
-	RoomDeleteRoomByIDHandler room.DeleteRoomByIDHandler
 	// HotelGetHotelByIDHandler sets the operation handler for the get hotel by id operation
 	HotelGetHotelByIDHandler hotel.GetHotelByIDHandler
 	// HotelGetHotelsHandler sets the operation handler for the get hotels operation
 	HotelGetHotelsHandler hotel.GetHotelsHandler
-	// RoomGetRoomByIDHandler sets the operation handler for the get room by id operation
-	RoomGetRoomByIDHandler room.GetRoomByIDHandler
-	// RoomGetRoomsHandler sets the operation handler for the get rooms operation
-	RoomGetRoomsHandler room.GetRoomsHandler
 	// HotelUpdateHotelHandler sets the operation handler for the update hotel operation
 	HotelUpdateHotelHandler hotel.UpdateHotelHandler
-	// RoomUpdateRoomHandler sets the operation handler for the update room operation
-	RoomUpdateRoomHandler room.UpdateRoomHandler
 
 	// ServeError is called when an error is received, there is a default handler
 	// but you can set your own with this
@@ -229,32 +198,14 @@ func (o *HotelsHotelAPI) Validate() error {
 	if o.HotelCreateHotelHandler == nil {
 		unregistered = append(unregistered, "hotel.CreateHotelHandler")
 	}
-	if o.RoomCreateRoomHandler == nil {
-		unregistered = append(unregistered, "room.CreateRoomHandler")
-	}
-	if o.HotelDeleteHotelByIDHandler == nil {
-		unregistered = append(unregistered, "hotel.DeleteHotelByIDHandler")
-	}
-	if o.RoomDeleteRoomByIDHandler == nil {
-		unregistered = append(unregistered, "room.DeleteRoomByIDHandler")
-	}
 	if o.HotelGetHotelByIDHandler == nil {
 		unregistered = append(unregistered, "hotel.GetHotelByIDHandler")
 	}
 	if o.HotelGetHotelsHandler == nil {
 		unregistered = append(unregistered, "hotel.GetHotelsHandler")
 	}
-	if o.RoomGetRoomByIDHandler == nil {
-		unregistered = append(unregistered, "room.GetRoomByIDHandler")
-	}
-	if o.RoomGetRoomsHandler == nil {
-		unregistered = append(unregistered, "room.GetRoomsHandler")
-	}
 	if o.HotelUpdateHotelHandler == nil {
 		unregistered = append(unregistered, "hotel.UpdateHotelHandler")
-	}
-	if o.RoomUpdateRoomHandler == nil {
-		unregistered = append(unregistered, "room.UpdateRoomHandler")
 	}
 
 	if len(unregistered) > 0 {
@@ -357,18 +308,6 @@ func (o *HotelsHotelAPI) initHandlerCache() {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}
 	o.handlers["POST"]["/hotel"] = hotel.NewCreateHotel(o.context, o.HotelCreateHotelHandler)
-	if o.handlers["POST"] == nil {
-		o.handlers["POST"] = make(map[string]http.Handler)
-	}
-	o.handlers["POST"]["/hotel/room"] = room.NewCreateRoom(o.context, o.RoomCreateRoomHandler)
-	if o.handlers["DELETE"] == nil {
-		o.handlers["DELETE"] = make(map[string]http.Handler)
-	}
-	o.handlers["DELETE"]["/hotel/{hotel_id}"] = hotel.NewDeleteHotelByID(o.context, o.HotelDeleteHotelByIDHandler)
-	if o.handlers["DELETE"] == nil {
-		o.handlers["DELETE"] = make(map[string]http.Handler)
-	}
-	o.handlers["DELETE"]["/hotel/room/{room_id}"] = room.NewDeleteRoomByID(o.context, o.RoomDeleteRoomByIDHandler)
 	if o.handlers["GET"] == nil {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
@@ -377,22 +316,10 @@ func (o *HotelsHotelAPI) initHandlerCache() {
 		o.handlers["GET"] = make(map[string]http.Handler)
 	}
 	o.handlers["GET"]["/hotel"] = hotel.NewGetHotels(o.context, o.HotelGetHotelsHandler)
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/hotel/room/{room_id}"] = room.NewGetRoomByID(o.context, o.RoomGetRoomByIDHandler)
-	if o.handlers["GET"] == nil {
-		o.handlers["GET"] = make(map[string]http.Handler)
-	}
-	o.handlers["GET"]["/hotel/room"] = room.NewGetRooms(o.context, o.RoomGetRoomsHandler)
 	if o.handlers["PUT"] == nil {
 		o.handlers["PUT"] = make(map[string]http.Handler)
 	}
 	o.handlers["PUT"]["/hotel/{hotel_id}"] = hotel.NewUpdateHotel(o.context, o.HotelUpdateHotelHandler)
-	if o.handlers["PUT"] == nil {
-		o.handlers["PUT"] = make(map[string]http.Handler)
-	}
-	o.handlers["PUT"]["/hotel/room/{room_id}"] = room.NewUpdateRoom(o.context, o.RoomUpdateRoomHandler)
 }
 
 // Serve creates a http handler to serve the API over HTTP

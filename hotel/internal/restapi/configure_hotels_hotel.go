@@ -11,7 +11,6 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/hotel"
-	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/room"
 )
 
 //go:generate swagger generate server --target ../../hotel --name HotelsHotel --spec ../api/swagger/hotels.yaml --principal interface{}
@@ -56,17 +55,9 @@ func configureAPI(api *operations.HotelsHotelAPI) http.Handler {
 
 	// hotel handlers
 	api.HotelCreateHotelHandler = hotel.CreateHotelHandlerFunc(handlers.CreateHotelHandler)
-	api.HotelDeleteHotelByIDHandler = hotel.DeleteHotelByIDHandlerFunc(handlers.DeleteHotelByIDHandler)
 	api.HotelGetHotelsHandler = hotel.GetHotelsHandlerFunc(handlers.GetHotelsHandler)
 	api.HotelGetHotelByIDHandler = hotel.GetHotelByIDHandlerFunc(handlers.GetHotelByIDHandler)
 	api.HotelUpdateHotelHandler = hotel.UpdateHotelHandlerFunc(handlers.UpdateHotelHandler)
-
-	// rooms handlers
-	api.RoomCreateRoomHandler = room.CreateRoomHandlerFunc(handlers.CreateRoomHandler)
-	api.RoomDeleteRoomByIDHandler = room.DeleteRoomByIDHandlerFunc(handlers.DeleteRoomByIDHandler)
-	api.RoomGetRoomByIDHandler = room.GetRoomByIDHandlerFunc(handlers.GetRoomByIDHandler)
-	api.RoomGetRoomsHandler = room.GetRoomsHandlerFunc(handlers.GetRoomsHandler)
-	api.RoomUpdateRoomHandler = room.UpdateRoomHandlerFunc(handlers.UpdateRoomHandler)
 
 	api.PreServerShutdown = func() {}
 

@@ -2,13 +2,9 @@
 swagger: "2.0"
 info:
   description: "MTS HSSE Go project | Hotel svc"
-  version: "0.2.3"
+  version: "0.3.0"
   title: "hotels.hotel"
-# host: example.com
-# basePath: "/v2"
 tags:
-  - name: "room"
-    description: "Hotel room operations"
   - name: "hotel"
     description: "Hotel operations"
 schemes:
@@ -65,43 +61,13 @@ paths:
         200:
           description: "successful operation"
           schema:
-            type: "object"
-            properties:
-              id:
-                type: "integer"
-                format: "int64"
+            $ref: "#/definitions/Hotel"
         403:
           description: "No access"
           schema:
             $ref: "#/definitions/Error"
         400:
           description: "Incorrect data"
-          schema:
-            $ref: "#/definitions/Error"
-      security:
-        - api_key: [ ]
-
-    delete:
-      tags:
-        - "hotel"
-      summary: "Delete hotel info by id"
-      operationId: "delete_hotel_by_id"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "hotel_id"
-          in: "path"
-          description: "ID of hotel to delete"
-          required: true
-          type: "integer"
-          format: "int64"
-      responses:
-        200:
-          schema:
-            $ref: "#/definitions/Result"
-          description: "successful operation"
-        404:
-          description: "Hotel not found"
           schema:
             $ref: "#/definitions/Error"
       security:
@@ -131,9 +97,6 @@ paths:
             - 3
             - 4
             - 5
-        - name: "tag"
-          in: "query"
-          type: "string"
       responses:
         200:
           description: "successful operation"
@@ -142,7 +105,7 @@ paths:
             items:
               $ref: "#/definitions/Hotel"
         404:
-          description: "Hotel not found"
+          description: "Suitable hotels not found"
           schema:
             $ref: "#/definitions/Error"
 
@@ -180,161 +143,6 @@ paths:
             $ref: "#/definitions/Error"
       security:
         - api_key: [ ]
-
-  /hotel/room/{room_id}:
-    get:
-      tags:
-        - "room"
-      summary: "Get room info by id"
-      operationId: "get_room_by_id"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "room_id"
-          in: "path"
-          description: "ID of room to return"
-          required: true
-          type: "integer"
-          format: "int64"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Room"
-        404:
-          description: "room not found"
-          schema:
-            $ref: "#/definitions/Error"
-
-    put:
-      tags:
-        - "room"
-      summary: "Update room"
-      operationId: "update_room"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "room_id"
-          in: "path"
-          description: "ID of room to change"
-          required: true
-          type: "integer"
-          format: "int64"
-        - name: "object"
-          in: "body"
-          required: true
-          schema:
-            $ref: "#/definitions/Room"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "object"
-            properties:
-              id:
-                type: "integer"
-        403:
-          description: "No access"
-          schema:
-            $ref: "#/definitions/Error"
-        400:
-          description: "Incorrect data"
-          schema:
-            $ref: "#/definitions/Error"
-      security:
-        - api_key: [ ]
-
-    delete:
-      tags:
-        - "room"
-      summary: "Delete room info by id"
-      operationId: "delete_room_by_id"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "room_id"
-          in: "path"
-          description: "ID of room to delete"
-          required: true
-          type: "integer"
-          format: "int64"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Result"
-        404:
-          description: "room not found"
-          schema:
-            $ref: "#/definitions/Error"
-      security:
-        - api_key: [ ]
-
-
-  /hotel/room:
-    get:
-      tags:
-        - "room"
-      summary: "Get hotel rooms"
-      operationId: "get_rooms"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "hotel_id"
-          in: "query"
-          type: "integer"
-          format: "int64"
-        - name: "tag"
-          in: "query"
-          type: "string"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Room"
-        404:
-          description: "Hotel not found"
-          schema:
-            $ref: "#/definitions/Error"
-    post:
-      tags:
-        - "room"
-      summary: "Create room"
-      operationId: "create_room"
-      consumes:
-        - "application/json"
-      produces:
-        - "application/json"
-      parameters:
-        - name: "object"
-          in: "body"
-          required: true
-          schema:
-            $ref: "#/definitions/Room"
-      responses:
-        200:
-          description: "successful operation"
-          schema:
-            type: "object"
-            properties:
-              id:
-                type: "integer"
-                format: "int64"
-        403:
-          description: "No access"
-          schema:
-            $ref: "#/definitions/Error"
-        400:
-          description: "Incorrect data"
-          schema:
-            $ref: "#/definitions/Error"
-      security:
-        - api_key: [ ]
-
 securityDefinitions:
   api_key:
     type: "apiKey"
@@ -360,15 +168,6 @@ definitions:
       address:
         type: "string"
         example: "Red Square №1"
-      #      photos:
-      #        description: "list of photo urls"
-      #        type: "array"
-      #        items:
-      #          type: "string"
-      rooms:
-        type: "array"
-        items:
-          $ref: "#/definitions/Room"
       hotel_class:
         type: "integer"
         description: "number of stars of hotel"
@@ -379,38 +178,6 @@ definitions:
           - 3
           - 4
           - 5
-  Room:
-    type: "object"
-    required:
-      - "hotel_id"
-      - "cost"
-      - "person_count"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      hotel_id:
-        type: "integer"
-        format: "int64"
-      cost:
-        type: "integer"
-        description: "cost per one night"
-        example: 10000
-      person_count:
-        description: "Amount of person who can suit in number"
-        type: "integer"
-        example: 3
-      tags:
-        type: "array"
-        items:
-          $ref: "#/definitions/Tag"
-  Tag:
-    type: "object"
-    required:
-      - "name"
-    properties:
-      name:
-        type: "string"
   Error:
     type: "object"
     required:

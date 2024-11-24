@@ -25,7 +25,7 @@ func init() {
   "info": {
     "description": "MTS HSSE Go project | Hotel svc",
     "title": "hotels.hotel",
-    "version": "0.2.3"
+    "version": "0.3.0"
   },
   "paths": {
     "/hotel": {
@@ -60,11 +60,6 @@ func init() {
             "type": "integer",
             "name": "hotel_class",
             "in": "query"
-          },
-          {
-            "type": "string",
-            "name": "tag",
-            "in": "query"
           }
         ],
         "responses": {
@@ -78,7 +73,7 @@ func init() {
             }
           },
           "404": {
-            "description": "Hotel not found",
+            "description": "Suitable hotels not found",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -133,238 +128,6 @@ func init() {
           },
           "403": {
             "description": "No access",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/hotel/room": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "room"
-        ],
-        "summary": "Get hotel rooms",
-        "operationId": "get_rooms",
-        "parameters": [
-          {
-            "type": "integer",
-            "format": "int64",
-            "name": "hotel_id",
-            "in": "query"
-          },
-          {
-            "type": "string",
-            "name": "tag",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Room"
-              }
-            }
-          },
-          "404": {
-            "description": "Hotel not found",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
-      "post": {
-        "security": [
-          {
-            "api_key": []
-          }
-        ],
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "room"
-        ],
-        "summary": "Create room",
-        "operationId": "create_room",
-        "parameters": [
-          {
-            "name": "object",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Room"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "integer",
-                  "format": "int64"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Incorrect data",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "403": {
-            "description": "No access",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/hotel/room/{room_id}": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "room"
-        ],
-        "summary": "Get room info by id",
-        "operationId": "get_room_by_id",
-        "parameters": [
-          {
-            "type": "integer",
-            "format": "int64",
-            "description": "ID of room to return",
-            "name": "room_id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/Room"
-            }
-          },
-          "404": {
-            "description": "room not found",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
-      "put": {
-        "security": [
-          {
-            "api_key": []
-          }
-        ],
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "room"
-        ],
-        "summary": "Update room",
-        "operationId": "update_room",
-        "parameters": [
-          {
-            "type": "integer",
-            "format": "int64",
-            "description": "ID of room to change",
-            "name": "room_id",
-            "in": "path",
-            "required": true
-          },
-          {
-            "name": "object",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Room"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "integer"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Incorrect data",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "403": {
-            "description": "No access",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
-      "delete": {
-        "security": [
-          {
-            "api_key": []
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "room"
-        ],
-        "summary": "Delete room info by id",
-        "operationId": "delete_room_by_id",
-        "parameters": [
-          {
-            "type": "integer",
-            "format": "int64",
-            "description": "ID of room to delete",
-            "name": "room_id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/Result"
-            }
-          },
-          "404": {
-            "description": "room not found",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -446,13 +209,7 @@ func init() {
           "200": {
             "description": "successful operation",
             "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "integer",
-                  "format": "int64"
-                }
-              }
+              "$ref": "#/definitions/Hotel"
             }
           },
           "400": {
@@ -463,45 +220,6 @@ func init() {
           },
           "403": {
             "description": "No access",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
-      "delete": {
-        "security": [
-          {
-            "api_key": []
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "hotel"
-        ],
-        "summary": "Delete hotel info by id",
-        "operationId": "delete_hotel_by_id",
-        "parameters": [
-          {
-            "type": "integer",
-            "format": "int64",
-            "description": "ID of hotel to delete",
-            "name": "hotel_id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/Result"
-            }
-          },
-          "404": {
-            "description": "Hotel not found",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -560,12 +278,6 @@ func init() {
         "name": {
           "type": "string",
           "example": "Radisson"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Room"
-          }
         }
       }
     },
@@ -579,51 +291,6 @@ func init() {
           "type": "string"
         }
       }
-    },
-    "Room": {
-      "type": "object",
-      "required": [
-        "hotel_id",
-        "cost",
-        "person_count"
-      ],
-      "properties": {
-        "cost": {
-          "description": "cost per one night",
-          "type": "integer",
-          "example": 10000
-        },
-        "hotel_id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "person_count": {
-          "description": "Amount of person who can suit in number",
-          "type": "integer",
-          "example": 3
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Tag"
-          }
-        }
-      }
-    },
-    "Tag": {
-      "type": "object",
-      "required": [
-        "name"
-      ],
-      "properties": {
-        "name": {
-          "type": "string"
-        }
-      }
     }
   },
   "securityDefinitions": {
@@ -634,10 +301,6 @@ func init() {
     }
   },
   "tags": [
-    {
-      "description": "Hotel room operations",
-      "name": "room"
-    },
     {
       "description": "Hotel operations",
       "name": "hotel"
@@ -652,7 +315,7 @@ func init() {
   "info": {
     "description": "MTS HSSE Go project | Hotel svc",
     "title": "hotels.hotel",
-    "version": "0.2.3"
+    "version": "0.3.0"
   },
   "paths": {
     "/hotel": {
@@ -687,11 +350,6 @@ func init() {
             "type": "integer",
             "name": "hotel_class",
             "in": "query"
-          },
-          {
-            "type": "string",
-            "name": "tag",
-            "in": "query"
           }
         ],
         "responses": {
@@ -705,7 +363,7 @@ func init() {
             }
           },
           "404": {
-            "description": "Hotel not found",
+            "description": "Suitable hotels not found",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -760,238 +418,6 @@ func init() {
           },
           "403": {
             "description": "No access",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/hotel/room": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "room"
-        ],
-        "summary": "Get hotel rooms",
-        "operationId": "get_rooms",
-        "parameters": [
-          {
-            "type": "integer",
-            "format": "int64",
-            "name": "hotel_id",
-            "in": "query"
-          },
-          {
-            "type": "string",
-            "name": "tag",
-            "in": "query"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Room"
-              }
-            }
-          },
-          "404": {
-            "description": "Hotel not found",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
-      "post": {
-        "security": [
-          {
-            "api_key": []
-          }
-        ],
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "room"
-        ],
-        "summary": "Create room",
-        "operationId": "create_room",
-        "parameters": [
-          {
-            "name": "object",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Room"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "integer",
-                  "format": "int64"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Incorrect data",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "403": {
-            "description": "No access",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      }
-    },
-    "/hotel/room/{room_id}": {
-      "get": {
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "room"
-        ],
-        "summary": "Get room info by id",
-        "operationId": "get_room_by_id",
-        "parameters": [
-          {
-            "type": "integer",
-            "format": "int64",
-            "description": "ID of room to return",
-            "name": "room_id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/Room"
-            }
-          },
-          "404": {
-            "description": "room not found",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
-      "put": {
-        "security": [
-          {
-            "api_key": []
-          }
-        ],
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "room"
-        ],
-        "summary": "Update room",
-        "operationId": "update_room",
-        "parameters": [
-          {
-            "type": "integer",
-            "format": "int64",
-            "description": "ID of room to change",
-            "name": "room_id",
-            "in": "path",
-            "required": true
-          },
-          {
-            "name": "object",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Room"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "integer"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Incorrect data",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          },
-          "403": {
-            "description": "No access",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
-      "delete": {
-        "security": [
-          {
-            "api_key": []
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "room"
-        ],
-        "summary": "Delete room info by id",
-        "operationId": "delete_room_by_id",
-        "parameters": [
-          {
-            "type": "integer",
-            "format": "int64",
-            "description": "ID of room to delete",
-            "name": "room_id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/Result"
-            }
-          },
-          "404": {
-            "description": "room not found",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -1073,13 +499,7 @@ func init() {
           "200": {
             "description": "successful operation",
             "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "integer",
-                  "format": "int64"
-                }
-              }
+              "$ref": "#/definitions/Hotel"
             }
           },
           "400": {
@@ -1090,45 +510,6 @@ func init() {
           },
           "403": {
             "description": "No access",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            }
-          }
-        }
-      },
-      "delete": {
-        "security": [
-          {
-            "api_key": []
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "tags": [
-          "hotel"
-        ],
-        "summary": "Delete hotel info by id",
-        "operationId": "delete_hotel_by_id",
-        "parameters": [
-          {
-            "type": "integer",
-            "format": "int64",
-            "description": "ID of hotel to delete",
-            "name": "hotel_id",
-            "in": "path",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/Result"
-            }
-          },
-          "404": {
-            "description": "Hotel not found",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -1187,12 +568,6 @@ func init() {
         "name": {
           "type": "string",
           "example": "Radisson"
-        },
-        "rooms": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Room"
-          }
         }
       }
     },
@@ -1206,51 +581,6 @@ func init() {
           "type": "string"
         }
       }
-    },
-    "Room": {
-      "type": "object",
-      "required": [
-        "hotel_id",
-        "cost",
-        "person_count"
-      ],
-      "properties": {
-        "cost": {
-          "description": "cost per one night",
-          "type": "integer",
-          "example": 10000
-        },
-        "hotel_id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "person_count": {
-          "description": "Amount of person who can suit in number",
-          "type": "integer",
-          "example": 3
-        },
-        "tags": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Tag"
-          }
-        }
-      }
-    },
-    "Tag": {
-      "type": "object",
-      "required": [
-        "name"
-      ],
-      "properties": {
-        "name": {
-          "type": "string"
-        }
-      }
     }
   },
   "securityDefinitions": {
@@ -1261,10 +591,6 @@ func init() {
     }
   },
   "tags": [
-    {
-      "description": "Hotel room operations",
-      "name": "room"
-    },
     {
       "description": "Hotel operations",
       "name": "hotel"

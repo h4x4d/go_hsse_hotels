@@ -45,10 +45,6 @@ type GetHotelsParams struct {
 	  In: query
 	*/
 	Name *string
-	/*
-	  In: query
-	*/
-	Tag *string
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -74,11 +70,6 @@ func (o *GetHotelsParams) BindRequest(r *http.Request, route *middleware.Matched
 
 	qName, qhkName, _ := qs.GetOK("name")
 	if err := o.bindName(qName, qhkName, route.Formats); err != nil {
-		res = append(res, err)
-	}
-
-	qTag, qhkTag, _ := qs.GetOK("tag")
-	if err := o.bindTag(qTag, qhkTag, route.Formats); err != nil {
 		res = append(res, err)
 	}
 	if len(res) > 0 {
@@ -156,24 +147,6 @@ func (o *GetHotelsParams) bindName(rawData []string, hasKey bool, formats strfmt
 		return nil
 	}
 	o.Name = &raw
-
-	return nil
-}
-
-// bindTag binds and validates parameter Tag from query.
-func (o *GetHotelsParams) bindTag(rawData []string, hasKey bool, formats strfmt.Registry) error {
-	var raw string
-	if len(rawData) > 0 {
-		raw = rawData[len(rawData)-1]
-	}
-
-	// Required: false
-	// AllowEmptyValue: false
-
-	if raw == "" { // empty values pass all other validations
-		return nil
-	}
-	o.Tag = &raw
 
 	return nil
 }

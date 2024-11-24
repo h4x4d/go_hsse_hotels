@@ -26,7 +26,7 @@ type UpdateHotelOK struct {
 	/*
 	  In: Body
 	*/
-	Payload *UpdateHotelOKBody `json:"body,omitempty"`
+	Payload *models.Hotel `json:"body,omitempty"`
 }
 
 // NewUpdateHotelOK creates UpdateHotelOK with default headers values
@@ -36,13 +36,13 @@ func NewUpdateHotelOK() *UpdateHotelOK {
 }
 
 // WithPayload adds the payload to the update hotel o k response
-func (o *UpdateHotelOK) WithPayload(payload *UpdateHotelOKBody) *UpdateHotelOK {
+func (o *UpdateHotelOK) WithPayload(payload *models.Hotel) *UpdateHotelOK {
 	o.Payload = payload
 	return o
 }
 
 // SetPayload sets the payload to the update hotel o k response
-func (o *UpdateHotelOK) SetPayload(payload *UpdateHotelOKBody) {
+func (o *UpdateHotelOK) SetPayload(payload *models.Hotel) {
 	o.Payload = payload
 }
 
