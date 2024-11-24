@@ -4,6 +4,9 @@ DOCKER_COMPOSE := $(shell command -v docker-compose >/dev/null 2>&1 && echo dock
 pull:
 	git pull
 
+.PHONY: pull
+generate:
+	./scripts/generate_from_swagger.sh
 
 .PHONY: update
 update: pull
