@@ -259,6 +259,10 @@ func init() {
           "type": "string",
           "example": "Moscow"
         },
+        "cost": {
+          "type": "integer",
+          "format": "int64"
+        },
         "hotel_class": {
           "description": "number of stars of hotel",
           "type": "integer",
@@ -548,6 +552,10 @@ func init() {
         "city": {
           "type": "string",
           "example": "Moscow"
+        },
+        "cost": {
+          "type": "integer",
+          "format": "int64"
         },
         "hotel_class": {
           "description": "number of stars of hotel",

@@ -298,6 +298,48 @@ func init() {
         }
       }
     },
+    "Hotel": {
+      "type": "object",
+      "required": [
+        "name",
+        "city",
+        "address"
+      ],
+      "properties": {
+        "address": {
+          "type": "string",
+          "example": "Red Square №1"
+        },
+        "city": {
+          "type": "string",
+          "example": "Moscow"
+        },
+        "cost": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "hotel_class": {
+          "description": "number of stars of hotel",
+          "type": "integer",
+          "enum": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string",
+          "example": "Radisson"
+        }
+      }
+    },
     "Result": {
       "type": "object",
       "properties": {
@@ -606,6 +648,48 @@ func init() {
         },
         "error_status_code": {
           "type": "integer"
+        }
+      }
+    },
+    "Hotel": {
+      "type": "object",
+      "required": [
+        "name",
+        "city",
+        "address"
+      ],
+      "properties": {
+        "address": {
+          "type": "string",
+          "example": "Red Square №1"
+        },
+        "city": {
+          "type": "string",
+          "example": "Moscow"
+        },
+        "cost": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "hotel_class": {
+          "description": "number of stars of hotel",
+          "type": "integer",
+          "enum": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string",
+          "example": "Radisson"
         }
       }
     },

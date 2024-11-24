@@ -11,35 +11,29 @@ import (
 )
 
 type GRPCServer struct {
-	HotelServer
-	gen.UnimplementedRoomServer
-}
-
-type HotelServer interface {
-	GetRoom(
-		ctx context.Context,
-		id int64,
-	) (*gen.RoomResponse, error)
+	gen.UnimplementedHotelServer
 }
 
 func Register(gRPCServer *grpc.Server) {
-	gen.RegisterRoomServer(gRPCServer, &GRPCServer{})
+	gen.RegisterHotelServer(gRPCServer, &GRPCServer{})
 }
 
-func (serverApi *GRPCServer) GetRoom(
-	ctx context.Context, in *gen.RoomRequest) (*gen.RoomResponse, error) {
+func (serverApi *GRPCServer) GetHotel(
+	ctx context.Context, in *gen.HotelRequest) (*gen.HotelResponse, error) {
 	log.Println("in func")
-	room, err := services.GetRoomByID(in.Id)
+	hotel, err := services.GetHotelByID(in.Id)
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "internal error: %v", err)
 	}
-	if room == nil {
+	if hotel == nil {
 		return nil, status.Errorf(codes.NotFound, "room %d not found", in.Id)
 	}
-	return &gen.RoomResponse{
-		Id:          room.ID,
-		HotelId:     *room.HotelID,
-		Cost:        int32(*room.Cost),
-		PersonCount: int32(*room.PersonCount),
+	return &gen.HotelResponse{
+		Id:         hotel.ID,
+		Name:       *hotel.Name,
+		City:       *hotel.City,
+		Address:    *hotel.Address,
+		HotelClass: hotel.HotelClass,
+		Cost:       hotel.Cost,
 	}, nil
 }

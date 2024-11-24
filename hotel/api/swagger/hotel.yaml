@@ -178,6 +178,9 @@ definitions:
           - 3
           - 4
           - 5
+      cost:
+        type: "integer"
+        format: "int64"
   Error:
     type: "object"
     required:

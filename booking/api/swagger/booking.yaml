@@ -208,3 +208,35 @@ definitions:
         type: "string"
       message:
         type: "string"
+  Hotel:
+    type: "object"
+    required:
+      - "name"
+      - "city"
+      - "address"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+        example: "Radisson"
+      city:
+        type: "string"
+        example: "Moscow"
+      address:
+        type: "string"
+        example: "Red Square №1"
+      hotel_class:
+        type: "integer"
+        description: "number of stars of hotel"
+        enum:
+          - 0
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+      cost:
+        type: "integer"
+        format: "int64"
