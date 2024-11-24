@@ -4,7 +4,7 @@
 // - protoc             v5.28.3
 // source: room.proto
 
-package room
+package booking
 
 import (
 	context "context"

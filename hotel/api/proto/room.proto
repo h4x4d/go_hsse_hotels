@@ -1,6 +1,6 @@
 syntax="proto3";
 package booking;
-option go_package="github.com/h4x4d/go_hsse_hotels/room";
+option go_package="github.com/h4x4d/go_hsse_hotels/hotel";
 
 service Room {
   rpc GetRoom (RoomRequest) returns (RoomResponse);

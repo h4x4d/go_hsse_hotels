@@ -4,9 +4,17 @@ DOCKER_COMPOSE := $(shell command -v docker-compose >/dev/null 2>&1 && echo dock
 pull:
 	git pull
 
-.PHONY: pull
-generate:
+.PHONY: swagger_generate
+swagger_generate:
 	./scripts/generate_from_swagger.sh
+
+.PHONY: grpc_generate
+grpc_generate:
+	protoc -I hotel/api/proto hotel/api/proto/room.proto --go_out=hotel/internal/grpc/gen --go_opt=paths=source_relative  --go-grpc_out=hotel/internal/grpc/gen --go-grpc_opt=paths=source_relative
+	protoc -I booking/api/proto booking/api/proto/room.proto --go_out=booking/internal/grpc/gen --go_opt=paths=source_relative  --go-grpc_out=booking/internal/grpc/gen --go-grpc_opt=paths=source_relative
+
+.PHONY: codegen
+codegen: grpc_generate swagger_generate
 
 .PHONY: update
 update: pull
