@@ -6,6 +6,7 @@ import (
 	"crypto/tls"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations"
 	customer2 "github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/customer"
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/hotelier"
 	"net/http"
 
 	"github.com/go-openapi/errors"
@@ -53,13 +54,8 @@ func configureAPI(api *operations.HotelsBookingAPI) http.Handler {
 			return middleware.NotImplemented("operation customer.CreateBooking has not yet been implemented")
 		})
 	}
-	if api.CustomerDeleteBookingByIDHandler == nil {
-		api.CustomerDeleteBookingByIDHandler = customer2.DeleteBookingByIDHandlerFunc(func(params customer2.DeleteBookingByIDParams, principal interface{}) middleware.Responder {
-			return middleware.NotImplemented("operation customer.DeleteBookingByID has not yet been implemented")
-		})
-	}
-	if api.CustomerGetBookingHandler == nil {
-		api.CustomerGetBookingHandler = customer2.GetBookingHandlerFunc(func(params customer2.GetBookingParams) middleware.Responder {
+	if api.HotelierGetBookingHandler == nil {
+		api.HotelierGetBookingHandler = hotelier.GetBookingHandlerFunc(func(params hotelier.GetBookingParams) middleware.Responder {
 			return middleware.NotImplemented("operation customer.GetBooking has not yet been implemented")
 		})
 	}
