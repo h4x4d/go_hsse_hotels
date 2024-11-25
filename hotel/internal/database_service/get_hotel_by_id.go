@@ -22,7 +22,7 @@ func (ds *DatabaseService) GetById(HotelID int64) (*models.Hotel, error) {
 
 	// scaning hotel object
 	errHotel := hotelRow.Scan(&hotel.ID, hotel.Name, hotel.City,
-		hotel.Address, &hotel.HotelClass)
+		hotel.Address, &hotel.HotelClass, &hotel.Cost)
 	hotelRow.Close()
 
 	return hotel, errHotel

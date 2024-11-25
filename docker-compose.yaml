@@ -38,6 +38,18 @@ services:
         condition: service_healthy
     ports:
       - "${BOOKING_REST_PORT}:${BOOKING_REST_PORT}"
+  auth:
+    container_name: auth-svc
+    build: ./auth
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+    ports:
+      - "${AUTH_REST_PORT}:${AUTH_REST_PORT}"
   notification:
     container_name: notification-svc
     build: ./notification
@@ -76,6 +88,35 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:20.0.2
+    container_name: keycloak
+    command:
+      - start -Dkeycloak.import=/opt/keycloak/data/import/realm-export.json --auto-build --db postgres --hostname-strict-https false --hostname-strict false --proxy edge --http-enabled true --import-realm --spi-user-profile-legacy-user-profile-read-only-attributes *_RES_ACCESS_MODE
+    environment:
+      KC_DB_URL: jdbc:postgresql://db:${POSTGRES_PORT}/${AUTH_DB_NAME}
+      KC_DB_USERNAME: ${POSTGRES_USER}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      KC_DB_SCHEMA: public
+      KC_FEATURES: preview
+    env_file:
+      - .env
+    volumes:
+      - type: bind
+        source: ./keycloak/config/realm-export.json
+        target: /opt/keycloak/data/import/realm-export.json
+    ports:
+      - ${KEYCLOAK_PORT}:8080
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://0.0.0.0:8080/realms/master" ]
+      start_period: 10s
+      interval: 30s
+      retries: 3
+      timeout: 5s
 
 volumes:
   postgres_data:
