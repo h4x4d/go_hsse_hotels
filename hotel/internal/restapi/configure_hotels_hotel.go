@@ -4,6 +4,7 @@ package restapi
 
 import (
 	"crypto/tls"
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/database_service"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/handlers"
 	"net/http"
 
@@ -53,11 +54,16 @@ func configureAPI(api *operations.HotelsHotelAPI) http.Handler {
 	// catch cases when error is nil but the first argument returning from function is nil TODO
 	// maybe this have been already caught, I dont remember clearly
 
-	// hotel handlers
-	api.HotelCreateHotelHandler = hotel.CreateHotelHandlerFunc(handlers.CreateHotelHandler)
-	api.HotelGetHotelsHandler = hotel.GetHotelsHandlerFunc(handlers.GetHotelsHandler)
-	api.HotelGetHotelByIDHandler = hotel.GetHotelByIDHandlerFunc(handlers.GetHotelByIDHandler)
-	api.HotelUpdateHotelHandler = hotel.UpdateHotelHandlerFunc(handlers.UpdateHotelHandler)
+	// creating database_service and then add it to context of handlers
+	databaseService, makeErr := database_service.Make()
+	for makeErr != nil {
+		databaseService, makeErr = database_service.Make()
+	}
+
+	api.HotelCreateHotelHandler = hotel.CreateHotelHandlerFunc(handlers.CreateHotelHandlerType(handlers.CreateHotelHandler).AddDatabaseService(databaseService))
+	api.HotelGetHotelsHandler = hotel.GetHotelsHandlerFunc(handlers.GetHotelsHandlerType(handlers.GetHotelsHandler).AddDatabaseService(databaseService))
+	api.HotelGetHotelByIDHandler = hotel.GetHotelByIDHandlerFunc(handlers.GetHotelByIDHandlerType(handlers.GetHotelByIDHandler).AddDatabaseService(databaseService))
+	api.HotelUpdateHotelHandler = hotel.UpdateHotelHandlerFunc(handlers.UpdateHotelHandlerType(handlers.UpdateHotelHandler).AddDatabaseService(databaseService))
 
 	api.PreServerShutdown = func() {}
 

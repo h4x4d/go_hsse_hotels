@@ -17,7 +17,6 @@ import (
 
 func StartServer(group *sync.WaitGroup) {
 	defer group.Done()
-
 	swaggerSpec, err := loads.Embedded(restapi2.SwaggerJSON, restapi2.FlatSwaggerJSON)
 	if err != nil {
 		log.Fatalln(err)

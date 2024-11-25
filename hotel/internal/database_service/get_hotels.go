@@ -1,20 +1,13 @@
-package services
+package database_service
 
 import (
 	"context"
 	"fmt"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
-	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/utils"
 	"strings"
 )
 
-func GetHotels(city *string, hotel_class *int64, name *string, tag *string) ([]*models.Hotel, error) {
-	pool, err := utils.NewConnection()
-	if err != nil {
-		return nil, err
-	}
-	defer pool.Close()
-
+func (ds *DatabaseService) GetAll(city *string, hotel_class *int64, name *string) ([]*models.Hotel, error) {
 	query := `SELECT * FROM hotels`
 	clauses := []string{}
 	args := []interface{}{}
@@ -35,9 +28,9 @@ func GetHotels(city *string, hotel_class *int64, name *string, tag *string) ([]*
 		query += " WHERE " + strings.Join(clauses, " AND ")
 	}
 
-	rowsHotels, errQueryHotels := pool.Query(context.Background(), query, args...)
+	rowsHotels, errQueryHotels := ds.pool.Query(context.Background(), query, args...)
 	if errQueryHotels != nil {
-		return nil, err
+		return nil, errQueryHotels
 	}
 
 	// getting hotels information
@@ -48,23 +41,12 @@ func GetHotels(city *string, hotel_class *int64, name *string, tag *string) ([]*
 		currHotel.Name = new(string)
 		currHotel.City = new(string)
 		currHotel.Address = new(string)
-		currHotel.Rooms = make([]*models.Room, 0)
 
 		// scaning current hotel
 		errHotel := rowsHotels.Scan(&currHotel.ID, currHotel.Name, currHotel.City,
 			currHotel.Address, &currHotel.HotelClass)
 		if errHotel != nil {
-			return nil, err
-		}
-
-		// getting rooms for current hotel
-		currRooms, errRooms := GetRooms(&currHotel.ID, tag)
-		if errRooms != nil {
-			return nil, errRooms
-		}
-		currHotel.Rooms = currRooms
-		if len(currRooms) > 0 {
-			result = append(result, currHotel)
+			return nil, errHotel
 		}
 	}
 	rowsHotels.Close()
