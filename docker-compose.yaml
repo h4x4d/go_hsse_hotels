@@ -104,7 +104,7 @@ services:
       - .env
     volumes:
       - type: bind
-        source: ./src/main/resources/keycloak/import/realm-export.json
+        source: ./keycloak/config/realm-export.json
         target: /opt/keycloak/data/import/realm-export.json
         read_only: true
     ports:
