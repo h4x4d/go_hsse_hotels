@@ -10,8 +10,21 @@ swagger_generate:
 
 .PHONY: grpc_generate
 grpc_generate:
-	protoc -I hotel/api/proto hotel/api/proto/*.proto --go_out=hotel/internal/grpc/gen --go_opt=paths=source_relative  --go-grpc_out=hotel/internal/grpc/gen --go-grpc_opt=paths=source_relative
-	protoc -I booking/api/proto booking/api/proto/*.proto --go_out=booking/internal/grpc/gen --go_opt=paths=source_relative  --go-grpc_out=booking/internal/grpc/gen --go-grpc_opt=paths=source_relative
+	protoc -I api/proto api/proto/*.proto \
+	  --go_out=hotel/internal/grpc/gen \
+	  --go_opt=paths=source_relative \
+	  --go_opt=Mhotel.proto=github.com/h4x4d/go_hsse_hotels/hotel/internal/grpc/gen \
+	  --go-grpc_out=hotel/internal/grpc/gen \
+	  --go-grpc_opt=paths=source_relative \
+	  --go-grpc_opt=Mhotel.proto=github.com/h4x4d/go_hsse_hotels/hotel/internal/grpc/gen
+
+	protoc -I api/proto api/proto/*.proto \
+	  --go_out=booking/internal/grpc/gen \
+	  --go_opt=paths=source_relative \
+	  --go_opt=Mhotel.proto=github.com/h4x4d/go_hsse_hotels/booking/internal/grpc/gen \
+	  --go-grpc_out=booking/internal/grpc/gen \
+	  --go-grpc_opt=paths=source_relative \
+	  --go-grpc_opt=Mhotel.proto=github.com/h4x4d/go_hsse_hotels/booking/internal/grpc/gen
 
 .PHONY: codegen
 codegen: grpc_generate swagger_generate

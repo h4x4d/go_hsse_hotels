@@ -19,7 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Hotel_GetHotel_FullMethodName = "/hotel.Hotel/GetHotel"
+	Hotel_GetHotel_FullMethodName = "/gen.Hotel/GetHotel"
 )
 
 // HotelClient is the client API for Hotel service.
@@ -108,7 +108,7 @@ func _Hotel_GetHotel_Handler(srv interface{}, ctx context.Context, dec func(inte
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Hotel_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "hotel.Hotel",
+	ServiceName: "gen.Hotel",
 	HandlerType: (*HotelServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

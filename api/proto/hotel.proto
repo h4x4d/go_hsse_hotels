@@ -1,6 +1,5 @@
 syntax="proto3";
-package hotel;
-option go_package="github.com/h4x4d/go_hsse_hotels/hotel/internal/grpc/gen";
+package gen;
 
 service Hotel {
   rpc GetHotel (HotelRequest) returns (HotelResponse);
