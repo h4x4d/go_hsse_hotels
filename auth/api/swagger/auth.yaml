@@ -56,10 +56,13 @@ paths:
           schema:
             type: "object"
             required:
+              - "email"
               - "login"
               - "password"
               - "role"
             properties:
+              email:
+                type: "string"
               login:
                 type: "string"
               password:

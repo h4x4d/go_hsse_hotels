@@ -7,6 +7,7 @@ package operations
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 
 	"github.com/go-openapi/errors"
@@ -65,6 +66,10 @@ func (o *PostRegister) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 // swagger:model PostRegisterBody
 type PostRegisterBody struct {
 
+	// email
+	// Required: true
+	Email *string `json:"email"`
+
 	// login
 	// Required: true
 	Login *string `json:"login"`
@@ -72,11 +77,20 @@ type PostRegisterBody struct {
 	// password
 	// Required: true
 	Password *string `json:"password"`
+
+	// role
+	// Required: true
+	// Enum: ["customer","hotelier"]
+	Role *string `json:"role"`
 }
 
 // Validate validates this post register body
 func (o *PostRegisterBody) Validate(formats strfmt.Registry) error {
 	var res []error
+
+	if err := o.validateEmail(formats); err != nil {
+		res = append(res, err)
+	}
 
 	if err := o.validateLogin(formats); err != nil {
 		res = append(res, err)
@@ -86,9 +100,22 @@ func (o *PostRegisterBody) Validate(formats strfmt.Registry) error {
 		res = append(res, err)
 	}
 
+	if err := o.validateRole(formats); err != nil {
+		res = append(res, err)
+	}
+
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (o *PostRegisterBody) validateEmail(formats strfmt.Registry) error {
+
+	if err := validate.Required("body"+"."+"email", "body", o.Email); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -104,6 +131,49 @@ func (o *PostRegisterBody) validateLogin(formats strfmt.Registry) error {
 func (o *PostRegisterBody) validatePassword(formats strfmt.Registry) error {
 
 	if err := validate.Required("body"+"."+"password", "body", o.Password); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+var postRegisterBodyTypeRolePropEnum []interface{}
+
+func init() {
+	var res []string
+	if err := json.Unmarshal([]byte(`["customer","hotelier"]`), &res); err != nil {
+		panic(err)
+	}
+	for _, v := range res {
+		postRegisterBodyTypeRolePropEnum = append(postRegisterBodyTypeRolePropEnum, v)
+	}
+}
+
+const (
+
+	// PostRegisterBodyRoleCustomer captures enum value "customer"
+	PostRegisterBodyRoleCustomer string = "customer"
+
+	// PostRegisterBodyRoleHotelier captures enum value "hotelier"
+	PostRegisterBodyRoleHotelier string = "hotelier"
+)
+
+// prop value enum
+func (o *PostRegisterBody) validateRoleEnum(path, location string, value string) error {
+	if err := validate.EnumCase(path, location, value, postRegisterBodyTypeRolePropEnum, true); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *PostRegisterBody) validateRole(formats strfmt.Registry) error {
+
+	if err := validate.Required("body"+"."+"role", "body", o.Role); err != nil {
+		return err
+	}
+
+	// value enum
+	if err := o.validateRoleEnum("body"+"."+"role", "body", *o.Role); err != nil {
 		return err
 	}
 

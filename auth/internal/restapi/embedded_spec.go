@@ -159,15 +159,27 @@ func init() {
             "schema": {
               "type": "object",
               "required": [
+                "email",
                 "login",
-                "password"
+                "password",
+                "role"
               ],
               "properties": {
+                "email": {
+                  "type": "string"
+                },
                 "login": {
                   "type": "string"
                 },
                 "password": {
                   "type": "string"
+                },
+                "role": {
+                  "type": "string",
+                  "enum": [
+                    "customer",
+                    "hotelier"
+                  ]
                 }
               }
             }
@@ -354,15 +366,27 @@ func init() {
             "schema": {
               "type": "object",
               "required": [
+                "email",
                 "login",
-                "password"
+                "password",
+                "role"
               ],
               "properties": {
+                "email": {
+                  "type": "string"
+                },
                 "login": {
                   "type": "string"
                 },
                 "password": {
                   "type": "string"
+                },
+                "role": {
+                  "type": "string",
+                  "enum": [
+                    "customer",
+                    "hotelier"
+                  ]
                 }
               }
             }
