@@ -1,14 +1,14 @@
-package services
+package database_service
 
 import (
 	"context"
 	"fmt"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
-	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/utils"
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/utils"
 	"strings"
 )
 
-func CreateHotel(hotel *models.Hotel) (*int64, error) {
+func (ds *DatabaseService) Create(hotel *models.Hotel) (*int64, error) {
 	pool, err := utils.NewConnection()
 	if err != nil {
 		return nil, err
@@ -47,14 +47,6 @@ func CreateHotel(hotel *models.Hotel) (*int64, error) {
 	errInsertHotel := pool.QueryRow(context.Background(), query, values...).Scan(&hotel.ID)
 	if errInsertHotel != nil {
 		return nil, errInsertHotel
-	}
-
-	for _, room := range hotel.Rooms {
-		room.HotelID = &hotel.ID
-		_, errCreateRoom := CreateRoom(room)
-		if errCreateRoom != nil {
-			return nil, errCreateRoom
-		}
 	}
 
 	return &hotel.ID, errInsertHotel
