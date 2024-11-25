@@ -25,6 +25,10 @@ func (ds *DatabaseService) Create(hotel *models.Hotel) (*int64, error) {
 		fieldNames = append(fieldNames, "name")
 		values = append(values, hotel.Name)
 	}
+	if hotel.Cost != 0 {
+		fieldNames = append(fieldNames, "cost")
+		values = append(values, hotel.Cost)
+	}
 	if hotel.ID != 0 {
 		fieldNames = append(fieldNames, "id")
 		values = append(values, hotel.ID)

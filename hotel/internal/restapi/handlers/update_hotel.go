@@ -10,25 +10,12 @@ func (handler *Handler) UpdateHotelHandler(params hotel.UpdateHotelParams, _ int
 	defer utils.CatchPanic(&responder)
 
 	newHotel := params.Object
-	newHotel.ID = params.HotelID
-	updatedHotel, errGet := handler.Database.GetById(params.HotelID)
-	if errGet != nil {
-		return utils.HandleInternalError(errGet)
-	}
-	if updatedHotel != nil {
-		// deleting old hotel
-		_, errDelete := handler.Database.DeleteByID(params.HotelID)
-		if errDelete != nil {
-			return utils.HandleInternalError(errDelete)
-		}
+	updated, errUpdate := handler.Database.Update(params.HotelID, newHotel)
+	if errUpdate != nil {
+		return utils.HandleInternalError(errUpdate)
 	}
 
-	// creating new Hotel
-	_, createErr := handler.Database.Create(newHotel)
-	if createErr != nil {
-		return utils.HandleInternalError(createErr)
-	}
 	result := new(hotel.UpdateHotelOK)
-	result.SetPayload(newHotel)
+	result.SetPayload(updated)
 	return result
 }
