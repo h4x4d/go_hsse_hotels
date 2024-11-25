@@ -1,8 +1,8 @@
 package main
 
 import (
-	"context"
-	"github.com/segmentio/kafka-go"
+	"github.com/h4x4d/go_hsse_hotels/notification/internal/handlers"
+	"github.com/h4x4d/go_hsse_hotels/notification/internal/server"
 	"log"
 	"os"
 )
@@ -12,18 +12,13 @@ func main() {
 	topic := os.Getenv("KAFKA_TOPIC")
 	groupID := os.Getenv("KAFKA_GROUP_ID")
 
-	reader := kafka.NewReader(kafka.ReaderConfig{
-		Brokers: []string{broker},
-		Topic:   topic,
-		GroupID: groupID,
-	})
-	defer reader.Close()
+	notify_handlers := map[string]func([]byte) error{
+		"send_notification": handlers.SendNotificationHandler,
+	}
 
-	for {
-		message, err := reader.ReadMessage(context.Background())
-		if err != nil {
-			log.Fatalf("failed to read message: %v", err)
-		}
-		log.Printf("received message: key=%s value=%s", string(message.Key), string(message.Value))
+	notificationServer := server.NewNotificationServer(&[]string{broker}, &topic, &groupID, notify_handlers)
+
+	if err := notificationServer.Serve(); err != nil {
+		log.Fatalln(err)
 	}
 }
