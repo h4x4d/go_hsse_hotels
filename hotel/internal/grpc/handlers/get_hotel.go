@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"context"
-	gen "github.com/h4x4d/go_hsse_hotels/hotel/internal/grpc/gen"
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/grpc/gen"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/services"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
