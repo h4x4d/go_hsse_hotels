@@ -58,11 +58,17 @@ paths:
             required:
               - "login"
               - "password"
+              - "role"
             properties:
               login:
                 type: "string"
               password:
                 type: "string"
+              role:
+                type: "string"
+                enum:
+                  - "customer"
+                  - "hotelier"
       responses:
         200:
           description: "Success operation"
