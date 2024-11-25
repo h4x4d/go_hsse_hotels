@@ -31,16 +31,16 @@ codegen: grpc_generate swagger_generate
 
 .PHONY: update
 update: pull
-	$(DOCKER_COMPOSE) up -d --build --force-recreate -V
+	$(DOCKER_COMPOSE) up -d --build --force-recreate -V --remove-orphans
 
 .PHONY: down
 down:
-	$(DOCKER_COMPOSE) down -v
+	$(DOCKER_COMPOSE) down -v --remove-orphans
 
 .PHONY: build-action
 build: down
-	$(DOCKER_COMPOSE) up -d --build --force-recreate -V
+	$(DOCKER_COMPOSE) up -d --build --force-recreate -V --remove-orphans
 
 .PHONY: up
 up:
-	$(DOCKER_COMPOSE) up -d --build --force-recreate -V
+	$(DOCKER_COMPOSE) up -d --build --force-recreate -V --remove-orphans
