@@ -5,7 +5,7 @@ package restapi
 import (
 	"crypto/tls"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations"
-	customer2 "github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/customer"
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/customer"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/hotelier"
 	"net/http"
 
@@ -50,7 +50,7 @@ func configureAPI(api *operations.HotelsBookingAPI) http.Handler {
 	// api.APIAuthorizer = security.Authorized()
 
 	if api.CustomerCreateBookingHandler == nil {
-		api.CustomerCreateBookingHandler = customer2.CreateBookingHandlerFunc(func(params customer2.CreateBookingParams, principal interface{}) middleware.Responder {
+		api.CustomerCreateBookingHandler = customer.CreateBookingHandlerFunc(func(params customer.CreateBookingParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation customer.CreateBooking has not yet been implemented")
 		})
 	}
@@ -60,12 +60,12 @@ func configureAPI(api *operations.HotelsBookingAPI) http.Handler {
 		})
 	}
 	if api.CustomerGetBookingByIDHandler == nil {
-		api.CustomerGetBookingByIDHandler = customer2.GetBookingByIDHandlerFunc(func(params customer2.GetBookingByIDParams, principal interface{}) middleware.Responder {
+		api.CustomerGetBookingByIDHandler = customer.GetBookingByIDHandlerFunc(func(params customer.GetBookingByIDParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation customer.GetBookingByID has not yet been implemented")
 		})
 	}
 	if api.CustomerUpdateBookingHandler == nil {
-		api.CustomerUpdateBookingHandler = customer2.UpdateBookingHandlerFunc(func(params customer2.UpdateBookingParams, principal interface{}) middleware.Responder {
+		api.CustomerUpdateBookingHandler = customer.UpdateBookingHandlerFunc(func(params customer.UpdateBookingParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation customer.UpdateBooking has not yet been implemented")
 		})
 	}

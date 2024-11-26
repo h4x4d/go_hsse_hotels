@@ -279,8 +279,7 @@ func init() {
           ]
         },
         "user_id": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         }
       }
     },
@@ -632,8 +631,7 @@ func init() {
           ]
         },
         "user_id": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         }
       }
     },

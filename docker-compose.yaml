@@ -3,7 +3,8 @@ services:
     image: postgres:16.4-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-      - ./scripts/:/docker-entrypoint-initdb.d/
+      - ./scripts/multiple_db.sh:/docker-entrypoint-initdb.d/multiple_db.sh
+      - ./scripts/init_sql:/docker-entrypoint-initdb.d/init_sql
     env_file:
       - .env
     expose:
@@ -37,6 +38,18 @@ services:
         condition: service_healthy
     ports:
       - "${BOOKING_REST_PORT}:${BOOKING_REST_PORT}"
+  auth:
+    container_name: auth-svc
+    build: ./auth
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+    ports:
+      - "${AUTH_REST_PORT}:${AUTH_REST_PORT}"
   notification:
     container_name: notification-svc
     build: ./notification
@@ -75,6 +88,34 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    command: start -Dkeycloak.import=/opt/keycloak/data/import/realm-export.json --db postgres --hostname-strict false --http-enabled true --import-realm
+    environment:
+      KC_DB_URL: jdbc:postgresql://db:${POSTGRES_PORT}/${AUTH_DB_NAME}
+      KC_DB_USERNAME: ${POSTGRES_USER}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      KC_DB_SCHEMA: public
+      KC_FEATURES: preview
+    env_file:
+      - .env
+    volumes:
+      - type: bind
+        source: ./keycloak/config/realm-export.json
+        target: /opt/keycloak/data/import/realm-export.json
+    ports:
+      - ${KEYCLOAK_PORT}:${KEYCLOAK_INNER_PORT}
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD", "/opt/keycloak/bin/kc.sh", "show-config" ]
+      start_period: 10s
+      interval: 10s
+      retries: 5
+      timeout: 5s
 
 volumes:
   postgres_data:
