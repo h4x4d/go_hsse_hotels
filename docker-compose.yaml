@@ -90,10 +90,9 @@ services:
       retries: 10
 
   keycloak:
-    image: quay.io/keycloak/keycloak:20.0.2
+    image: quay.io/keycloak/keycloak:latest
     container_name: keycloak
-    command:
-      - start -Dkeycloak.import=/opt/keycloak/data/import/realm-export.json --auto-build --db postgres --hostname-strict-https false --hostname-strict false --proxy edge --http-enabled true --import-realm --spi-user-profile-legacy-user-profile-read-only-attributes *_RES_ACCESS_MODE
+    command: start -Dkeycloak.import=/opt/keycloak/data/import/realm-export.json --db postgres --hostname-strict false --http-enabled true --import-realm
     environment:
       KC_DB_URL: jdbc:postgresql://db:${POSTGRES_PORT}/${AUTH_DB_NAME}
       KC_DB_USERNAME: ${POSTGRES_USER}
@@ -112,10 +111,10 @@ services:
       db:
         condition: service_healthy
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://0.0.0.0:8080/realms/master" ]
+      test: [ "CMD", "/opt/keycloak/bin/kc.sh", "show-config" ]
       start_period: 10s
-      interval: 30s
-      retries: 3
+      interval: 10s
+      retries: 5
       timeout: 5s
 
 volumes:
