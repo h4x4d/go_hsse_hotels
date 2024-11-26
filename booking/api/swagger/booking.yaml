@@ -115,6 +115,8 @@ paths:
           description: "Booking not found"
           schema:
             $ref: "#/definitions/Error"
+      security:
+        - api_key: [ ]
     post:
       tags:
         - "customer"

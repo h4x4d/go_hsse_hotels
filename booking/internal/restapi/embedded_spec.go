@@ -30,6 +30,11 @@ func init() {
   "paths": {
     "/booking": {
       "get": {
+        "security": [
+          {
+            "api_key": []
+          }
+        ],
         "produces": [
           "application/json"
         ],
@@ -383,6 +388,11 @@ func init() {
   "paths": {
     "/booking": {
       "get": {
+        "security": [
+          {
+            "api_key": []
+          }
+        ],
         "produces": [
           "application/json"
         ],
