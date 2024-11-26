@@ -52,7 +52,7 @@ type Booking struct {
 	Status *string `json:"status"`
 
 	// user id
-	UserID int64 `json:"user_id,omitempty"`
+	UserID string `json:"user_id,omitempty"`
 }
 
 // Validate validates this booking
