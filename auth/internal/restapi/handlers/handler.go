@@ -1,17 +1,17 @@
 package handlers
 
 import (
-    "auth/internal/utils"
+	"auth/internal/client"
 )
 
 type Handler struct {
-    Client *utils.Client
+	Client *client.Client
 }
 
 func NewHandler() (*Handler, error) {
-    client, err := utils.NewClient()
-    if err != nil {
-        return nil, err
-    }
-    return &Handler{client}, nil
+	client, err := client.NewClient()
+	if err != nil {
+		return nil, err
+	}
+	return &Handler{client}, nil
 }
