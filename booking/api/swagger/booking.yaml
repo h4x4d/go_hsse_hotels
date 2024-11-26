@@ -179,8 +179,7 @@ definitions:
         type: "integer"
         format: "int64"
       user_id:
-        type: "integer"
-        format: "int64"
+        type: "string"
       final_cost:
         type: "integer"
         format: "int64"
