@@ -106,7 +106,7 @@ services:
         source: ./keycloak/config/realm-export.json
         target: /opt/keycloak/data/import/realm-export.json
     ports:
-      - ${KEYCLOAK_PORT}:8080
+      - ${KEYCLOAK_PORT}:${KEYCLOAK_INNER_PORT}
     depends_on:
       db:
         condition: service_healthy

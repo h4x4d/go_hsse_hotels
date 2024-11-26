@@ -82,6 +82,10 @@ type PostRegisterBody struct {
 	// Required: true
 	// Enum: ["customer","hotelier"]
 	Role *string `json:"role"`
+
+	// telegram id
+	// Required: true
+	TelegramID *int64 `json:"telegram_id"`
 }
 
 // Validate validates this post register body
@@ -101,6 +105,10 @@ func (o *PostRegisterBody) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := o.validateRole(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateTelegramID(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -174,6 +182,15 @@ func (o *PostRegisterBody) validateRole(formats strfmt.Registry) error {
 
 	// value enum
 	if err := o.validateRoleEnum("body"+"."+"role", "body", *o.Role); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (o *PostRegisterBody) validateTelegramID(formats strfmt.Registry) error {
+
+	if err := validate.Required("body"+"."+"telegram_id", "body", o.TelegramID); err != nil {
 		return err
 	}
 

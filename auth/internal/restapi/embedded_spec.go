@@ -98,7 +98,7 @@ func init() {
         "produces": [
           "application/json"
         ],
-        "summary": "Login user by username and password",
+        "summary": "Sign in user by login and password",
         "parameters": [
           {
             "name": "body",
@@ -162,7 +162,8 @@ func init() {
                 "email",
                 "login",
                 "password",
-                "role"
+                "role",
+                "telegram_id"
               ],
               "properties": {
                 "email": {
@@ -180,6 +181,9 @@ func init() {
                     "customer",
                     "hotelier"
                   ]
+                },
+                "telegram_id": {
+                  "type": "integer"
                 }
               }
             }
@@ -198,7 +202,7 @@ func init() {
             }
           },
           "409": {
-            "description": "Username is taken",
+            "description": "Incorrect data",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -305,7 +309,7 @@ func init() {
         "produces": [
           "application/json"
         ],
-        "summary": "Login user by username and password",
+        "summary": "Sign in user by login and password",
         "parameters": [
           {
             "name": "body",
@@ -369,7 +373,8 @@ func init() {
                 "email",
                 "login",
                 "password",
-                "role"
+                "role",
+                "telegram_id"
               ],
               "properties": {
                 "email": {
@@ -387,6 +392,9 @@ func init() {
                     "customer",
                     "hotelier"
                   ]
+                },
+                "telegram_id": {
+                  "type": "integer"
                 }
               }
             }
@@ -405,7 +413,7 @@ func init() {
             }
           },
           "409": {
-            "description": "Username is taken",
+            "description": "Incorrect data",
             "schema": {
               "$ref": "#/definitions/Error"
             }

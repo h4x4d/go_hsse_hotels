@@ -10,7 +10,7 @@ schemes:
 paths:
   /login:
     post:
-      summary: "Login user by username and password"
+      summary: "Sign in user by login and password"
       consumes:
         - "application/json"
       produces:
@@ -60,6 +60,7 @@ paths:
               - "login"
               - "password"
               - "role"
+              - "telegram_id"
             properties:
               email:
                 type: "string"
@@ -72,6 +73,8 @@ paths:
                 enum:
                   - "customer"
                   - "hotelier"
+              telegram_id:
+                type: integer
       responses:
         200:
           description: "Success operation"
@@ -83,7 +86,7 @@ paths:
         409:
           schema:
             $ref: "#/definitions/Error"
-          description: "Username is taken"
+          description: "Incorrect data"
 
   /change-password:
     post:

@@ -62,7 +62,7 @@ func (o *PostRegisterOK) WriteResponse(rw http.ResponseWriter, producer runtime.
 const PostRegisterConflictCode int = 409
 
 /*
-PostRegisterConflict Username is taken
+PostRegisterConflict Incorrect data
 
 swagger:response postRegisterConflict
 */
