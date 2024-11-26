@@ -261,7 +261,7 @@ func init() {
           "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
           "example": "2025-01-11"
         },
-        "final_cost": {
+        "full_cost": {
           "type": "integer",
           "format": "int64"
         },
@@ -619,7 +619,7 @@ func init() {
           "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
           "example": "2025-01-11"
         },
-        "final_cost": {
+        "full_cost": {
           "type": "integer",
           "format": "int64"
         },

@@ -35,8 +35,8 @@ type Booking struct {
 	// Pattern: ^\d{4}-\d{2}-\d{2}$
 	DateTo *string `json:"date_to"`
 
-	// final cost
-	FinalCost int64 `json:"final_cost,omitempty"`
+	// full cost
+	FullCost int64 `json:"full_cost,omitempty"`
 
 	// hotel id
 	// Required: true

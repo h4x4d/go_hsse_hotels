@@ -183,7 +183,7 @@ definitions:
       user_id:
         type: "integer"
         format: "int64"
-      final_cost:
+      full_cost:
         type: "integer"
         format: "int64"
       status:
