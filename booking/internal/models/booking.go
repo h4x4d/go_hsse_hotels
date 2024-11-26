@@ -42,14 +42,9 @@ type Booking struct {
 	// Required: true
 	HotelID *int64 `json:"hotel_id"`
 
-	// room id
-	// Required: true
-	RoomID *int64 `json:"room_id"`
-
 	// status of booking
-	// Required: true
 	// Enum: ["Waiting","Payed","Confirmed","Finished"]
-	Status *string `json:"status"`
+	Status string `json:"status,omitempty"`
 
 	// user id
 	UserID int64 `json:"user_id,omitempty"`
@@ -68,10 +63,6 @@ func (m *Booking) Validate(formats strfmt.Registry) error {
 	}
 
 	if err := m.validateHotelID(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateRoomID(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -120,15 +111,6 @@ func (m *Booking) validateHotelID(formats strfmt.Registry) error {
 	return nil
 }
 
-func (m *Booking) validateRoomID(formats strfmt.Registry) error {
-
-	if err := validate.Required("room_id", "body", m.RoomID); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 var bookingTypeStatusPropEnum []interface{}
 
 func init() {
@@ -165,13 +147,12 @@ func (m *Booking) validateStatusEnum(path, location string, value string) error 
 }
 
 func (m *Booking) validateStatus(formats strfmt.Registry) error {
-
-	if err := validate.Required("status", "body", m.Status); err != nil {
-		return err
+	if swag.IsZero(m.Status) { // not required
+		return nil
 	}
 
 	// value enum
-	if err := m.validateStatusEnum("status", "body", *m.Status); err != nil {
+	if err := m.validateStatusEnum("status", "body", m.Status); err != nil {
 		return err
 	}
 

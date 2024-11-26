@@ -242,9 +242,7 @@ func init() {
       "required": [
         "date_from",
         "date_to",
-        "room_id",
-        "hotel_id",
-        "status"
+        "hotel_id"
       ],
       "properties": {
         "booking_id": {
@@ -266,10 +264,6 @@ func init() {
           "format": "int64"
         },
         "hotel_id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "room_id": {
           "type": "integer",
           "format": "int64"
         },
@@ -600,9 +594,7 @@ func init() {
       "required": [
         "date_from",
         "date_to",
-        "room_id",
-        "hotel_id",
-        "status"
+        "hotel_id"
       ],
       "properties": {
         "booking_id": {
@@ -624,10 +616,6 @@ func init() {
           "format": "int64"
         },
         "hotel_id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "room_id": {
           "type": "integer",
           "format": "int64"
         },
