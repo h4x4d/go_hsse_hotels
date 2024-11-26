@@ -7,11 +7,9 @@ import (
     "crypto/tls"
     "net/http"
 
+    "auth/internal/restapi/operations"
     "github.com/go-openapi/errors"
     "github.com/go-openapi/runtime"
-    "github.com/go-openapi/runtime/middleware"
-
-    "auth/internal/restapi/operations"
 )
 
 //go:generate swagger generate server --target ../../internal --name HotelsAuth --spec ../../api/swagger/auth.yaml --principal interface{}
@@ -45,12 +43,7 @@ func configureAPI(api *operations.HotelsAuthAPI) http.Handler {
 
     api.PostLoginHandler = operations.PostLoginHandlerFunc(handler.LoginHandler)
     api.PostRegisterHandler = operations.PostRegisterHandlerFunc(handler.RegisterHandler)
-
-    if api.PostChangePasswordHandler == nil {
-        api.PostChangePasswordHandler = operations.PostChangePasswordHandlerFunc(func(params operations.PostChangePasswordParams) middleware.Responder {
-            return middleware.NotImplemented("operation operations.PostChangePassword has not yet been implemented")
-        })
-    }
+    api.PostChangePasswordHandler = operations.PostChangePasswordHandlerFunc(handler.ChangePasswordHandler)
 
     api.PreServerShutdown = func() {}
 
