@@ -6,6 +6,8 @@ import (
 	"crypto/tls"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/database_service"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/handlers"
+	"github.com/h4x4d/go_hsse_hotels/pkg/client"
+	"log"
 	"net/http"
 
 	"github.com/go-openapi/errors"
@@ -40,9 +42,17 @@ func configureAPI(api *operations.HotelsHotelAPI) http.Handler {
 
 	// Applies when the "api_key" header is set
 
+	manager, err := client.NewClient()
+	if err != nil {
+		log.Fatal(err)
+	}
 	// Applies when the "api_key" header is set
 	api.APIKeyAuth = func(token string) (interface{}, error) {
-		return "OK", nil
+		userId, err := manager.CheckToken(token)
+		if err != nil {
+			return nil, err
+		}
+		return userId, nil
 	}
 
 	// Set your custom authorizer if needed. Default one is security.Authorized()

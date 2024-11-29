@@ -1,13 +1,14 @@
 package handlers
 
 import (
+	"auth/internal/impl"
 	"auth/internal/models"
 	"auth/internal/restapi/operations"
 	"github.com/go-openapi/runtime/middleware"
 )
 
 func (h *Handler) ChangePasswordHandler(params operations.PostChangePasswordParams) middleware.Responder {
-	token, err := ChangePasswordUser(h.Client, params.Body)
+	token, err := impl.ChangePasswordUser(h.Client, params.Body)
 	conflict := int64(operations.PostLoginUnauthorizedCode)
 	if err != nil {
 		return new(operations.PostChangePasswordUnauthorized).WithPayload(&models.Error{

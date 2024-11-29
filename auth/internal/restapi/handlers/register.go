@@ -1,13 +1,14 @@
 package handlers
 
 import (
+	"auth/internal/impl"
 	"auth/internal/models"
 	"auth/internal/restapi/operations"
 	"github.com/go-openapi/runtime/middleware"
 )
 
 func (h *Handler) RegisterHandler(api operations.PostRegisterParams) middleware.Responder {
-	token, err := h.Client.CreateUser(api.Body)
+	token, err := impl.CreateUser(h.Client, api.Body)
 	if err != nil {
 		conflict := int64(operations.PostRegisterConflictCode)
 		return new(operations.PostRegisterConflict).WithPayload(&models.Error{
