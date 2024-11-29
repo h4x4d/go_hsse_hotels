@@ -4,7 +4,7 @@ import (
 	"auth/internal/restapi/operations"
 	"context"
 	"github.com/Nerzal/gocloak/v13"
-	"github.com/h4x4d/go_hsse_hotels/internal/client"
+	"github.com/h4x4d/go_hsse_hotels/pkg/client"
 )
 
 func ChangePasswordUser(c client.Client, fields operations.PostChangePasswordBody) (*string, error) {

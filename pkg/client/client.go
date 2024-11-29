@@ -3,7 +3,7 @@ package client
 import (
 	"crypto/tls"
 	"github.com/Nerzal/gocloak/v13"
-	"github.com/h4x4d/go_hsse_hotels/internal/config"
+	"github.com/h4x4d/go_hsse_hotels/pkg/config"
 )
 
 type Client struct {

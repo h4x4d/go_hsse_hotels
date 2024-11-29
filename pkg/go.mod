@@ -1,4 +1,4 @@
-module github.com/h4x4d/go_hsse_hotels/internal
+module github.com/h4x4d/go_hsse_hotels/pkg
 
 go 1.23.1
 
