@@ -1,4 +1,4 @@
-package client
+package impl
 
 import (
 	"auth/internal/restapi/operations"

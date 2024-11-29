@@ -1,9 +1,9 @@
 package client
 
 import (
-	"auth/internal/config"
 	"crypto/tls"
 	"github.com/Nerzal/gocloak/v13"
+	"github.com/h4x4d/go_hsse_hotels/internal/config"
 )
 
 type Client struct {

@@ -1,12 +1,13 @@
-package client
+package impl
 
 import (
 	"auth/internal/restapi/operations"
 	"context"
 	"github.com/Nerzal/gocloak/v13"
+	"github.com/h4x4d/go_hsse_hotels/internal/client"
 )
 
-func (c Client) ChangePasswordUser(fields operations.PostChangePasswordBody) (*string, error) {
+func ChangePasswordUser(c client.Client, fields operations.PostChangePasswordBody) (*string, error) {
 	ctx := context.Background()
 
 	// Check Old Password

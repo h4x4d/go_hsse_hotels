@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"auth/internal/client"
+	"github.com/h4x4d/go_hsse_hotels/internal/client"
 )
 
 type Handler struct {
