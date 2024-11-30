@@ -19,6 +19,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/customer"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/hotelier"
 )
@@ -45,21 +46,21 @@ func NewHotelsBookingAPI(spec *loads.Document) *HotelsBookingAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
-		CustomerCreateBookingHandler: customer.CreateBookingHandlerFunc(func(params customer.CreateBookingParams, principal interface{}) middleware.Responder {
+		CustomerCreateBookingHandler: customer.CreateBookingHandlerFunc(func(params customer.CreateBookingParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation customer.CreateBooking has not yet been implemented")
 		}),
-		HotelierGetBookingHandler: hotelier.GetBookingHandlerFunc(func(params hotelier.GetBookingParams, principal interface{}) middleware.Responder {
+		HotelierGetBookingHandler: hotelier.GetBookingHandlerFunc(func(params hotelier.GetBookingParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation hotelier.GetBooking has not yet been implemented")
 		}),
-		CustomerGetBookingByIDHandler: customer.GetBookingByIDHandlerFunc(func(params customer.GetBookingByIDParams, principal interface{}) middleware.Responder {
+		CustomerGetBookingByIDHandler: customer.GetBookingByIDHandlerFunc(func(params customer.GetBookingByIDParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation customer.GetBookingByID has not yet been implemented")
 		}),
-		CustomerUpdateBookingHandler: customer.UpdateBookingHandlerFunc(func(params customer.UpdateBookingParams, principal interface{}) middleware.Responder {
+		CustomerUpdateBookingHandler: customer.UpdateBookingHandlerFunc(func(params customer.UpdateBookingParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation customer.UpdateBooking has not yet been implemented")
 		}),
 
 		// Applies when the "api_key" header is set
-		APIKeyAuth: func(token string) (interface{}, error) {
+		APIKeyAuth: func(token string) (*models.User, error) {
 			return nil, errors.NotImplemented("api key auth (api_key) api_key from header param [api_key] has not yet been implemented")
 		},
 		// default authorizer is authorized meaning no requests are blocked
@@ -102,7 +103,7 @@ type HotelsBookingAPI struct {
 
 	// APIKeyAuth registers a function that takes a token and returns a principal
 	// it performs authentication based on an api key api_key provided in the header
-	APIKeyAuth func(string) (interface{}, error)
+	APIKeyAuth func(string) (*models.User, error)
 
 	// APIAuthorizer provides access control (ACL/RBAC/ABAC) by providing access to the request and authenticated principal
 	APIAuthorizer runtime.Authorizer
@@ -228,7 +229,9 @@ func (o *HotelsBookingAPI) AuthenticatorsFor(schemes map[string]spec.SecuritySch
 		switch name {
 		case "api_key":
 			scheme := schemes[name]
-			result[name] = o.APIKeyAuthenticator(scheme.Name, scheme.In, o.APIKeyAuth)
+			result[name] = o.APIKeyAuthenticator(scheme.Name, scheme.In, func(token string) (interface{}, error) {
+				return o.APIKeyAuth(token)
+			})
 
 		}
 	}

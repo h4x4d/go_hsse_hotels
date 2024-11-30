@@ -9,19 +9,21 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
+
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 )
 
 // GetBookingHandlerFunc turns a function with the right signature into a get booking handler
-type GetBookingHandlerFunc func(GetBookingParams, interface{}) middleware.Responder
+type GetBookingHandlerFunc func(GetBookingParams, *models.User) middleware.Responder
 
 // Handle executing the request and returning a response
-func (fn GetBookingHandlerFunc) Handle(params GetBookingParams, principal interface{}) middleware.Responder {
+func (fn GetBookingHandlerFunc) Handle(params GetBookingParams, principal *models.User) middleware.Responder {
 	return fn(params, principal)
 }
 
 // GetBookingHandler interface for that can handle valid get booking params
 type GetBookingHandler interface {
-	Handle(GetBookingParams, interface{}) middleware.Responder
+	Handle(GetBookingParams, *models.User) middleware.Responder
 }
 
 // NewGetBooking creates a new http.Handler for the get booking operation
@@ -53,9 +55,9 @@ func (o *GetBooking) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if aCtx != nil {
 		*r = *aCtx
 	}
-	var principal interface{}
+	var principal *models.User
 	if uprinc != nil {
-		principal = uprinc.(interface{}) // this is really a interface{}, I promise
+		principal = uprinc.(*models.User) // this is really a models.User, I promise
 	}
 
 	if err := o.Context.BindValidRequest(r, route, &Params); err != nil { // bind params

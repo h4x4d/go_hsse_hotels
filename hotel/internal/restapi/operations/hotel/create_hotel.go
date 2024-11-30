@@ -12,19 +12,21 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
+
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 )
 
 // CreateHotelHandlerFunc turns a function with the right signature into a create hotel handler
-type CreateHotelHandlerFunc func(CreateHotelParams, interface{}) middleware.Responder
+type CreateHotelHandlerFunc func(CreateHotelParams, *models.User) middleware.Responder
 
 // Handle executing the request and returning a response
-func (fn CreateHotelHandlerFunc) Handle(params CreateHotelParams, principal interface{}) middleware.Responder {
+func (fn CreateHotelHandlerFunc) Handle(params CreateHotelParams, principal *models.User) middleware.Responder {
 	return fn(params, principal)
 }
 
 // CreateHotelHandler interface for that can handle valid create hotel params
 type CreateHotelHandler interface {
-	Handle(CreateHotelParams, interface{}) middleware.Responder
+	Handle(CreateHotelParams, *models.User) middleware.Responder
 }
 
 // NewCreateHotel creates a new http.Handler for the create hotel operation
@@ -56,9 +58,9 @@ func (o *CreateHotel) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if aCtx != nil {
 		*r = *aCtx
 	}
-	var principal interface{}
+	var principal *models.User
 	if uprinc != nil {
-		principal = uprinc.(interface{}) // this is really a interface{}, I promise
+		principal = uprinc.(*models.User) // this is really a models.User, I promise
 	}
 
 	if err := o.Context.BindValidRequest(r, route, &Params); err != nil { // bind params

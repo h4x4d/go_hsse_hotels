@@ -5,6 +5,7 @@ package restapi
 import (
 	"crypto/tls"
 	"fmt"
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/handlers"
 	"github.com/h4x4d/go_hsse_hotels/pkg/client"
 	"log"
@@ -17,7 +18,7 @@ import (
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/hotel"
 )
 
-//go:generate swagger generate server --target ../../hotel --name HotelsHotel --spec ../api/swagger/hotels.yaml --principal interface{}
+//go:generate swagger generate server --target ../../internal --name HotelsHotel --spec ../../api/swagger/hotel.yaml --principal models.User
 
 func configureFlags(api *operations.HotelsHotelAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
@@ -48,12 +49,12 @@ func configureAPI(api *operations.HotelsHotelAPI) http.Handler {
 		log.Fatal(err)
 	}
 	// Applies when the "api_key" header is set
-	api.APIKeyAuth = func(token string) (interface{}, error) {
-		userId, err := manager.CheckToken(token)
+	api.APIKeyAuth = func(token string) (*models.User, error) {
+		user, err := manager.CheckToken(token)
 		if err != nil {
 			return nil, err
 		}
-		return userId, nil
+		return (*models.User)(user), nil
 	}
 
 	// Set your custom authorizer if needed. Default one is security.Authorized()

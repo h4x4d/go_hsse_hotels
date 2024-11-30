@@ -12,19 +12,21 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
+
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 )
 
 // UpdateBookingHandlerFunc turns a function with the right signature into a update booking handler
-type UpdateBookingHandlerFunc func(UpdateBookingParams, interface{}) middleware.Responder
+type UpdateBookingHandlerFunc func(UpdateBookingParams, *models.User) middleware.Responder
 
 // Handle executing the request and returning a response
-func (fn UpdateBookingHandlerFunc) Handle(params UpdateBookingParams, principal interface{}) middleware.Responder {
+func (fn UpdateBookingHandlerFunc) Handle(params UpdateBookingParams, principal *models.User) middleware.Responder {
 	return fn(params, principal)
 }
 
 // UpdateBookingHandler interface for that can handle valid update booking params
 type UpdateBookingHandler interface {
-	Handle(UpdateBookingParams, interface{}) middleware.Responder
+	Handle(UpdateBookingParams, *models.User) middleware.Responder
 }
 
 // NewUpdateBooking creates a new http.Handler for the update booking operation
@@ -56,9 +58,9 @@ func (o *UpdateBooking) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if aCtx != nil {
 		*r = *aCtx
 	}
-	var principal interface{}
+	var principal *models.User
 	if uprinc != nil {
-		principal = uprinc.(interface{}) // this is really a interface{}, I promise
+		principal = uprinc.(*models.User) // this is really a models.User, I promise
 	}
 
 	if err := o.Context.BindValidRequest(r, route, &Params); err != nil { // bind params

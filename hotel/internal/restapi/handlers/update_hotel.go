@@ -8,7 +8,7 @@ import (
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/utils"
 )
 
-func (handler *Handler) UpdateHotelHandler(params hotel.UpdateHotelParams, _ interface{}) (responder middleware.Responder) {
+func (handler *Handler) UpdateHotelHandler(params hotel.UpdateHotelParams, _ *models.User) (responder middleware.Responder) {
 	defer utils.CatchPanic(&responder)
 
 	exists, errGet := handler.Database.Exists(params.HotelID)
