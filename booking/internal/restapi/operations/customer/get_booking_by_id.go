@@ -9,19 +9,21 @@ import (
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
+
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 )
 
 // GetBookingByIDHandlerFunc turns a function with the right signature into a get booking by id handler
-type GetBookingByIDHandlerFunc func(GetBookingByIDParams, interface{}) middleware.Responder
+type GetBookingByIDHandlerFunc func(GetBookingByIDParams, *models.User) middleware.Responder
 
 // Handle executing the request and returning a response
-func (fn GetBookingByIDHandlerFunc) Handle(params GetBookingByIDParams, principal interface{}) middleware.Responder {
+func (fn GetBookingByIDHandlerFunc) Handle(params GetBookingByIDParams, principal *models.User) middleware.Responder {
 	return fn(params, principal)
 }
 
 // GetBookingByIDHandler interface for that can handle valid get booking by id params
 type GetBookingByIDHandler interface {
-	Handle(GetBookingByIDParams, interface{}) middleware.Responder
+	Handle(GetBookingByIDParams, *models.User) middleware.Responder
 }
 
 // NewGetBookingByID creates a new http.Handler for the get booking by id operation
@@ -53,9 +55,9 @@ func (o *GetBookingByID) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if aCtx != nil {
 		*r = *aCtx
 	}
-	var principal interface{}
+	var principal *models.User
 	if uprinc != nil {
-		principal = uprinc.(interface{}) // this is really a interface{}, I promise
+		principal = uprinc.(*models.User) // this is really a models.User, I promise
 	}
 
 	if err := o.Context.BindValidRequest(r, route, &Params); err != nil { // bind params

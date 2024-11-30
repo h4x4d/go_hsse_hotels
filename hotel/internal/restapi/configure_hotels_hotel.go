@@ -4,9 +4,13 @@ package restapi
 
 import (
 	"crypto/tls"
-	"github.com/h4x4d/go_hsse_hotels/hotel/internal/database_service"
+	"fmt"
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/handlers"
+	"github.com/h4x4d/go_hsse_hotels/pkg/client"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
@@ -14,7 +18,7 @@ import (
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/hotel"
 )
 
-//go:generate swagger generate server --target ../../hotel --name HotelsHotel --spec ../api/swagger/hotels.yaml --principal interface{}
+//go:generate swagger generate server --target ../../internal --name HotelsHotel --spec ../../api/swagger/hotel.yaml --principal models.User
 
 func configureFlags(api *operations.HotelsHotelAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
@@ -40,9 +44,17 @@ func configureAPI(api *operations.HotelsHotelAPI) http.Handler {
 
 	// Applies when the "api_key" header is set
 
+	manager, err := client.NewClient()
+	if err != nil {
+		log.Fatal(err)
+	}
 	// Applies when the "api_key" header is set
-	api.APIKeyAuth = func(token string) (interface{}, error) {
-		return "OK", nil
+	api.APIKeyAuth = func(token string) (*models.User, error) {
+		user, err := manager.CheckToken(token)
+		if err != nil {
+			return nil, err
+		}
+		return (*models.User)(user), nil
 	}
 
 	// Set your custom authorizer if needed. Default one is security.Authorized()
@@ -55,15 +67,17 @@ func configureAPI(api *operations.HotelsHotelAPI) http.Handler {
 	// maybe this have been already caught, I dont remember clearly
 
 	// creating database_service and then add it to context of handlers
-	databaseService, makeErr := database_service.Make()
+	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", os.Getenv("POSTGRES_USER"),
+		os.Getenv("POSTGRES_PASSWORD"), "db", os.Getenv("POSTGRES_PORT"), os.Getenv("HOTEL_DB_NAME"))
+	handler, makeErr := handlers.NewHandler(connStr)
 	for makeErr != nil {
-		databaseService, makeErr = database_service.Make()
+		handler, makeErr = handlers.NewHandler(connStr)
 	}
 
-	api.HotelCreateHotelHandler = hotel.CreateHotelHandlerFunc(handlers.CreateHotelHandlerType(handlers.CreateHotelHandler).AddDatabaseService(databaseService))
-	api.HotelGetHotelsHandler = hotel.GetHotelsHandlerFunc(handlers.GetHotelsHandlerType(handlers.GetHotelsHandler).AddDatabaseService(databaseService))
-	api.HotelGetHotelByIDHandler = hotel.GetHotelByIDHandlerFunc(handlers.GetHotelByIDHandlerType(handlers.GetHotelByIDHandler).AddDatabaseService(databaseService))
-	api.HotelUpdateHotelHandler = hotel.UpdateHotelHandlerFunc(handlers.UpdateHotelHandlerType(handlers.UpdateHotelHandler).AddDatabaseService(databaseService))
+	api.HotelCreateHotelHandler = hotel.CreateHotelHandlerFunc(handler.CreateHotelHandler)
+	api.HotelGetHotelsHandler = hotel.GetHotelsHandlerFunc(handler.GetHotelsHandler)
+	api.HotelGetHotelByIDHandler = hotel.GetHotelByIDHandlerFunc(handler.GetHotelByIDHandler)
+	api.HotelUpdateHotelHandler = hotel.UpdateHotelHandlerFunc(handler.UpdateHotelHandler)
 
 	api.PreServerShutdown = func() {}
 

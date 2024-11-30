@@ -147,3 +147,48 @@ func (o *UpdateHotelForbidden) WriteResponse(rw http.ResponseWriter, producer ru
 		}
 	}
 }
+
+// UpdateHotelNotFoundCode is the HTTP code returned for type UpdateHotelNotFound
+const UpdateHotelNotFoundCode int = 404
+
+/*
+UpdateHotelNotFound No such element
+
+swagger:response updateHotelNotFound
+*/
+type UpdateHotelNotFound struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
+}
+
+// NewUpdateHotelNotFound creates UpdateHotelNotFound with default headers values
+func NewUpdateHotelNotFound() *UpdateHotelNotFound {
+
+	return &UpdateHotelNotFound{}
+}
+
+// WithPayload adds the payload to the update hotel not found response
+func (o *UpdateHotelNotFound) WithPayload(payload *models.Error) *UpdateHotelNotFound {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the update hotel not found response
+func (o *UpdateHotelNotFound) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *UpdateHotelNotFound) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(404)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}

@@ -2,11 +2,11 @@ FROM golang:1.23-alpine
 
 WORKDIR /booking
 
-COPY go.mod .
-COPY go.sum .
+COPY booking/go.mod .
+COPY booking/go.sum .
 RUN go mod download
 
-COPY . .
+COPY booking/ .
 
 RUN go build -o booking cmd/hotels-booking-server/main.go
 

@@ -4,17 +4,19 @@ package restapi
 
 import (
 	"crypto/tls"
-	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations"
-	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/customer"
-	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/hotelier"
 	"net/http"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
+
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations"
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/customer"
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/hotelier"
 )
 
-//go:generate swagger generate server --target ../../booking --name HotelsBooking --spec ../docs/swagger/booking.yaml --principal interface{}
+//go:generate swagger generate server --target ../../internal --name HotelsBooking --spec ../../api/swagger/booking.yaml --principal models.User
 
 func configureFlags(api *operations.HotelsBookingAPI) {
 	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
@@ -39,8 +41,10 @@ func configureAPI(api *operations.HotelsBookingAPI) http.Handler {
 	api.JSONProducer = runtime.JSONProducer()
 
 	// Applies when the "api_key" header is set
-	api.APIKeyAuth = func(token string) (interface{}, error) {
-		return "OK", nil
+	if api.APIKeyAuth == nil {
+		api.APIKeyAuth = func(token string) (*models.User, error) {
+			return nil, errors.NotImplemented("api key auth (api_key) api_key from header param [api_key] has not yet been implemented")
+		}
 	}
 
 	// Set your custom authorizer if needed. Default one is security.Authorized()
@@ -50,22 +54,22 @@ func configureAPI(api *operations.HotelsBookingAPI) http.Handler {
 	// api.APIAuthorizer = security.Authorized()
 
 	if api.CustomerCreateBookingHandler == nil {
-		api.CustomerCreateBookingHandler = customer.CreateBookingHandlerFunc(func(params customer.CreateBookingParams, principal interface{}) middleware.Responder {
+		api.CustomerCreateBookingHandler = customer.CreateBookingHandlerFunc(func(params customer.CreateBookingParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation customer.CreateBooking has not yet been implemented")
 		})
 	}
 	if api.HotelierGetBookingHandler == nil {
-		api.HotelierGetBookingHandler = hotelier.GetBookingHandlerFunc(func(params hotelier.GetBookingParams) middleware.Responder {
-			return middleware.NotImplemented("operation customer.GetBooking has not yet been implemented")
+		api.HotelierGetBookingHandler = hotelier.GetBookingHandlerFunc(func(params hotelier.GetBookingParams, principal *models.User) middleware.Responder {
+			return middleware.NotImplemented("operation hotelier.GetBooking has not yet been implemented")
 		})
 	}
 	if api.CustomerGetBookingByIDHandler == nil {
-		api.CustomerGetBookingByIDHandler = customer.GetBookingByIDHandlerFunc(func(params customer.GetBookingByIDParams, principal interface{}) middleware.Responder {
+		api.CustomerGetBookingByIDHandler = customer.GetBookingByIDHandlerFunc(func(params customer.GetBookingByIDParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation customer.GetBookingByID has not yet been implemented")
 		})
 	}
 	if api.CustomerUpdateBookingHandler == nil {
-		api.CustomerUpdateBookingHandler = customer.UpdateBookingHandlerFunc(func(params customer.UpdateBookingParams, principal interface{}) middleware.Responder {
+		api.CustomerUpdateBookingHandler = customer.UpdateBookingHandlerFunc(func(params customer.UpdateBookingParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation customer.UpdateBooking has not yet been implemented")
 		})
 	}

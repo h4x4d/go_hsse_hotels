@@ -1,50 +1,35 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/go-openapi/runtime/middleware"
-	"github.com/h4x4d/go_hsse_hotels/hotel/internal/database_service"
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/hotel"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/utils"
-	"net/http"
 )
 
-func UpdateHotelHandler(params hotel.UpdateHotelParams, _ interface{}) (responder middleware.Responder) {
+func (handler *Handler) UpdateHotelHandler(params hotel.UpdateHotelParams, _ *models.User) (responder middleware.Responder) {
 	defer utils.CatchPanic(&responder)
 
-	databaseService, contextErr := database_service.GetDatabaseServiceFromContext(params.HTTPRequest.Context())
-	if contextErr != nil {
-		return middleware.Error(http.StatusInternalServerError, contextErr.Error())
-	}
-
-	newHotel := params.Object
-	newHotel.ID = params.HotelID
-	updatedHotel, errGet := databaseService.GetById(params.HotelID)
+	exists, errGet := handler.Database.Exists(params.HotelID)
 	if errGet != nil {
 		return utils.HandleInternalError(errGet)
 	}
-	if updatedHotel != nil {
-		// deleting old hotel
-		_, errDelete := databaseService.DeleteByID(params.HotelID)
-		if errDelete != nil {
-			return utils.HandleInternalError(errDelete)
-		}
+	if exists == false {
+		code := int64(hotel.UpdateHotelNotFoundCode)
+		return &hotel.UpdateHotelNotFound{Payload: &models.Error{
+			ErrorMessage:    fmt.Sprintf("no hotel with id %d", params.HotelID),
+			ErrorStatusCode: &code,
+		}}
 	}
 
-	// creating new Hotel
-	_, createErr := databaseService.Create(newHotel)
-	if createErr != nil {
-		return utils.HandleInternalError(createErr)
+	newHotel := params.Object
+	updated, errUpdate := handler.Database.Update(params.HotelID, newHotel)
+	if errUpdate != nil {
+		return utils.HandleInternalError(errUpdate)
 	}
+
 	result := new(hotel.UpdateHotelOK)
-	result.SetPayload(newHotel)
+	result.SetPayload(updated)
 	return result
-}
-
-type UpdateHotelHandlerType func(params hotel.UpdateHotelParams, _ interface{}) middleware.Responder
-
-func (h UpdateHotelHandlerType) AddDatabaseService(databaseService *database_service.DatabaseService) UpdateHotelHandlerType {
-	return func(params hotel.UpdateHotelParams, principal interface{}) middleware.Responder {
-		params.HTTPRequest = params.HTTPRequest.WithContext(database_service.ContextWithDatabaseService(databaseService))
-		return h(params, principal)
-	}
 }
