@@ -185,6 +185,8 @@ definitions:
       cost:
         type: "integer"
         format: "int64"
+      user_id:
+        type: "string"
   Error:
     type: "object"
     required:

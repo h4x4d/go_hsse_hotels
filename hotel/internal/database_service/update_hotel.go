@@ -41,6 +41,6 @@ func (ds *DatabaseService) Update(id int64, hotel *models.Hotel) (*models.Hotel,
 	values = append(values, id)
 	fmt.Println(query, values)
 	errGetHotel := ds.pool.QueryRow(context.Background(), query, values...).Scan(&hotel.ID, hotel.Name,
-		hotel.City, hotel.Address, &hotel.HotelClass, &hotel.Cost)
+		hotel.City, hotel.Address, &hotel.HotelClass, &hotel.Cost, &hotel.UserID)
 	return hotel, errGetHotel
 }

@@ -288,6 +288,9 @@ func init() {
         "name": {
           "type": "string",
           "example": "Radisson"
+        },
+        "user_id": {
+          "type": "string"
         }
       }
     },
@@ -588,6 +591,9 @@ func init() {
         "name": {
           "type": "string",
           "example": "Radisson"
+        },
+        "user_id": {
+          "type": "string"
         }
       }
     },
