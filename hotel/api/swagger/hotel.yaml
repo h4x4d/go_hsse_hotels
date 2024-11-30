@@ -66,6 +66,10 @@ paths:
           description: "No access"
           schema:
             $ref: "#/definitions/Error"
+        404:
+          description: "No such element"
+          schema:
+            $ref: "#/definitions/Error"
         400:
           description: "Incorrect data"
           schema:

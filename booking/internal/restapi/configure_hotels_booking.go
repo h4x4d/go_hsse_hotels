@@ -55,7 +55,7 @@ func configureAPI(api *operations.HotelsBookingAPI) http.Handler {
 		})
 	}
 	if api.HotelierGetBookingHandler == nil {
-		api.HotelierGetBookingHandler = hotelier.GetBookingHandlerFunc(func(params hotelier.GetBookingParams) middleware.Responder {
+		api.HotelierGetBookingHandler = hotelier.GetBookingHandlerFunc(func(params hotelier.GetBookingParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation customer.GetBooking has not yet been implemented")
 		})
 	}

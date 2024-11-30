@@ -4,17 +4,10 @@ import (
 	"context"
 	"fmt"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
-	"github.com/h4x4d/go_hsse_hotels/hotel/internal/utils"
 	"strings"
 )
 
 func (ds *DatabaseService) Create(hotel *models.Hotel) (*int64, error) {
-	pool, err := utils.NewConnection()
-	if err != nil {
-		return nil, err
-	}
-	defer pool.Close()
-
 	query := `INSERT INTO hotels`
 	var fieldNames []string
 	var fields []string
@@ -32,6 +25,10 @@ func (ds *DatabaseService) Create(hotel *models.Hotel) (*int64, error) {
 		fieldNames = append(fieldNames, "name")
 		values = append(values, hotel.Name)
 	}
+	if hotel.Cost != 0 {
+		fieldNames = append(fieldNames, "cost")
+		values = append(values, hotel.Cost)
+	}
 	if hotel.ID != 0 {
 		fieldNames = append(fieldNames, "id")
 		values = append(values, hotel.ID)
@@ -44,7 +41,7 @@ func (ds *DatabaseService) Create(hotel *models.Hotel) (*int64, error) {
 	}
 	query += fmt.Sprintf(" (%s) VALUES (%s) RETURNING id", strings.Join(fieldNames, ", "),
 		strings.Join(fields, ", "))
-	errInsertHotel := pool.QueryRow(context.Background(), query, values...).Scan(&hotel.ID)
+	errInsertHotel := ds.pool.QueryRow(context.Background(), query, values...).Scan(&hotel.ID)
 	if errInsertHotel != nil {
 		return nil, errInsertHotel
 	}

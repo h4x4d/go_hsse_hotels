@@ -48,7 +48,7 @@ func NewHotelsBookingAPI(spec *loads.Document) *HotelsBookingAPI {
 		CustomerCreateBookingHandler: customer.CreateBookingHandlerFunc(func(params customer.CreateBookingParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation customer.CreateBooking has not yet been implemented")
 		}),
-		HotelierGetBookingHandler: hotelier.GetBookingHandlerFunc(func(params hotelier.GetBookingParams) middleware.Responder {
+		HotelierGetBookingHandler: hotelier.GetBookingHandlerFunc(func(params hotelier.GetBookingParams, principal interface{}) middleware.Responder {
 			return middleware.NotImplemented("operation hotelier.GetBooking has not yet been implemented")
 		}),
 		CustomerGetBookingByIDHandler: customer.GetBookingByIDHandlerFunc(func(params customer.GetBookingByIDParams, principal interface{}) middleware.Responder {

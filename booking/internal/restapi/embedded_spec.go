@@ -30,6 +30,11 @@ func init() {
   "paths": {
     "/booking": {
       "get": {
+        "security": [
+          {
+            "api_key": []
+          }
+        ],
         "produces": [
           "application/json"
         ],
@@ -237,9 +242,7 @@ func init() {
       "required": [
         "date_from",
         "date_to",
-        "room_id",
-        "hotel_id",
-        "status"
+        "hotel_id"
       ],
       "properties": {
         "booking_id": {
@@ -256,15 +259,11 @@ func init() {
           "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
           "example": "2025-01-11"
         },
-        "final_cost": {
+        "full_cost": {
           "type": "integer",
           "format": "int64"
         },
         "hotel_id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "room_id": {
           "type": "integer",
           "format": "int64"
         },
@@ -382,6 +381,11 @@ func init() {
   "paths": {
     "/booking": {
       "get": {
+        "security": [
+          {
+            "api_key": []
+          }
+        ],
         "produces": [
           "application/json"
         ],
@@ -589,9 +593,7 @@ func init() {
       "required": [
         "date_from",
         "date_to",
-        "room_id",
-        "hotel_id",
-        "status"
+        "hotel_id"
       ],
       "properties": {
         "booking_id": {
@@ -608,15 +610,11 @@ func init() {
           "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
           "example": "2025-01-11"
         },
-        "final_cost": {
+        "full_cost": {
           "type": "integer",
           "format": "int64"
         },
         "hotel_id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "room_id": {
           "type": "integer",
           "format": "int64"
         },

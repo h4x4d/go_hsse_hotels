@@ -44,3 +44,7 @@ build: down
 .PHONY: up
 up:
 	$(DOCKER_COMPOSE) up -d --build --force-recreate -V --remove-orphans
+
+.PHONY: ps
+ps:
+	$(DOCKER_COMPOSE) ps -a
