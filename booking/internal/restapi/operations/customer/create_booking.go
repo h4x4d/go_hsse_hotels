@@ -12,19 +12,21 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
+
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 )
 
 // CreateBookingHandlerFunc turns a function with the right signature into a create booking handler
-type CreateBookingHandlerFunc func(CreateBookingParams, interface{}) middleware.Responder
+type CreateBookingHandlerFunc func(CreateBookingParams, *models.User) middleware.Responder
 
 // Handle executing the request and returning a response
-func (fn CreateBookingHandlerFunc) Handle(params CreateBookingParams, principal interface{}) middleware.Responder {
+func (fn CreateBookingHandlerFunc) Handle(params CreateBookingParams, principal *models.User) middleware.Responder {
 	return fn(params, principal)
 }
 
 // CreateBookingHandler interface for that can handle valid create booking params
 type CreateBookingHandler interface {
-	Handle(CreateBookingParams, interface{}) middleware.Responder
+	Handle(CreateBookingParams, *models.User) middleware.Responder
 }
 
 // NewCreateBooking creates a new http.Handler for the create booking operation
@@ -56,9 +58,9 @@ func (o *CreateBooking) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if aCtx != nil {
 		*r = *aCtx
 	}
-	var principal interface{}
+	var principal *models.User
 	if uprinc != nil {
-		principal = uprinc.(interface{}) // this is really a interface{}, I promise
+		principal = uprinc.(*models.User) // this is really a models.User, I promise
 	}
 
 	if err := o.Context.BindValidRequest(r, route, &Params); err != nil { // bind params

@@ -12,11 +12,11 @@ func main() {
 	topic := os.Getenv("KAFKA_TOPIC")
 	groupID := os.Getenv("KAFKA_GROUP_ID")
 
-	notify_handlers := map[string]func([]byte) error{
+	notifyHandlers := map[string]func([]byte) error{
 		"send_notification": handlers.SendNotificationHandler,
 	}
 
-	notificationServer := server.NewNotificationServer(&[]string{broker}, &topic, &groupID, notify_handlers)
+	notificationServer := server.NewNotificationServer(&[]string{broker}, &topic, &groupID, notifyHandlers)
 
 	if err := notificationServer.Serve(); err != nil {
 		log.Fatalln(err)

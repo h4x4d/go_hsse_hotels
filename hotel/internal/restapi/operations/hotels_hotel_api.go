@@ -19,6 +19,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/hotel"
 )
 
@@ -44,7 +45,7 @@ func NewHotelsHotelAPI(spec *loads.Document) *HotelsHotelAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
-		HotelCreateHotelHandler: hotel.CreateHotelHandlerFunc(func(params hotel.CreateHotelParams, principal interface{}) middleware.Responder {
+		HotelCreateHotelHandler: hotel.CreateHotelHandlerFunc(func(params hotel.CreateHotelParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation hotel.CreateHotel has not yet been implemented")
 		}),
 		HotelGetHotelByIDHandler: hotel.GetHotelByIDHandlerFunc(func(params hotel.GetHotelByIDParams) middleware.Responder {
@@ -53,12 +54,12 @@ func NewHotelsHotelAPI(spec *loads.Document) *HotelsHotelAPI {
 		HotelGetHotelsHandler: hotel.GetHotelsHandlerFunc(func(params hotel.GetHotelsParams) middleware.Responder {
 			return middleware.NotImplemented("operation hotel.GetHotels has not yet been implemented")
 		}),
-		HotelUpdateHotelHandler: hotel.UpdateHotelHandlerFunc(func(params hotel.UpdateHotelParams, principal interface{}) middleware.Responder {
+		HotelUpdateHotelHandler: hotel.UpdateHotelHandlerFunc(func(params hotel.UpdateHotelParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation hotel.UpdateHotel has not yet been implemented")
 		}),
 
 		// Applies when the "api_key" header is set
-		APIKeyAuth: func(token string) (interface{}, error) {
+		APIKeyAuth: func(token string) (*models.User, error) {
 			return nil, errors.NotImplemented("api key auth (api_key) api_key from header param [api_key] has not yet been implemented")
 		},
 		// default authorizer is authorized meaning no requests are blocked
@@ -101,7 +102,7 @@ type HotelsHotelAPI struct {
 
 	// APIKeyAuth registers a function that takes a token and returns a principal
 	// it performs authentication based on an api key api_key provided in the header
-	APIKeyAuth func(string) (interface{}, error)
+	APIKeyAuth func(string) (*models.User, error)
 
 	// APIAuthorizer provides access control (ACL/RBAC/ABAC) by providing access to the request and authenticated principal
 	APIAuthorizer runtime.Authorizer
@@ -227,7 +228,9 @@ func (o *HotelsHotelAPI) AuthenticatorsFor(schemes map[string]spec.SecuritySchem
 		switch name {
 		case "api_key":
 			scheme := schemes[name]
-			result[name] = o.APIKeyAuthenticator(scheme.Name, scheme.In, o.APIKeyAuth)
+			result[name] = o.APIKeyAuthenticator(scheme.Name, scheme.In, func(token string) (interface{}, error) {
+				return o.APIKeyAuth(token)
+			})
 
 		}
 	}

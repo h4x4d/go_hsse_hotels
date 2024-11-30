@@ -115,6 +115,8 @@ paths:
           description: "Booking not found"
           schema:
             $ref: "#/definitions/Error"
+      security:
+        - api_key: [ ]
     post:
       tags:
         - "customer"
@@ -157,10 +159,11 @@ definitions:
     required:
       - "date_from"
       - "date_to"
-      - "room_id"
       - "hotel_id"
-      - "status"
     properties:
+      booking_id:
+        type: "integer"
+        format: "int64"
       date_from:
         type: "string"
         pattern: ^\d{4}-\d{2}-\d{2}$
@@ -169,18 +172,10 @@ definitions:
         type: "string"
         pattern: ^\d{4}-\d{2}-\d{2}$
         example: "2025-01-11"
-      booking_id:
-        type: "integer"
-        format: "int64"
-      room_id:
-        type: "integer"
-        format: "int64"
       hotel_id:
         type: "integer"
         format: "int64"
-      user_id:
-        type: "string"
-      final_cost:
+      full_cost:
         type: "integer"
         format: "int64"
       status:
@@ -191,6 +186,9 @@ definitions:
           - "Payed"
           - "Confirmed"
           - "Finished"
+      user_id:
+        type: "integer"
+        format: "int64"
   Error:
     type: "object"
     required:

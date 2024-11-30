@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"auth/internal/client"
+	"github.com/h4x4d/go_hsse_hotels/pkg/client"
 )
 
 type Handler struct {
@@ -9,9 +9,9 @@ type Handler struct {
 }
 
 func NewHandler() (*Handler, error) {
-	client, err := client.NewClient()
+	cl, err := client.NewClient()
 	if err != nil {
 		return nil, err
 	}
-	return &Handler{client}, nil
+	return &Handler{cl}, nil
 }

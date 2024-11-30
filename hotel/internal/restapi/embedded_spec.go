@@ -223,6 +223,12 @@ func init() {
             "schema": {
               "$ref": "#/definitions/Error"
             }
+          },
+          "404": {
+            "description": "No such element",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
@@ -514,6 +520,12 @@ func init() {
           },
           "403": {
             "description": "No access",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "No such element",
             "schema": {
               "$ref": "#/definitions/Error"
             }

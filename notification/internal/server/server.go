@@ -42,7 +42,7 @@ func NewNotificationServer(brokers *[]string, topic *string, groupID *string,
 
 func (server *NotificationKafkaServer) Serve() error {
 	stopChan := make(chan os.Signal, 1)
-	signal.Notify(stopChan, os.Interrupt, syscall.SIGTERM)
+	signal.Notify(stopChan, syscall.SIGTERM, syscall.SIGINT)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -61,7 +61,7 @@ func (server *NotificationKafkaServer) Serve() error {
 			fmt.Println("Consumer stopped")
 			return nil
 		default:
-			message, err := reader.ReadMessage(context.Background())
+			message, err := reader.ReadMessage(ctx)
 			if err != nil {
 				return err
 			}

@@ -11,9 +11,12 @@ require (
 	github.com/go-openapi/strfmt v0.23.0
 	github.com/go-openapi/swag v0.23.0
 	github.com/go-openapi/validate v0.24.0
+	github.com/h4x4d/go_hsse_hotels/pkg v0.0.0-00010101000000-000000000000
 	github.com/jessevdk/go-flags v1.6.1
 	golang.org/x/net v0.31.0
 )
+
+replace github.com/h4x4d/go_hsse_hotels/pkg => ../pkg
 
 require (
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect
