@@ -39,7 +39,7 @@ func (c Client) CheckToken(token string) (user *models.User, err error) {
 	}
 	role := *groups[0].Name
 	return &models.User{
-		UserId:     userId,
+		UserID:     userId,
 		TelegramId: tgId,
 		Role:       role,
 	}, nil

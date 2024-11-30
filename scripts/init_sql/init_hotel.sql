@@ -5,5 +5,6 @@ CREATE TABLE IF NOT EXISTS hotels
     city        TEXT NOT NULL,
     address     TEXT NOT NULL,
     hotel_class INTEGER CHECK ( hotel_class >= 0 and hotel_class <= 5 ),
-    cost       INT  NOT NULL
+    cost        INT  NOT NULL,
+    user_id     TEXT
 );
