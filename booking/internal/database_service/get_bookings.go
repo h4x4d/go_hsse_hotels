@@ -2,11 +2,26 @@ package database_service
 
 import (
 	"context"
+	"fmt"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
+	"strings"
 )
 
-func (ds *DatabaseService) GetAll() ([]*models.Booking, error) {
-	bookingIdRow, errGetId := ds.pool.Query(context.Background(), "SELECT booking_id FROM bookings")
+// actually there is no need in this method because api does not contains such
+func (ds *DatabaseService) GetAll(HotelID *int64) ([]*models.Booking, error) {
+	query := "SELECT booking_id FROM bookings"
+	var conditions []string
+	var values []interface{}
+
+	if HotelID != nil {
+		conditions = append(conditions, fmt.Sprintf("hotel_id=$%d", len(values)+1))
+		values = append(values, *HotelID)
+	}
+	if len(conditions) > 0 {
+		query += " WHERE " + strings.Join(conditions, " AND ")
+	}
+
+	bookingIdRow, errGetId := ds.pool.Query(context.Background(), query)
 	if errGetId != nil {
 		return nil, errGetId
 	}
@@ -20,7 +35,7 @@ func (ds *DatabaseService) GetAll() ([]*models.Booking, error) {
 		if errScanId != nil {
 			return nil, errScanId
 		}
-		booking, errGetBooking := ds.GetById(bookingId)
+		booking, errGetBooking := ds.GetByID(bookingId)
 		if errGetBooking != nil {
 			return nil, errGetBooking
 		}

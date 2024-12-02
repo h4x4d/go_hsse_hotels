@@ -4,12 +4,13 @@ package restapi
 
 import (
 	"crypto/tls"
+	"fmt"
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/handlers"
 	"net/http"
+	"os"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/runtime/middleware"
-
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/customer"
@@ -53,26 +54,17 @@ func configureAPI(api *operations.HotelsBookingAPI) http.Handler {
 	// Example:
 	// api.APIAuthorizer = security.Authorized()
 
-	if api.CustomerCreateBookingHandler == nil {
-		api.CustomerCreateBookingHandler = customer.CreateBookingHandlerFunc(func(params customer.CreateBookingParams, principal *models.User) middleware.Responder {
-			return middleware.NotImplemented("operation customer.CreateBooking has not yet been implemented")
-		})
+	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", os.Getenv("POSTGRES_USER"),
+		os.Getenv("POSTGRES_PASSWORD"), "db", os.Getenv("POSTGRES_PORT"), os.Getenv("HOTEL_DB_NAME"))
+	handler, makeErr := handlers.NewHandler(connStr)
+	for makeErr != nil {
+		handler, makeErr = handlers.NewHandler(connStr)
 	}
-	if api.HotelierGetBookingHandler == nil {
-		api.HotelierGetBookingHandler = hotelier.GetBookingHandlerFunc(func(params hotelier.GetBookingParams, principal *models.User) middleware.Responder {
-			return middleware.NotImplemented("operation hotelier.GetBooking has not yet been implemented")
-		})
-	}
-	if api.CustomerGetBookingByIDHandler == nil {
-		api.CustomerGetBookingByIDHandler = customer.GetBookingByIDHandlerFunc(func(params customer.GetBookingByIDParams, principal *models.User) middleware.Responder {
-			return middleware.NotImplemented("operation customer.GetBookingByID has not yet been implemented")
-		})
-	}
-	if api.CustomerUpdateBookingHandler == nil {
-		api.CustomerUpdateBookingHandler = customer.UpdateBookingHandlerFunc(func(params customer.UpdateBookingParams, principal *models.User) middleware.Responder {
-			return middleware.NotImplemented("operation customer.UpdateBooking has not yet been implemented")
-		})
-	}
+
+	api.CustomerCreateBookingHandler = customer.CreateBookingHandlerFunc(handler.CreateBooking)
+	api.CustomerGetBookingByIDHandler = customer.GetBookingByIDHandlerFunc(handler.GetBookingByID)
+	api.CustomerUpdateBookingHandler = customer.UpdateBookingHandlerFunc(handler.UpdateBooking)
+	api.HotelierGetBookingHandler = hotelier.GetBookingHandlerFunc(handler.GetBooking)
 
 	api.PreServerShutdown = func() {}
 

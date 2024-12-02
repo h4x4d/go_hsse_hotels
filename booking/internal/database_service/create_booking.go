@@ -9,6 +9,7 @@ import (
 
 func (ds *DatabaseService) Create(booking *models.Booking) (*int64, error) {
 	query := `INSERT INTO bookings`
+	// maybe fieldNames can be placed in common place cause other methods also need this info
 	var fieldNames []string
 	var fields []string
 	var values []interface{}
@@ -25,22 +26,16 @@ func (ds *DatabaseService) Create(booking *models.Booking) (*int64, error) {
 		fieldNames = append(fieldNames, "hotel_id")
 		values = append(values, booking.HotelID)
 	}
-	if booking.RoomID != nil {
-		fieldNames = append(fieldNames, "room_id")
-		values = append(values, booking.RoomID)
-	}
-	if booking.Status != nil {
-		fieldNames = append(fieldNames, "status")
-		values = append(values, booking.Status)
-	}
 
 	if booking.BookingID != 0 {
 		fieldNames = append(fieldNames, "booking_id")
 		values = append(values, booking.BookingID)
 	}
 
+	fieldNames = append(fieldNames, "status")
+	values = append(values, booking.Status)
 	fieldNames = append(fieldNames, "full_cost")
-	values = append(values, booking.FinalCost)
+	values = append(values, booking.FullCost)
 	fieldNames = append(fieldNames, "user_id")
 	values = append(values, booking.UserID)
 
