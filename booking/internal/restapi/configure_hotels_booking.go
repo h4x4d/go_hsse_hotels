@@ -6,6 +6,8 @@ import (
 	"crypto/tls"
 	"fmt"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/handlers"
+	"github.com/h4x4d/go_hsse_hotels/pkg/client"
+	"log"
 	"net/http"
 	"os"
 
@@ -41,11 +43,17 @@ func configureAPI(api *operations.HotelsBookingAPI) http.Handler {
 
 	api.JSONProducer = runtime.JSONProducer()
 
+	manager, err := client.NewClient()
+	if err != nil {
+		log.Fatal(err)
+	}
 	// Applies when the "api_key" header is set
-	if api.APIKeyAuth == nil {
-		api.APIKeyAuth = func(token string) (*models.User, error) {
-			return nil, errors.NotImplemented("api key auth (api_key) api_key from header param [api_key] has not yet been implemented")
+	api.APIKeyAuth = func(token string) (*models.User, error) {
+		user, err := manager.CheckToken(token)
+		if err != nil {
+			return nil, err
 		}
+		return (*models.User)(user), nil
 	}
 
 	// Set your custom authorizer if needed. Default one is security.Authorized()
