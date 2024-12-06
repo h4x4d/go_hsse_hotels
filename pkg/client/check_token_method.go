@@ -33,7 +33,11 @@ func (c Client) CheckToken(token string) (user *models.User, err error) {
 	if err != nil {
 		return nil, err
 	}
-	role := (*users[0].Groups)[0]
+	groups, err := c.Client.GetUserGroups(ctx, adminToken.AccessToken, c.Config.Realm, userId, gocloak.GetGroupsParams{})
+	if err != nil {
+		return nil, err
+	}
+	role := *groups[0].Name
 	return &models.User{
 		UserID:     userId,
 		TelegramID: tgId,

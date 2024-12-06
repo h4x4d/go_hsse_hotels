@@ -44,7 +44,7 @@ func (ds *DatabaseService) GetAll(city *string, hotelClass *int64, name *string)
 
 		// scaning current hotel
 		errHotel := rowsHotels.Scan(&currHotel.ID, currHotel.Name, currHotel.City,
-			currHotel.Address, &currHotel.HotelClass, &currHotel.Cost)
+			currHotel.Address, &currHotel.HotelClass, &currHotel.Cost, &currHotel.UserID)
 		if errHotel != nil {
 			return nil, errHotel
 		}

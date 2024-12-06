@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func (ds *DatabaseService) Create(hotel *models.Hotel) (*int64, error) {
+func (ds *DatabaseService) Create(hotel *models.Hotel, user *models.User) (*int64, error) {
 	query := `INSERT INTO hotels`
 	var fieldNames []string
 	var fields []string
@@ -25,16 +25,18 @@ func (ds *DatabaseService) Create(hotel *models.Hotel) (*int64, error) {
 		fieldNames = append(fieldNames, "name")
 		values = append(values, hotel.Name)
 	}
-	if hotel.Cost != 0 {
-		fieldNames = append(fieldNames, "cost")
-		values = append(values, hotel.Cost)
-	}
 	if hotel.ID != 0 {
 		fieldNames = append(fieldNames, "id")
 		values = append(values, hotel.ID)
 	}
+	fieldNames = append(fieldNames, "cost")
+	values = append(values, hotel.Cost)
+
 	fieldNames = append(fieldNames, "hotel_class")
 	values = append(values, hotel.HotelClass)
+
+	fieldNames = append(fieldNames, "user_id")
+	values = append(values, user.UserID)
 
 	for ind := 0; ind < len(fieldNames); ind++ {
 		fields = append(fields, fmt.Sprintf("$%d", ind+1))

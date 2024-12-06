@@ -9,7 +9,6 @@ import (
 )
 
 func (handler *Handler) GetHotelsHandler(params hotel.GetHotelsParams) (responder middleware.Responder) {
-	// catching panic
 	defer utils.CatchPanic(&responder)
 
 	payload, err := handler.Database.GetAll(params.City, params.HotelClass, params.Name)
