@@ -127,7 +127,18 @@ paths:
           in: "body"
           required: true
           schema:
-            $ref: "#/definitions/Booking"
+            required:
+              - hotel_id
+              - date_from
+              - date_to
+            properties:
+              hotel_id:
+                type: "integer"
+                format: "int64"
+              date_from:
+                type: "string"
+              date_to:
+                type: "string"
       responses:
         200:
           description: "successful operation"

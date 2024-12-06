@@ -98,7 +98,23 @@ func init() {
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Booking"
+              "required": [
+                "hotel_id",
+                "date_from",
+                "date_to"
+              ],
+              "properties": {
+                "date_from": {
+                  "type": "string"
+                },
+                "date_to": {
+                  "type": "string"
+                },
+                "hotel_id": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
             }
           }
         ],
@@ -452,7 +468,23 @@ func init() {
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Booking"
+              "required": [
+                "hotel_id",
+                "date_from",
+                "date_to"
+              ],
+              "properties": {
+                "date_from": {
+                  "type": "string"
+                },
+                "date_to": {
+                  "type": "string"
+                },
+                "hotel_id": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
             }
           }
         ],

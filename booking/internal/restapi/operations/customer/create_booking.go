@@ -9,9 +9,11 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
+	"github.com/go-openapi/validate"
 
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 )
@@ -71,6 +73,96 @@ func (o *CreateBooking) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	res := o.Handler.Handle(Params, principal) // actually handle the request
 	o.Context.Respond(rw, r, route.Produces, route, res)
 
+}
+
+// CreateBookingBody create booking body
+//
+// swagger:model CreateBookingBody
+type CreateBookingBody struct {
+
+	// date from
+	// Required: true
+	DateFrom *string `json:"date_from"`
+
+	// date to
+	// Required: true
+	DateTo *string `json:"date_to"`
+
+	// hotel id
+	// Required: true
+	HotelID *int64 `json:"hotel_id"`
+}
+
+// Validate validates this create booking body
+func (o *CreateBookingBody) Validate(formats strfmt.Registry) error {
+	var res []error
+
+	if err := o.validateDateFrom(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateDateTo(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := o.validateHotelID(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (o *CreateBookingBody) validateDateFrom(formats strfmt.Registry) error {
+
+	if err := validate.Required("object"+"."+"date_from", "body", o.DateFrom); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (o *CreateBookingBody) validateDateTo(formats strfmt.Registry) error {
+
+	if err := validate.Required("object"+"."+"date_to", "body", o.DateTo); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (o *CreateBookingBody) validateHotelID(formats strfmt.Registry) error {
+
+	if err := validate.Required("object"+"."+"hotel_id", "body", o.HotelID); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validates this create booking body based on context it is used
+func (o *CreateBookingBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	return nil
+}
+
+// MarshalBinary interface implementation
+func (o *CreateBookingBody) MarshalBinary() ([]byte, error) {
+	if o == nil {
+		return nil, nil
+	}
+	return swag.WriteJSON(o)
+}
+
+// UnmarshalBinary interface implementation
+func (o *CreateBookingBody) UnmarshalBinary(b []byte) error {
+	var res CreateBookingBody
+	if err := swag.ReadJSON(b, &res); err != nil {
+		return err
+	}
+	*o = res
+	return nil
 }
 
 // CreateBookingOKBody create booking o k body
