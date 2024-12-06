@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-// actually there is no need in this method because api does not contains such
+// GetAll actually there is no need in this method because api does not contains such
 func (ds *DatabaseService) GetAll(HotelID *int64) ([]*models.Booking, error) {
 	query := "SELECT booking_id FROM bookings"
 	var conditions []string

@@ -6,13 +6,13 @@ import (
 )
 
 const (
-	KEYCLOAK_PORT           = "KEYCLOAK_INNER_PORT"
-	KEYCLOAK_CLIENT         = "KEYCLOAK_CLIENT"
-	KEYCLOAK_REALM          = "KEYCLOAK_REALM"
-	KEYCLOAK_CLIENT_SECRET  = "KEYCLOAK_CLIENT_SECRET"
-	KEYCLOAK_ADMIN          = "KEYCLOAK_ADMIN"
-	KEYCLOAK_ADMIN_PASSWORD = "KEYCLOAK_ADMIN_PASSWORD"
-	KEYCLOAK_MASTER_REALM   = "master"
+	KeycloakPort          = "KEYCLOAK_INNER_PORT"
+	KeycloakClient        = "KEYCLOAK_CLIENT"
+	KeycloakRealm         = "KEYCLOAK_REALM"
+	KeycloakClientSecret  = "KEYCLOAK_CLIENT_SECRET"
+	KeycloakAdmin         = "KEYCLOAK_ADMIN"
+	KeycloakAdminPassword = "KEYCLOAK_ADMIN_PASSWORD"
+	KeycloakMasterRealm   = "master"
 )
 
 type Config struct {
@@ -26,27 +26,27 @@ type Config struct {
 }
 
 func NewConfig() (*Config, error) {
-	keycloakClient := os.Getenv(KEYCLOAK_CLIENT)
+	keycloakClient := os.Getenv(KeycloakClient)
 	if keycloakClient == "" {
 		return nil, errors.New("keycloak client not set")
 	}
-	keycloakRealm := os.Getenv(KEYCLOAK_REALM)
+	keycloakRealm := os.Getenv(KeycloakRealm)
 	if keycloakRealm == "" {
 		return nil, errors.New("keycloak realm not set")
 	}
-	keycloakSecret := os.Getenv(KEYCLOAK_CLIENT_SECRET)
+	keycloakSecret := os.Getenv(KeycloakClientSecret)
 	if keycloakSecret == "" {
 		return nil, errors.New("keycloak secret not set")
 	}
-	keycloakPort := os.Getenv(KEYCLOAK_PORT)
+	keycloakPort := os.Getenv(KeycloakPort)
 	if keycloakPort == "" {
 		return nil, errors.New("keycloak port not set")
 	}
-	keycloakAdmin := os.Getenv(KEYCLOAK_ADMIN)
+	keycloakAdmin := os.Getenv(KeycloakAdmin)
 	if keycloakAdmin == "" {
 		return nil, errors.New("keycloak admin not set")
 	}
-	keycloakAdminPassword := os.Getenv(KEYCLOAK_ADMIN_PASSWORD)
+	keycloakAdminPassword := os.Getenv(KeycloakAdminPassword)
 	if keycloakAdminPassword == "" {
 		return nil, errors.New("keycloak admin password not set")
 	}
@@ -57,6 +57,6 @@ func NewConfig() (*Config, error) {
 		Port:          keycloakPort,
 		Admin:         keycloakAdmin,
 		AdminPassword: keycloakAdminPassword,
-		MasterRealm:   KEYCLOAK_MASTER_REALM,
+		MasterRealm:   KeycloakMasterRealm,
 	}, nil
 }

@@ -35,7 +35,7 @@ func Register(gRPCServer *grpc.Server) {
 }
 
 func (serverApi *GRPCServer) GetHotel(
-	ctx context.Context, in *gen.HotelRequest) (*gen.HotelResponse, error) {
+	_ context.Context, in *gen.HotelRequest) (*gen.HotelResponse, error) {
 	log.Println("in func")
 
 	hotel, err := serverApi.Database.GetById(in.Id)

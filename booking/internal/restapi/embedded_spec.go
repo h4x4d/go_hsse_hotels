@@ -120,6 +120,12 @@ func init() {
             "schema": {
               "$ref": "#/definitions/Error"
             }
+          },
+          "403": {
+            "description": "No access",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
@@ -211,13 +217,7 @@ func init() {
           "200": {
             "description": "successful operation",
             "schema": {
-              "type": "object",
-              "properties": {
-                "booking_id": {
-                  "type": "integer",
-                  "format": "int64"
-                }
-              }
+              "$ref": "#/definitions/Booking"
             }
           },
           "400": {
@@ -278,8 +278,7 @@ func init() {
           ]
         },
         "user_id": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         }
       }
     },
@@ -336,6 +335,9 @@ func init() {
         "name": {
           "type": "string",
           "example": "Radisson"
+        },
+        "user_id": {
+          "type": "string"
         }
       }
     },
@@ -472,6 +474,12 @@ func init() {
             "schema": {
               "$ref": "#/definitions/Error"
             }
+          },
+          "403": {
+            "description": "No access",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
           }
         }
       }
@@ -563,13 +571,7 @@ func init() {
           "200": {
             "description": "successful operation",
             "schema": {
-              "type": "object",
-              "properties": {
-                "booking_id": {
-                  "type": "integer",
-                  "format": "int64"
-                }
-              }
+              "$ref": "#/definitions/Booking"
             }
           },
           "400": {
@@ -630,8 +632,7 @@ func init() {
           ]
         },
         "user_id": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         }
       }
     },
@@ -688,6 +689,9 @@ func init() {
         "name": {
           "type": "string",
           "example": "Radisson"
+        },
+        "user_id": {
+          "type": "string"
         }
       }
     },

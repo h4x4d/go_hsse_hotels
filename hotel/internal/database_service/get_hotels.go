@@ -7,18 +7,18 @@ import (
 	"strings"
 )
 
-func (ds *DatabaseService) GetAll(city *string, hotel_class *int64, name *string) ([]*models.Hotel, error) {
+func (ds *DatabaseService) GetAll(city *string, hotelClass *int64, name *string) ([]*models.Hotel, error) {
 	query := `SELECT * FROM hotels`
-	clauses := []string{}
-	args := []interface{}{}
+	var clauses []string
+	var args []interface{}
 
 	if city != nil {
 		clauses = append(clauses, fmt.Sprintf("city = $%d", len(clauses)+1))
 		args = append(args, *city)
 	}
-	if hotel_class != nil {
+	if hotelClass != nil {
 		clauses = append(clauses, fmt.Sprintf("hotel_class = $%d", len(clauses)+1))
-		args = append(args, *hotel_class)
+		args = append(args, *hotelClass)
 	}
 	if name != nil {
 		clauses = append(clauses, fmt.Sprintf("NAME LIKE $%d", len(clauses)+1))

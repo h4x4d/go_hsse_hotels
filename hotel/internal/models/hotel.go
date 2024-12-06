@@ -44,6 +44,9 @@ type Hotel struct {
 	// Example: Radisson
 	// Required: true
 	Name *string `json:"name"`
+
+	// user id
+	UserID string `json:"user_id,omitempty"`
 }
 
 // Validate validates this hotel

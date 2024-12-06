@@ -6,12 +6,9 @@ package customer
 // Editing this file might prove futile when you re-run the generate command
 
 import (
-	"context"
 	"net/http"
 
 	"github.com/go-openapi/runtime/middleware"
-	"github.com/go-openapi/strfmt"
-	"github.com/go-openapi/swag"
 
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 )
@@ -71,41 +68,4 @@ func (o *UpdateBooking) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	res := o.Handler.Handle(Params, principal) // actually handle the request
 	o.Context.Respond(rw, r, route.Produces, route, res)
 
-}
-
-// UpdateBookingOKBody update booking o k body
-//
-// swagger:model UpdateBookingOKBody
-type UpdateBookingOKBody struct {
-
-	// booking id
-	BookingID int64 `json:"booking_id,omitempty"`
-}
-
-// Validate validates this update booking o k body
-func (o *UpdateBookingOKBody) Validate(formats strfmt.Registry) error {
-	return nil
-}
-
-// ContextValidate validates this update booking o k body based on context it is used
-func (o *UpdateBookingOKBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
-	return nil
-}
-
-// MarshalBinary interface implementation
-func (o *UpdateBookingOKBody) MarshalBinary() ([]byte, error) {
-	if o == nil {
-		return nil, nil
-	}
-	return swag.WriteJSON(o)
-}
-
-// UnmarshalBinary interface implementation
-func (o *UpdateBookingOKBody) UnmarshalBinary(b []byte) error {
-	var res UpdateBookingOKBody
-	if err := swag.ReadJSON(b, &res); err != nil {
-		return err
-	}
-	*o = res
-	return nil
 }

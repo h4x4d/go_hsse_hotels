@@ -39,10 +39,10 @@ func (ds *DatabaseService) Update(bookingId int64, booking *models.Booking) (*mo
 		settings = append(settings, fmt.Sprintf("status = $%d", len(values)+1))
 		values = append(values, booking.Status)
 	} else if booking.Status != "" {
-		return nil, errors.New("Wrong status of the given booking")
+		return nil, errors.New("wrong status of the given booking")
 	}
 
-	if booking.UserID != 0 {
+	if booking.UserID != "" {
 		settings = append(settings, fmt.Sprintf("user_id = $%d", len(values)+1))
 		values = append(values, booking.UserID)
 	}

@@ -71,11 +71,7 @@ paths:
         200:
           description: "successful operation"
           schema:
-            type: "object"
-            properties:
-              booking_id:
-                type: "integer"
-                format: "int64"
+            $ref: "#/definitions/Booking"
         403:
           description: "No access"
           schema:
@@ -141,6 +137,10 @@ paths:
               booking_id:
                 type: "integer"
                 format: "int64"
+        403:
+          description: "No access"
+          schema:
+            $ref: "#/definitions/Error"
         400:
           description: "Incorrect data"
           schema:
@@ -187,8 +187,7 @@ definitions:
           - "Confirmed"
           - "Finished"
       user_id:
-        type: "integer"
-        format: "int64"
+        type: "string"
   Error:
     type: "object"
     required:
@@ -237,3 +236,5 @@ definitions:
       cost:
         type: "integer"
         format: "int64"
+      user_id:
+        type: "string"

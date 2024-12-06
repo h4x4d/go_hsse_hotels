@@ -2,12 +2,12 @@ package client
 
 import (
 	"context"
-	gen "github.com/h4x4d/go_hsse_hotels/booking/internal/grpc/gen"
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/grpc/gen"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/grpc/utils"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 )
 
-func GetHotelById(roomId int) (*models.Hotel, error) {
+func GetHotelById(roomId *int64) (*models.Hotel, error) {
 	conn, err := utils.ConnectToHotel()
 	if err != nil {
 		return nil, err
@@ -15,7 +15,7 @@ func GetHotelById(roomId int) (*models.Hotel, error) {
 	defer conn.Close()
 
 	client := gen.NewHotelClient(conn)
-	hotelResp, err := client.GetHotel(context.Background(), &gen.HotelRequest{Id: int64(roomId)})
+	hotelResp, err := client.GetHotel(context.Background(), &gen.HotelRequest{Id: *roomId})
 	if err != nil {
 		return nil, err
 	}
@@ -26,6 +26,7 @@ func GetHotelById(roomId int) (*models.Hotel, error) {
 		Address:    &hotelResp.Address,
 		Cost:       hotelResp.Cost,
 		HotelClass: hotelResp.HotelClass,
+		UserID:     hotelResp.UserId,
 	}
 	return &hotel, err
 }
