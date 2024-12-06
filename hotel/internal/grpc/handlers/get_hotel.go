@@ -52,5 +52,6 @@ func (serverApi *GRPCServer) GetHotel(
 		Address:    *hotel.Address,
 		HotelClass: hotel.HotelClass,
 		Cost:       hotel.Cost,
+		UserId:     hotel.UserID,
 	}, nil
 }
