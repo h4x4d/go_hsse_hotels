@@ -1,0 +1,23 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: 'hotels'
+    static_configs:
+      - targets: ['go_service:${HOTEL_REST_PORT}']
+
+  - job_name: 'booking'
+    static_configs:
+      - targets: ['go_service:${BOOKING_REST_PORT}']
+
+  - job_name: 'auth'
+    static_configs:
+      - targets: ['go_service:${AUTH_REST_PORT}']
+
+  - job_name: 'notification'
+    static_configs:
+      - targets: ['go_service:${NOTIFICATION_REST_PORT}']
+
+  - job_name: 'jaeger'
+    static_configs:
+      - targets: ['jaeger:14268']
