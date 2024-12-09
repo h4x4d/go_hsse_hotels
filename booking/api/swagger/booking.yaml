@@ -9,6 +9,8 @@ tags:
     description: "Customer operations"
   - name: "hotelier"
     description: "Hotelier operations"
+  - name: "instruments"
+    description: "Inner operations"
 schemes:
   #  - "https"
   - "http"
@@ -147,6 +149,16 @@ paths:
             $ref: "#/definitions/Error"
       security:
         - api_key: [ ]
+  /metrics:
+    get:
+      tags:
+        - "instruments"
+      summary: "Prometheus metrics"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: ok
 
 securityDefinitions:
   api_key:

@@ -128,6 +128,14 @@ paths:
           schema:
             $ref: "#/definitions/Error"
           description: "Incorrect old password"
+  /metrics:
+    get:
+      summary: "Prometheus metrics"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: ok
 
 definitions:
   Error:

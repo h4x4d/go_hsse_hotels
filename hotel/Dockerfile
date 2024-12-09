@@ -14,7 +14,6 @@ COPY hotel/ .
 
 COPY ../pkg ../pkg
 
-WORKDIR /hotel
 RUN go build -o hotel cmd/main.go
 
 EXPOSE $HOTEL_REST_PORT

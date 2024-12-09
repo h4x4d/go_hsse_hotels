@@ -22,6 +22,7 @@ import (
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/customer"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/hotelier"
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/instruments"
 )
 
 // NewHotelsBookingAPI creates a new HotelsBooking instance
@@ -46,6 +47,9 @@ func NewHotelsBookingAPI(spec *loads.Document) *HotelsBookingAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
+		InstrumentsGetMetricsHandler: instruments.GetMetricsHandlerFunc(func(params instruments.GetMetricsParams) middleware.Responder {
+			return middleware.NotImplemented("operation instruments.GetMetrics has not yet been implemented")
+		}),
 		CustomerCreateBookingHandler: customer.CreateBookingHandlerFunc(func(params customer.CreateBookingParams, principal *models.User) middleware.Responder {
 			return middleware.NotImplemented("operation customer.CreateBooking has not yet been implemented")
 		}),
@@ -108,6 +112,8 @@ type HotelsBookingAPI struct {
 	// APIAuthorizer provides access control (ACL/RBAC/ABAC) by providing access to the request and authenticated principal
 	APIAuthorizer runtime.Authorizer
 
+	// InstrumentsGetMetricsHandler sets the operation handler for the get metrics operation
+	InstrumentsGetMetricsHandler instruments.GetMetricsHandler
 	// CustomerCreateBookingHandler sets the operation handler for the create booking operation
 	CustomerCreateBookingHandler customer.CreateBookingHandler
 	// HotelierGetBookingHandler sets the operation handler for the get booking operation
@@ -197,6 +203,9 @@ func (o *HotelsBookingAPI) Validate() error {
 		unregistered = append(unregistered, "APIKeyAuth")
 	}
 
+	if o.InstrumentsGetMetricsHandler == nil {
+		unregistered = append(unregistered, "instruments.GetMetricsHandler")
+	}
 	if o.CustomerCreateBookingHandler == nil {
 		unregistered = append(unregistered, "customer.CreateBookingHandler")
 	}
@@ -308,6 +317,10 @@ func (o *HotelsBookingAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/metrics"] = instruments.NewGetMetrics(o.context, o.InstrumentsGetMetricsHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

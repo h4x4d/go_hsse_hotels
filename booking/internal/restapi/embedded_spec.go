@@ -234,6 +234,22 @@ func init() {
           }
         }
       }
+    },
+    "/metrics": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "instruments"
+        ],
+        "summary": "Prometheus metrics",
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -366,6 +382,10 @@ func init() {
     {
       "description": "Hotelier operations",
       "name": "hotelier"
+    },
+    {
+      "description": "Inner operations",
+      "name": "instruments"
     }
   ]
 }`))
@@ -586,6 +606,22 @@ func init() {
           }
         }
       }
+    },
+    "/metrics": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "instruments"
+        ],
+        "summary": "Prometheus metrics",
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -718,6 +754,10 @@ func init() {
     {
       "description": "Hotelier operations",
       "name": "hotelier"
+    },
+    {
+      "description": "Inner operations",
+      "name": "instruments"
     }
   ]
 }`))
