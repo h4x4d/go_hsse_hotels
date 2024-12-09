@@ -5,19 +5,18 @@ package restapi
 import (
 	"crypto/tls"
 	"fmt"
+	"github.com/go-openapi/errors"
+	"github.com/go-openapi/runtime"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/handlers"
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations"
+	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/hotel"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/instruments"
 	"github.com/h4x4d/go_hsse_hotels/pkg/client"
 	"github.com/h4x4d/go_hsse_hotels/pkg/middlewares"
 	"log"
 	"net/http"
 	"os"
-
-	"github.com/go-openapi/errors"
-	"github.com/go-openapi/runtime"
-	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations"
-	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/hotel"
 )
 
 //go:generate swagger generate server --target ../../internal --name HotelsHotel --spec ../../api/swagger/hotel.yaml --principal models.User

@@ -142,7 +142,7 @@ services:
     ports:
       - "${JAEGER_AGENT_PORT}:${JAEGER_AGENT_PORT}/udp"  # Для связи с агентом
       - "16686:16686"    # Интерфейс Jaeger UI
-      - "14269:14269"    # HTTP API для отправки данных
+      - "${JAEGER_SEND_PORT}:${JAEGER_SEND_PORT}"    # HTTP API для отправки данных
       - "14250:14250"    # gRPC для отправки данных
     healthcheck:
       test: [ "CMD", "nc", "-z", "jaeger:16686" ]

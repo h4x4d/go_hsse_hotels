@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"context"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/hotel"
@@ -10,7 +11,8 @@ import (
 func (handler *Handler) CreateHotelHandler(params hotel.CreateHotelParams,
 	user *models.User) (responder middleware.Responder) {
 	defer utils.CatchPanic(&responder)
-
+	_, span := handler.tracer.Start(context.Background(), "create hotel")
+	defer span.End()
 	if user == nil || user.Role != "hotelier" {
 		code := int64(hotel.CreateHotelForbiddenCode)
 		result := hotel.CreateHotelForbidden{Payload: &models.Error{

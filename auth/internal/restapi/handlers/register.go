@@ -4,10 +4,13 @@ import (
 	"auth/internal/impl"
 	"auth/internal/models"
 	"auth/internal/restapi/operations"
+	"context"
 	"github.com/go-openapi/runtime/middleware"
 )
 
 func (h *Handler) RegisterHandler(api operations.PostRegisterParams) middleware.Responder {
+	_, span := h.tracer.Start(context.Background(), "register")
+	defer span.End()
 	token, err := impl.CreateUser(h.Client, api.Body)
 	if err != nil {
 		conflict := int64(operations.PostRegisterConflictCode)

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"context"
 	"fmt"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
@@ -9,6 +10,8 @@ import (
 )
 
 func (handler *Handler) UpdateHotelHandler(params hotel.UpdateHotelParams, user *models.User) (responder middleware.Responder) {
+	_, span := handler.tracer.Start(context.Background(), "update hotel")
+	defer span.End()
 	defer utils.CatchPanic(&responder)
 
 	existing, errGet := handler.Database.GetById(params.HotelID)
