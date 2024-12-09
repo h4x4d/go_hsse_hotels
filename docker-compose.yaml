@@ -28,7 +28,7 @@ services:
       db:
         condition: service_healthy
       jaeger:
-        condition: service_started
+        condition: service_healthy
     ports:
       - "${HOTEL_REST_PORT}:${HOTEL_REST_PORT}"
       - "${HOTEL_GRPC_PORT}:${HOTEL_GRPC_PORT}"
@@ -59,7 +59,7 @@ services:
       keycloak:
         condition: service_healthy
       jaeger:
-        condition: service_started
+        condition: service_healthy
     ports:
       - "${AUTH_REST_PORT}:${AUTH_REST_PORT}"
   notification:
@@ -72,8 +72,6 @@ services:
         condition: service_healthy
       kafka:
         condition: service_healthy
-      jaeger:
-        condition: service_started
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.0
     container_name: zookeeper
@@ -146,6 +144,12 @@ services:
       - "16686:16686"    # Интерфейс Jaeger UI
       - "14269:14269"    # HTTP API для отправки данных
       - "14250:14250"    # gRPC для отправки данных
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "jaeger:16686" ]
+      start_period: 5s
+      interval: 10s
+      retries: 5
+      timeout: 5s
 
   prometheus:
     image: prom/prometheus:latest
