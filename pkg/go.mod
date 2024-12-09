@@ -13,7 +13,6 @@ require (
 require (
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/Nerzal/gocloak/v13 v13.9.0
 	github.com/prometheus/client_golang v1.20.5
 )
 
@@ -32,6 +31,6 @@ require (
 	github.com/segmentio/ksuid v1.0.4 // indirect
 	go.opentelemetry.io/otel/metric v1.32.0 // indirect
 	golang.org/x/net v0.26.0 // indirect
-	golang.org/x/sys v0.22.0 // indirect
+	golang.org/x/sys v0.27.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
 )
