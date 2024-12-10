@@ -7,10 +7,8 @@ import (
 	"fmt"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/handlers"
 	"github.com/h4x4d/go_hsse_hotels/pkg/client"
-	"log"
-	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/handlers"
-	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/instruments"
 	"github.com/h4x4d/go_hsse_hotels/pkg/middlewares"
+	"log"
 	"net/http"
 	"os"
 
@@ -67,7 +65,7 @@ func configureAPI(api *operations.HotelsBookingAPI) http.Handler {
 	// api.APIAuthorizer = security.Authorized()
 
 	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", os.Getenv("POSTGRES_USER"),
-		os.Getenv("POSTGRES_PASSWORD"), "db", os.Getenv("POSTGRES_PORT"), os.Getenv("HOTEL_DB_NAME"))
+		os.Getenv("POSTGRES_PASSWORD"), "db", os.Getenv("POSTGRES_PORT"), os.Getenv("BOOKING_DB_NAME"))
 	handler, makeErr := handlers.NewHandler(connStr)
 	for makeErr != nil {
 		handler, makeErr = handlers.NewHandler(connStr)

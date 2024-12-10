@@ -7,7 +7,7 @@ import (
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 )
 
-func GetHotelById(roomId *int64) (*models.Hotel, error) {
+func GetHotelById(hotelId *int64) (*models.Hotel, error) {
 	conn, err := utils.ConnectToHotel()
 	if err != nil {
 		return nil, err
@@ -15,7 +15,7 @@ func GetHotelById(roomId *int64) (*models.Hotel, error) {
 	defer conn.Close()
 
 	client := gen.NewHotelClient(conn)
-	hotelResp, err := client.GetHotel(context.Background(), &gen.HotelRequest{Id: *roomId})
+	hotelResp, err := client.GetHotel(context.Background(), &gen.HotelRequest{Id: *hotelId})
 	if err != nil {
 		return nil, err
 	}

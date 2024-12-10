@@ -3,11 +3,14 @@ package database_service
 import (
 	"context"
 	"fmt"
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/grpc/client"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
+	"log"
 	"strings"
+	"time"
 )
 
-func (ds *DatabaseService) Create(booking *models.Booking) (*int64, error) {
+func (ds *DatabaseService) CreateBooking(booking *models.Booking) (*int64, error) {
 	query := `INSERT INTO bookings`
 	// maybe fieldNames can be placed in common place cause other methods also need this info
 	var fieldNames []string
@@ -44,10 +47,37 @@ func (ds *DatabaseService) Create(booking *models.Booking) (*int64, error) {
 	}
 	query += fmt.Sprintf(" (%s) VALUES (%s) RETURNING id", strings.Join(fieldNames, ", "),
 		strings.Join(fields, ", "))
+	log.Println(query)
 	errInsert := ds.pool.QueryRow(context.Background(), query, values...).Scan(&booking.BookingID)
 	if errInsert != nil {
 		return nil, errInsert
 	}
 
 	return &booking.BookingID, errInsert
+}
+
+func (ds *DatabaseService) Create(dateFrom *string, dateTo *string, hotelID *int64, userID string) (*int64, error) {
+	hotel, err := client.GetHotelById(hotelID)
+	if err != nil {
+		return nil, err
+	}
+	dFrom, dateErr1 := time.Parse("02-01-2006", *dateFrom)
+	dTo, dateErr2 := time.Parse("02-01-2006", *dateTo)
+	if dateErr1 != nil {
+		return nil, dateErr1
+	}
+	if dateErr2 != nil {
+		return nil, dateErr2
+	}
+	cost := hotel.Cost * (int64(dTo.Sub(dFrom).Hours()) / 24)
+
+	booking := &models.Booking{
+		DateFrom: dateFrom,
+		DateTo:   dateTo,
+		HotelID:  hotelID,
+		FullCost: cost,
+		Status:   "Unpayed",
+		UserID:   userID,
+	}
+	return ds.CreateBooking(booking)
 }

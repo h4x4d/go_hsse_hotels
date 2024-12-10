@@ -6,5 +6,5 @@ CREATE TABLE IF NOT EXISTS bookings
     hotel_id  INTEGER NOT NULL,
     full_cost INTEGER                                                                     DEFAULT 0,
     status    TEXT CHECK ( status in ('Unpayed', 'Confirming', 'Confirmed', 'Canceled') ) DEFAULT 'Unpayed',
-    user_id   INTEGER NOT NULL
+    user_id   TEXT    NOT NULL
 );

@@ -3,6 +3,7 @@ package database_service
 import (
 	"context"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
+	"github.com/jackc/pgx/v5/pgtype"
 )
 
 func (ds *DatabaseService) GetByID(BookingID int64) (*models.Booking, error) {
@@ -18,13 +19,18 @@ func (ds *DatabaseService) GetByID(BookingID int64) (*models.Booking, error) {
 	}
 
 	booking := new(models.Booking)
-	booking.DateTo = new(string)
-	booking.DateFrom = new(string)
 	booking.HotelID = new(int64)
 
-	// scaning booking object
-	errBooking := bookingRow.Scan(&booking.BookingID, booking.DateFrom,
-		booking.DateTo, booking.HotelID, &booking.UserID, &booking.FullCost, booking.Status)
+	from := new(pgtype.Date)
+	to := new(pgtype.Date)
 
+	// scaning booking object
+	errBooking := bookingRow.Scan(&booking.BookingID, from,
+		to, booking.HotelID, &booking.FullCost, &booking.Status, &booking.UserID)
+
+	fromStr := from.Time.Format("02-01-2006")
+	toStr := to.Time.Format("02-01-2006")
+	booking.DateFrom = &fromStr
+	booking.DateFrom = &toStr
 	return booking, errBooking
 }

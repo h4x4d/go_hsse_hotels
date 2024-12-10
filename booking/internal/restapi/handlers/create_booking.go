@@ -12,7 +12,12 @@ func (handler *Handler) CreateBooking(params customer.CreateBookingParams, user 
 	defer utils.CatchPanic(&responder)
 
 	if user != nil && user.Role == "customer" {
-		bookingId, errCreate := handler.Database.Create(params.Object)
+		bookingId, errCreate := handler.Database.Create(
+			params.Object.DateFrom,
+			params.Object.DateTo,
+			params.Object.HotelID,
+			user.UserID,
+		)
 		if errCreate != nil {
 			return utils.HandleInternalError(errCreate)
 		}
@@ -23,7 +28,7 @@ func (handler *Handler) CreateBooking(params customer.CreateBookingParams, user 
 		errCode := int64(http.StatusForbidden)
 		result := new(customer.CreateBookingForbidden)
 		result.SetPayload(&models.Error{
-			ErrorMessage:    "You doesn't have permission to create a booking",
+			ErrorMessage:    "You don't have permission to create a booking",
 			ErrorStatusCode: &errCode,
 		})
 		return result

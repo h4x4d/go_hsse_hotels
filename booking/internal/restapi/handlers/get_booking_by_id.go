@@ -17,7 +17,7 @@ func (handler *Handler) GetBookingByID(params customer.GetBookingByIDParams, use
 		errCode := int64(customer.GetBookingByIDForbiddenCode)
 		result := new(customer.GetBookingByIDForbidden)
 		result.SetPayload(&models.Error{
-			ErrorMessage:    "You doesn't have permission to create a booking",
+			ErrorMessage:    "You don't have permission to get this booking",
 			ErrorStatusCode: &errCode,
 		})
 		return result

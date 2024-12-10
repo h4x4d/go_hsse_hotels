@@ -2,26 +2,13 @@ package database_service
 
 import (
 	"context"
-	"fmt"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
-	"strings"
 )
 
 // GetAll actually there is no need in this method because api does not contains such
 func (ds *DatabaseService) GetAll(HotelID *int64) ([]*models.Booking, error) {
-	query := "SELECT booking_id FROM bookings"
-	var conditions []string
-	var values []interface{}
-
-	if HotelID != nil {
-		conditions = append(conditions, fmt.Sprintf("hotel_id=$%d", len(values)+1))
-		values = append(values, *HotelID)
-	}
-	if len(conditions) > 0 {
-		query += " WHERE " + strings.Join(conditions, " AND ")
-	}
-
-	bookingIdRow, errGetId := ds.pool.Query(context.Background(), query)
+	bookingIdRow, errGetId := ds.pool.Query(context.Background(),
+		"SELECT id FROM bookings WHERE hotel_id=$1", *HotelID)
 	if errGetId != nil {
 		return nil, errGetId
 	}
