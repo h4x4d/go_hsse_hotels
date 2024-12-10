@@ -23,7 +23,7 @@ func (handler *Handler) GetBooking(params hotelier.GetBookingParams, user *model
 				return &hotelier.GetBookingNotFound{
 					Payload: &models.Error{
 						ErrorStatusCode: &code,
-						ErrorMessage:    fmt.Sprintf("Hotel with id %d not found", params.HotelID),
+						ErrorMessage:    fmt.Sprintf("Hotel with id %d not found", *params.HotelID),
 					},
 				}
 			}

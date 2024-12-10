@@ -87,10 +87,6 @@ func (ds *DatabaseService) Create(dateFrom *string, dateTo *string, hotelID *int
 		Status:   "Unpayed",
 		UserID:   userID,
 	}
-	booking_id, createErr := ds.CreateBooking(booking)
-	if createErr != nil {
-		return nil, createErr
-	}
 
-	return booking_id, nil
+	return ds.CreateBooking(booking)
 }

@@ -21,7 +21,7 @@ func (handler *Handler) UpdateHotelHandler(params hotel.UpdateHotelParams, user 
 	if existing == nil {
 		code := int64(hotel.UpdateHotelNotFoundCode)
 		return &hotel.UpdateHotelNotFound{Payload: &models.Error{
-			ErrorMessage:    fmt.Sprintf("no hotel with id %d", params.HotelID),
+			ErrorMessage:    fmt.Sprintf("Hotel with id %d not found", params.HotelID),
 			ErrorStatusCode: &code,
 		}}
 	}

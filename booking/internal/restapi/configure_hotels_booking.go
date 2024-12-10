@@ -70,6 +70,7 @@ func configureAPI(api *operations.HotelsBookingAPI) http.Handler {
 	for makeErr != nil {
 		handler, makeErr = handlers.NewHandler(connStr)
 	}
+	handler.KeyCloak = manager
 
 	api.CustomerCreateBookingHandler = customer.CreateBookingHandlerFunc(handler.CreateBooking)
 	api.CustomerGetBookingByIDHandler = customer.GetBookingByIDHandlerFunc(handler.GetBookingByID)

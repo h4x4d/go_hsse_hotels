@@ -1,9 +1,15 @@
 package handlers
 
-import "github.com/h4x4d/go_hsse_hotels/booking/internal/database_service"
+import (
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/database_service"
+	"github.com/h4x4d/go_hsse_hotels/pkg/client"
+	"github.com/h4x4d/go_hsse_hotels/pkg/notification"
+)
 
 type Handler struct {
-	Database *database_service.DatabaseService
+	Database  *database_service.DatabaseService
+	KafkaConn *notification.KafkaConnection
+	KeyCloak  *client.Client
 }
 
 func NewHandler(connStr string) (*Handler, error) {
@@ -11,5 +17,9 @@ func NewHandler(connStr string) (*Handler, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Handler{db}, nil
+	conn, kafkaErr := notification.NewEnvKafkaConnection()
+	if kafkaErr != nil {
+		return nil, kafkaErr
+	}
+	return &Handler{db, conn, nil}, nil
 }

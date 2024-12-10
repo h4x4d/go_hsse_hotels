@@ -1,10 +1,13 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/grpc/client"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/customer"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/utils"
+	pkg_models "github.com/h4x4d/go_hsse_hotels/pkg/models"
 )
 
 func (handler *Handler) UpdateBooking(params customer.UpdateBookingParams, user *models.User) (responder middleware.Responder) {
@@ -25,6 +28,36 @@ func (handler *Handler) UpdateBooking(params customer.UpdateBookingParams, user 
 	booking, errUpdate := handler.Database.Update(params.BookingID, params.Object)
 	if errUpdate != nil {
 		return utils.HandleInternalError(errUpdate)
+	}
+
+	notifyErr := handler.KafkaConn.SendNotification(
+		pkg_models.Notification{
+			Name: "Booking update",
+			Text: fmt.Sprintf("Your booking with booking_id %d was updated successfully",
+				params.BookingID),
+			TelegramID: user.TelegramID,
+		})
+	if notifyErr != nil {
+		return utils.HandleInternalError(notifyErr)
+	}
+	hotel, hotelErr := client.GetHotelById(booking.HotelID)
+	if hotelErr != nil {
+		return utils.HandleInternalError(hotelErr)
+	}
+	tgId, tgErr := handler.KeyCloak.GetTelegramId(hotel.UserID)
+	if tgErr != nil {
+		return utils.HandleInternalError(tgErr)
+	}
+
+	notifyErr2 := handler.KafkaConn.SendNotification(
+		pkg_models.Notification{
+			Name: "Booking update",
+			Text: fmt.Sprintf("Your hotel %d booking with booking_id %d was updated",
+				*params.Object.HotelID, params.BookingID),
+			TelegramID: tgId,
+		})
+	if notifyErr2 != nil {
+		return utils.HandleInternalError(notifyErr2)
 	}
 
 	result := new(customer.UpdateBookingOK)
