@@ -142,6 +142,19 @@ func init() {
         }
       }
     },
+    "/metrics": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Prometheus metrics",
+        "responses": {
+          "200": {
+            "description": "ok"
+          }
+        }
+      }
+    },
     "/register": {
       "post": {
         "consumes": [
@@ -349,6 +362,19 @@ func init() {
             "schema": {
               "$ref": "#/definitions/Error"
             }
+          }
+        }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Prometheus metrics",
+        "responses": {
+          "200": {
+            "description": "ok"
           }
         }
       }

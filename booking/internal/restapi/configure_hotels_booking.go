@@ -8,6 +8,9 @@ import (
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/handlers"
 	"github.com/h4x4d/go_hsse_hotels/pkg/client"
 	"log"
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/handlers"
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/instruments"
+	"github.com/h4x4d/go_hsse_hotels/pkg/middlewares"
 	"net/http"
 	"os"
 
@@ -97,6 +100,8 @@ func configureServer(s *http.Server, scheme, addr string) {
 // The middleware configuration is for the handler executors. These do not apply to the swagger.json document.
 // The middleware executes after routing but before authentication, binding and validation.
 func setupMiddlewares(handler http.Handler) http.Handler {
+	middle := middlewares.NewPrometheusMetrics()
+	handler = middle.ApplyMetrics(handler)
 	return handler
 }
 

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"context"
 	"fmt"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
@@ -9,6 +10,8 @@ import (
 )
 
 func (handler *Handler) GetHotelByIDHandler(params hotel.GetHotelByIDParams) (responder middleware.Responder) {
+	_, span := handler.tracer.Start(context.Background(), "get hotel by id")
+	defer span.End()
 	defer utils.CatchPanic(&responder)
 	hotelByID, err := handler.Database.GetById(params.HotelID)
 
