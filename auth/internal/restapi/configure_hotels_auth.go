@@ -9,10 +9,8 @@ import (
 	"net/http"
 
 	"auth/internal/restapi/operations"
-	"crypto/tls"
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"net/http"
 )
 
 //go:generate swagger generate server --target ../../internal --name HotelsAuth --spec ../../api/swagger/auth.yaml --principal models.User
