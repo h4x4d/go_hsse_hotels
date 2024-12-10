@@ -31,6 +31,6 @@ func (ds *DatabaseService) GetByID(BookingID int64) (*models.Booking, error) {
 	fromStr := from.Time.Format("02-01-2006")
 	toStr := to.Time.Format("02-01-2006")
 	booking.DateFrom = &fromStr
-	booking.DateFrom = &toStr
+	booking.DateTo = &toStr
 	return booking, errBooking
 }

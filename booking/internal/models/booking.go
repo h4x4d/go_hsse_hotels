@@ -24,15 +24,15 @@ type Booking struct {
 	BookingID int64 `json:"booking_id,omitempty"`
 
 	// date from
-	// Example: 2024-12-31
+	// Example: 31-12-2024
 	// Required: true
-	// Pattern: ^\d{4}-\d{2}-\d{2}$
+	// Pattern: ^\d{2}-\d{2}-\d{4}$
 	DateFrom *string `json:"date_from"`
 
 	// date to
-	// Example: 2025-01-11
+	// Example: 31-12-2025
 	// Required: true
-	// Pattern: ^\d{4}-\d{2}-\d{2}$
+	// Pattern: ^\d{2}-\d{2}-\d{4}$
 	DateTo *string `json:"date_to"`
 
 	// full cost
@@ -43,7 +43,7 @@ type Booking struct {
 	HotelID *int64 `json:"hotel_id"`
 
 	// status of booking
-	// Enum: ["Waiting","Payed","Confirmed","Finished"]
+	// Enum: ["Unpayed","Confirming","Confirmed","Canceled"]
 	Status string `json:"status,omitempty"`
 
 	// user id
@@ -82,7 +82,7 @@ func (m *Booking) validateDateFrom(formats strfmt.Registry) error {
 		return err
 	}
 
-	if err := validate.Pattern("date_from", "body", *m.DateFrom, `^\d{4}-\d{2}-\d{2}$`); err != nil {
+	if err := validate.Pattern("date_from", "body", *m.DateFrom, `^\d{2}-\d{2}-\d{4}$`); err != nil {
 		return err
 	}
 
@@ -95,7 +95,7 @@ func (m *Booking) validateDateTo(formats strfmt.Registry) error {
 		return err
 	}
 
-	if err := validate.Pattern("date_to", "body", *m.DateTo, `^\d{4}-\d{2}-\d{2}$`); err != nil {
+	if err := validate.Pattern("date_to", "body", *m.DateTo, `^\d{2}-\d{2}-\d{4}$`); err != nil {
 		return err
 	}
 
@@ -115,7 +115,7 @@ var bookingTypeStatusPropEnum []interface{}
 
 func init() {
 	var res []string
-	if err := json.Unmarshal([]byte(`["Waiting","Payed","Confirmed","Finished"]`), &res); err != nil {
+	if err := json.Unmarshal([]byte(`["Unpayed","Confirming","Confirmed","Canceled"]`), &res); err != nil {
 		panic(err)
 	}
 	for _, v := range res {
@@ -125,17 +125,17 @@ func init() {
 
 const (
 
-	// BookingStatusWaiting captures enum value "Waiting"
-	BookingStatusWaiting string = "Waiting"
+	// BookingStatusUnpayed captures enum value "Unpayed"
+	BookingStatusUnpayed string = "Unpayed"
 
-	// BookingStatusPayed captures enum value "Payed"
-	BookingStatusPayed string = "Payed"
+	// BookingStatusConfirming captures enum value "Confirming"
+	BookingStatusConfirming string = "Confirming"
 
 	// BookingStatusConfirmed captures enum value "Confirmed"
 	BookingStatusConfirmed string = "Confirmed"
 
-	// BookingStatusFinished captures enum value "Finished"
-	BookingStatusFinished string = "Finished"
+	// BookingStatusCanceled captures enum value "Canceled"
+	BookingStatusCanceled string = "Canceled"
 )
 
 // prop value enum

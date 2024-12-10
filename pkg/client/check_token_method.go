@@ -14,8 +14,10 @@ func (c Client) CheckToken(token string) (user *models.User, err error) {
 	if err != nil {
 		return nil, err
 	}
+	exact := true
 	params := gocloak.GetUsersParams{
 		Email: usrInfo.Email,
+		Exact: &exact,
 	}
 	adminToken, err := c.GetAdminToken()
 	if err != nil {

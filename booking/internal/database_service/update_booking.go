@@ -4,9 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/grpc/client"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
+	"github.com/jackc/pgx/v5/pgtype"
 	"slices"
 	"strings"
+	"time"
 )
 
 func (ds *DatabaseService) Update(bookingId int64, booking *models.Booking) (*models.Booking, error) {
@@ -16,23 +19,45 @@ func (ds *DatabaseService) Update(bookingId int64, booking *models.Booking) (*mo
 
 	if booking.DateFrom != nil {
 		settings = append(settings, fmt.Sprintf("date_from = $%d", len(values)+1))
-		values = append(values, *booking.DateFrom)
+		date, err := time.Parse("02-01-2006", *booking.DateFrom)
+		if err != nil {
+			return nil, err
+		}
+		values = append(values, date.Format(time.DateOnly))
 	}
 
 	if booking.DateTo != nil {
 		settings = append(settings, fmt.Sprintf("date_to = $%d", len(values)+1))
-		values = append(values, *booking.DateTo)
+		date, err := time.Parse("02-01-2006", *booking.DateTo)
+		if err != nil {
+			return nil, err
+		}
+		values = append(values, date.Format(time.DateOnly))
 	}
 
 	if booking.HotelID != nil {
 		settings = append(settings, fmt.Sprintf("hotel_id = $%d", len(values)+1))
 		values = append(values, *booking.HotelID)
 	}
+	if booking.FullCost == 0 {
+		hotel, err := client.GetHotelById(booking.HotelID)
+		if err != nil {
+			return nil, err
+		}
 
-	if booking.FullCost != 0 {
-		settings = append(settings, fmt.Sprintf("full_cost = $%d", len(values)+1))
-		values = append(values, booking.FullCost)
+		dFrom, dateErr1 := time.Parse("02-01-2006", *booking.DateFrom)
+		dTo, dateErr2 := time.Parse("02-01-2006", *booking.DateTo)
+		if dateErr1 != nil {
+			return nil, dateErr1
+		}
+		if dateErr2 != nil {
+			return nil, dateErr2
+		}
+		booking.FullCost = hotel.Cost * (int64(dTo.Sub(dFrom).Hours()) / 24)
 	}
+
+	settings = append(settings, fmt.Sprintf("full_cost = $%d", len(values)+1))
+	values = append(values, booking.FullCost)
 
 	statuses := []string{"Waiting", "Payed", "Confirmed", "Finished"}
 	if slices.Contains(statuses, booking.Status) {
@@ -48,9 +73,18 @@ func (ds *DatabaseService) Update(bookingId int64, booking *models.Booking) (*mo
 	}
 
 	query += fmt.Sprintf(" %s WHERE %s RETURNING *", strings.Join(settings, ", "),
-		fmt.Sprintf("booking_id = $%d", len(values)+1))
+		fmt.Sprintf("id = $%d", len(values)+1))
 	values = append(values, bookingId)
-	errUpdate := ds.pool.QueryRow(context.Background(), query, values...).Scan(&booking.BookingID, booking.DateFrom,
-		booking.DateTo, booking.HotelID, &booking.UserID, &booking.FullCost, booking.Status)
+
+	from := new(pgtype.Date)
+	to := new(pgtype.Date)
+
+	errUpdate := ds.pool.QueryRow(context.Background(), query, values...).Scan(&booking.BookingID, from,
+		to, booking.HotelID, &booking.FullCost, &booking.Status, &booking.UserID)
+
+	fromStr := from.Time.Format("02-01-2006")
+	toStr := to.Time.Format("02-01-2006")
+	booking.DateFrom = &fromStr
+	booking.DateTo = &toStr
 	return booking, errUpdate
 }

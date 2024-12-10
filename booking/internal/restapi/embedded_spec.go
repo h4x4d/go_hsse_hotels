@@ -283,13 +283,13 @@ func init() {
         },
         "date_from": {
           "type": "string",
-          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-          "example": "2024-12-31"
+          "pattern": "^\\d{2}-\\d{2}-\\d{4}$",
+          "example": "31-12-2024"
         },
         "date_to": {
           "type": "string",
-          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-          "example": "2025-01-11"
+          "pattern": "^\\d{2}-\\d{2}-\\d{4}$",
+          "example": "31-12-2025"
         },
         "full_cost": {
           "type": "integer",
@@ -303,10 +303,10 @@ func init() {
           "description": "status of booking",
           "type": "string",
           "enum": [
-            "Waiting",
-            "Payed",
+            "Unpayed",
+            "Confirming",
             "Confirmed",
-            "Finished"
+            "Canceled"
           ]
         },
         "user_id": {
@@ -673,13 +673,13 @@ func init() {
         },
         "date_from": {
           "type": "string",
-          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-          "example": "2024-12-31"
+          "pattern": "^\\d{2}-\\d{2}-\\d{4}$",
+          "example": "31-12-2024"
         },
         "date_to": {
           "type": "string",
-          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-          "example": "2025-01-11"
+          "pattern": "^\\d{2}-\\d{2}-\\d{4}$",
+          "example": "31-12-2025"
         },
         "full_cost": {
           "type": "integer",
@@ -693,10 +693,10 @@ func init() {
           "description": "status of booking",
           "type": "string",
           "enum": [
-            "Waiting",
-            "Payed",
+            "Unpayed",
+            "Confirming",
             "Confirmed",
-            "Finished"
+            "Canceled"
           ]
         },
         "user_id": {

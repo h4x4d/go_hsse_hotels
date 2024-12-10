@@ -19,11 +19,19 @@ func (ds *DatabaseService) CreateBooking(booking *models.Booking) (*int64, error
 
 	if booking.DateFrom != nil {
 		fieldNames = append(fieldNames, "date_from")
-		values = append(values, booking.DateFrom)
+		date, err := time.Parse("02-01-2006", *booking.DateFrom)
+		if err != nil {
+			return nil, err
+		}
+		values = append(values, date.Format(time.DateOnly))
 	}
 	if booking.DateTo != nil {
 		fieldNames = append(fieldNames, "date_to")
-		values = append(values, booking.DateTo)
+		date, err := time.Parse("02-01-2006", *booking.DateTo)
+		if err != nil {
+			return nil, err
+		}
+		values = append(values, date.Format(time.DateOnly))
 	}
 	if booking.HotelID != nil {
 		fieldNames = append(fieldNames, "hotel_id")
