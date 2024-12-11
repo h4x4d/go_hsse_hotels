@@ -14,6 +14,7 @@ require (
 	github.com/jackc/pgx/v5 v5.7.1
 	github.com/jessevdk/go-flags v1.6.1
 	github.com/prometheus/client_golang v1.20.5
+	go.opentelemetry.io/otel v1.32.0
 	go.opentelemetry.io/otel/trace v1.32.0
 	golang.org/x/net v0.30.0
 	google.golang.org/grpc v1.68.0
@@ -52,7 +53,6 @@ require (
 	github.com/prometheus/procfs v0.15.1 // indirect
 	github.com/segmentio/ksuid v1.0.4 // indirect
 	go.mongodb.org/mongo-driver v1.14.0 // indirect
-	go.opentelemetry.io/otel v1.32.0 // indirect
 	go.opentelemetry.io/otel/exporters/jaeger v1.17.0 // indirect
 	go.opentelemetry.io/otel/metric v1.32.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.32.0 // indirect

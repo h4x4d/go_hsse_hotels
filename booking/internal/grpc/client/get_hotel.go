@@ -5,17 +5,24 @@ import (
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/grpc/gen"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/grpc/utils"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
+	"go.opentelemetry.io/otel"
 )
 
-func GetHotelById(hotelId *int64) (*models.Hotel, error) {
+func GetHotelById(ctx context.Context, hotelId *int64) (*models.Hotel, error) {
 	conn, err := utils.ConnectToHotel()
 	if err != nil {
 		return nil, err
 	}
 	defer conn.Close()
 
+	// Tracing
+	tracer := otel.Tracer("Booking")
+	childCtx, span := tracer.Start(ctx, "booking request get hotel")
+	defer span.End()
+
 	client := gen.NewHotelClient(conn)
-	hotelResp, err := client.GetHotel(context.Background(), &gen.HotelRequest{Id: *hotelId})
+
+	hotelResp, err := client.GetHotel(childCtx, &gen.HotelRequest{Id: *hotelId})
 	if err != nil {
 		return nil, err
 	}

@@ -5,10 +5,12 @@ import (
 	"fmt"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/database_service"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/grpc/gen"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/trace"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
-	"log"
 	"os"
 )
 
@@ -35,8 +37,21 @@ func Register(gRPCServer *grpc.Server) {
 }
 
 func (serverApi *GRPCServer) GetHotel(
-	_ context.Context, in *gen.HotelRequest) (*gen.HotelResponse, error) {
-	log.Println("in func")
+	ctx context.Context, in *gen.HotelRequest) (*gen.HotelResponse, error) {
+
+	tracer := otel.Tracer("Hotel")
+	md, _ := metadata.FromIncomingContext(ctx)
+	traceIdString := md.Get("x-trace-id")[0]
+	traceId, err := trace.TraceIDFromHex(traceIdString)
+	if err != nil {
+		return nil, err
+	}
+	spanContext := trace.NewSpanContext(trace.SpanContextConfig{
+		TraceID: traceId,
+	})
+	ctx = trace.ContextWithSpanContext(ctx, spanContext)
+	_, span := tracer.Start(ctx, "get hotel")
+	defer span.End()
 
 	hotel, err := serverApi.Database.GetById(in.Id)
 	if err != nil {
