@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"fmt"
 	"context"
 	"fmt"
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/grpc/client"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/customer"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/utils"
@@ -42,7 +42,7 @@ func (handler *Handler) CreateBooking(params customer.CreateBookingParams, user 
 		if notifyErr != nil {
 			return utils.HandleInternalError(notifyErr)
 		}
-		hotel, hotelErr := client.GetHotelById(params.Object.HotelID)
+		hotel, hotelErr := client.GetHotelById(ctx, params.Object.HotelID)
 		if hotelErr != nil {
 			return utils.HandleInternalError(hotelErr)
 		}

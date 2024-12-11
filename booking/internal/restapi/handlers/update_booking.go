@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"context"
 	"fmt"
 	"github.com/go-openapi/runtime/middleware"
@@ -48,7 +47,7 @@ func (handler *Handler) UpdateBooking(params customer.UpdateBookingParams, user 
 	if notifyErr != nil {
 		return utils.HandleInternalError(notifyErr)
 	}
-	hotel, hotelErr := client.GetHotelById(booking.HotelID)
+	hotel, hotelErr := client.GetHotelById(ctx, booking.HotelID)
 	if hotelErr != nil {
 		return utils.HandleInternalError(hotelErr)
 	}

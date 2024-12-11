@@ -3,6 +3,7 @@ package handlers
 import (
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/database_service"
 	"github.com/h4x4d/go_hsse_hotels/pkg/client"
+	"github.com/h4x4d/go_hsse_hotels/pkg/jaeger"
 	"github.com/h4x4d/go_hsse_hotels/pkg/notification"
 	"go.opentelemetry.io/otel/trace"
 	"log"
@@ -12,7 +13,7 @@ type Handler struct {
 	Database  *database_service.DatabaseService
 	KafkaConn *notification.KafkaConnection
 	KeyCloak  *client.Client
-	tracer   trace.Tracer
+	tracer    trace.Tracer
 }
 
 func NewHandler(connStr string) (*Handler, error) {

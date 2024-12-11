@@ -41,15 +41,19 @@ func (serverApi *GRPCServer) GetHotel(
 
 	tracer := otel.Tracer("Hotel")
 	md, _ := metadata.FromIncomingContext(ctx)
-	traceIdString := md.Get("x-trace-id")[0]
-	traceId, err := trace.TraceIDFromHex(traceIdString)
-	if err != nil {
-		return nil, err
+	if len(md.Get("x-trace-id")) > 0 {
+		traceIdString := md.Get("x-trace-id")[0]
+		traceId, err := trace.TraceIDFromHex(traceIdString)
+		if err != nil {
+			return nil, err
+		}
+		spanContext := trace.NewSpanContext(trace.SpanContextConfig{
+			TraceID: traceId,
+		})
+		ctx = trace.ContextWithSpanContext(ctx, spanContext)
+	} else {
+		ctx = context.Background()
 	}
-	spanContext := trace.NewSpanContext(trace.SpanContextConfig{
-		TraceID: traceId,
-	})
-	ctx = trace.ContextWithSpanContext(ctx, spanContext)
 	_, span := tracer.Start(ctx, "get hotel")
 	defer span.End()
 
