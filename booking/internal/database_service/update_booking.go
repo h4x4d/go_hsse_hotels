@@ -8,7 +8,6 @@ import (
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 	"github.com/jackc/pgx/v5/pgtype"
 	"go.opentelemetry.io/otel"
-	"slices"
 	"strings"
 	"time"
 )
@@ -65,8 +64,7 @@ func (ds *DatabaseService) Update(ctx context.Context, bookingId int64, booking 
 	settings = append(settings, fmt.Sprintf("full_cost = $%d", len(values)+1))
 	values = append(values, booking.FullCost)
 
-	statuses := []string{"Waiting", "Payed", "Confirmed", "Finished"}
-	if slices.Contains(statuses, booking.Status) {
+	if booking.Status != "" {
 		settings = append(settings, fmt.Sprintf("status = $%d", len(values)+1))
 		values = append(values, booking.Status)
 	} else if booking.Status != "" {

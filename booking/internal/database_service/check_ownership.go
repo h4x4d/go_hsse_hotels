@@ -17,6 +17,9 @@ func (ds *DatabaseService) CheckOwnership(ctx context.Context, BookingID int64, 
 		if err != nil {
 			return false, err
 		}
+		if booking == nil {
+			return false, nil
+		}
 		return booking.UserID == user.UserID, nil
 	}
 	booking, err := ds.GetByID(BookingID)
