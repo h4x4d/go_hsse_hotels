@@ -2,17 +2,25 @@ package handlers
 
 import (
 	"fmt"
+	"context"
+	"fmt"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/grpc/client"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/customer"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/utils"
 	pkg_models "github.com/h4x4d/go_hsse_hotels/pkg/models"
+	"google.golang.org/grpc/metadata"
 )
 
 func (handler *Handler) UpdateBooking(params customer.UpdateBookingParams, user *models.User) (responder middleware.Responder) {
 	defer utils.CatchPanic(&responder)
-	owner, err := handler.Database.CheckOwnership(params.BookingID, user)
+	ctx, span := handler.tracer.Start(context.Background(), "update booking")
+	traceId := fmt.Sprintf("%s", span.SpanContext().TraceID())
+	ctx = metadata.AppendToOutgoingContext(ctx, "x-trace-id", traceId)
+
+	defer span.End()
+	owner, err := handler.Database.CheckOwnership(ctx, params.BookingID, user)
 	if err != nil {
 		return utils.HandleInternalError(err)
 	}
@@ -25,7 +33,7 @@ func (handler *Handler) UpdateBooking(params customer.UpdateBookingParams, user 
 		})
 		return result
 	}
-	booking, errUpdate := handler.Database.Update(params.BookingID, params.Object)
+	booking, errUpdate := handler.Database.Update(ctx, params.BookingID, params.Object)
 	if errUpdate != nil {
 		return utils.HandleInternalError(errUpdate)
 	}

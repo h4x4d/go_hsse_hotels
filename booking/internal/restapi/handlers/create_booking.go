@@ -2,20 +2,27 @@ package handlers
 
 import (
 	"fmt"
+	"context"
+	"fmt"
 	"github.com/go-openapi/runtime/middleware"
-	"github.com/h4x4d/go_hsse_hotels/booking/internal/grpc/client"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/customer"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/utils"
 	pkg_models "github.com/h4x4d/go_hsse_hotels/pkg/models"
+	"google.golang.org/grpc/metadata"
 	"net/http"
 )
 
 func (handler *Handler) CreateBooking(params customer.CreateBookingParams, user *models.User) (responder middleware.Responder) {
 	defer utils.CatchPanic(&responder)
 
+	ctx, span := handler.tracer.Start(context.Background(), "create booking")
+	defer span.End()
+	traceId := fmt.Sprintf("%s", span.SpanContext().TraceID())
+	ctx = metadata.AppendToOutgoingContext(ctx, "x-trace-id", traceId)
+
 	if user != nil && user.Role == "customer" {
-		bookingId, errCreate := handler.Database.Create(
+		bookingId, errCreate := handler.Database.Create(ctx,
 			params.Object.DateFrom,
 			params.Object.DateTo,
 			params.Object.HotelID,

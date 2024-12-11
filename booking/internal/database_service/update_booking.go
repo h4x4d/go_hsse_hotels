@@ -7,15 +7,21 @@ import (
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/grpc/client"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 	"github.com/jackc/pgx/v5/pgtype"
+	"go.opentelemetry.io/otel"
 	"slices"
 	"strings"
 	"time"
 )
 
-func (ds *DatabaseService) Update(bookingId int64, booking *models.Booking) (*models.Booking, error) {
+func (ds *DatabaseService) Update(ctx context.Context, bookingId int64, booking *models.Booking) (*models.Booking, error) {
 	query := `UPDATE bookings SET`
 	var settings []string
 	var values []interface{}
+
+	// Tracing
+	tracer := otel.Tracer("Booking")
+	ctx, span := tracer.Start(ctx, "update")
+	defer span.End()
 
 	if booking.DateFrom != nil {
 		settings = append(settings, fmt.Sprintf("date_from = $%d", len(values)+1))
@@ -40,7 +46,7 @@ func (ds *DatabaseService) Update(bookingId int64, booking *models.Booking) (*mo
 		values = append(values, *booking.HotelID)
 	}
 	if booking.FullCost == 0 {
-		hotel, err := client.GetHotelById(booking.HotelID)
+		hotel, err := client.GetHotelById(ctx, booking.HotelID)
 		if err != nil {
 			return nil, err
 		}

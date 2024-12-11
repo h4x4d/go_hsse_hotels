@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/grpc/client"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
+	"go.opentelemetry.io/otel"
 	"log"
 	"strings"
 	"time"
@@ -64,8 +65,14 @@ func (ds *DatabaseService) CreateBooking(booking *models.Booking) (*int64, error
 	return &booking.BookingID, errInsert
 }
 
-func (ds *DatabaseService) Create(dateFrom *string, dateTo *string, hotelID *int64, userID string) (*int64, error) {
-	hotel, err := client.GetHotelById(hotelID)
+func (ds *DatabaseService) Create(ctx context.Context, dateFrom *string, dateTo *string, hotelID *int64, userID string) (*int64, error) {
+	// Tracing
+	tracer := otel.Tracer("Booking")
+	childCtx, span := tracer.Start(ctx, "create booking in database")
+	defer span.End()
+
+	hotel, err := client.GetHotelById(childCtx, hotelID)
+
 	if err != nil {
 		return nil, err
 	}

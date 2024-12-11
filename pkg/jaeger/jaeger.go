@@ -33,7 +33,7 @@ func InitTracer(serviceName string) (trace.Tracer, error) {
 
 	otel.SetTracerProvider(tp)
 
-	return tp.Tracer("main tracer"), nil
+	return tp.Tracer("main"), nil
 }
 
 // NewJaegerExporter creates new jaeger exporter
