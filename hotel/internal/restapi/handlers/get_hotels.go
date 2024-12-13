@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"context"
 	"github.com/go-openapi/runtime/middleware"
 	models2 "github.com/h4x4d/go_hsse_hotels/hotel/internal/models"
 	"github.com/h4x4d/go_hsse_hotels/hotel/internal/restapi/operations/hotel"
@@ -9,6 +10,8 @@ import (
 )
 
 func (handler *Handler) GetHotelsHandler(params hotel.GetHotelsParams) (responder middleware.Responder) {
+	_, span := handler.tracer.Start(context.Background(), "get hotels")
+	defer span.End()
 	defer utils.CatchPanic(&responder)
 
 	payload, err := handler.Database.GetAll(params.City, params.HotelClass, params.Name)

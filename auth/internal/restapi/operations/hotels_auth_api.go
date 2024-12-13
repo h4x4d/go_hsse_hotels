@@ -42,6 +42,9 @@ func NewHotelsAuthAPI(spec *loads.Document) *HotelsAuthAPI {
 
 		JSONProducer: runtime.JSONProducer(),
 
+		GetMetricsHandler: GetMetricsHandlerFunc(func(params GetMetricsParams) middleware.Responder {
+			return middleware.NotImplemented("operation GetMetrics has not yet been implemented")
+		}),
 		PostChangePasswordHandler: PostChangePasswordHandlerFunc(func(params PostChangePasswordParams) middleware.Responder {
 			return middleware.NotImplemented("operation PostChangePassword has not yet been implemented")
 		}),
@@ -87,6 +90,8 @@ type HotelsAuthAPI struct {
 	//   - application/json
 	JSONProducer runtime.Producer
 
+	// GetMetricsHandler sets the operation handler for the get metrics operation
+	GetMetricsHandler GetMetricsHandler
 	// PostChangePasswordHandler sets the operation handler for the post change password operation
 	PostChangePasswordHandler PostChangePasswordHandler
 	// PostLoginHandler sets the operation handler for the post login operation
@@ -170,6 +175,9 @@ func (o *HotelsAuthAPI) Validate() error {
 		unregistered = append(unregistered, "JSONProducer")
 	}
 
+	if o.GetMetricsHandler == nil {
+		unregistered = append(unregistered, "GetMetricsHandler")
+	}
 	if o.PostChangePasswordHandler == nil {
 		unregistered = append(unregistered, "PostChangePasswordHandler")
 	}
@@ -267,6 +275,10 @@ func (o *HotelsAuthAPI) initHandlerCache() {
 		o.handlers = make(map[string]map[string]http.Handler)
 	}
 
+	if o.handlers["GET"] == nil {
+		o.handlers["GET"] = make(map[string]http.Handler)
+	}
+	o.handlers["GET"]["/metrics"] = NewGetMetrics(o.context, o.GetMetricsHandler)
 	if o.handlers["POST"] == nil {
 		o.handlers["POST"] = make(map[string]http.Handler)
 	}

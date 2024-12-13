@@ -16,4 +16,5 @@ message HotelResponse {
   string address = 4;
   int64 hotel_class = 5;
   int64 cost = 6;
+  string user_id = 7;
 }

@@ -13,8 +13,6 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/validate"
-
-	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 )
 
 // NewCreateBookingParams creates a new CreateBookingParams object
@@ -38,7 +36,7 @@ type CreateBookingParams struct {
 	  Required: true
 	  In: body
 	*/
-	Object *models.Booking
+	Object CreateBookingBody
 }
 
 // BindRequest both binds and validates a request, it assumes that complex things implement a Validatable(strfmt.Registry) error interface
@@ -52,7 +50,7 @@ func (o *CreateBookingParams) BindRequest(r *http.Request, route *middleware.Mat
 
 	if runtime.HasBody(r) {
 		defer r.Body.Close()
-		var body models.Booking
+		var body CreateBookingBody
 		if err := route.Consumer.Consume(r.Body, &body); err != nil {
 			if err == io.EOF {
 				res = append(res, errors.Required("object", "body", ""))
@@ -71,7 +69,7 @@ func (o *CreateBookingParams) BindRequest(r *http.Request, route *middleware.Mat
 			}
 
 			if len(res) == 0 {
-				o.Object = &body
+				o.Object = body
 			}
 		}
 	} else {

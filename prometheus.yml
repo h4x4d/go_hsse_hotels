@@ -1,0 +1,24 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: 'hotel'
+    static_configs:
+      - targets: [ 'hotel:8888' ]
+
+  - job_name: 'booking'
+    static_configs:
+      - targets: [ 'booking:8880' ]
+
+  - job_name: 'auth'
+    static_configs:
+      - targets: [ 'auth:8800' ]
+
+  - job_name: 'jaeger'
+    static_configs:
+      - targets: [ 'jaeger:14269' ]
+
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: [ 'localhost:9090' ]

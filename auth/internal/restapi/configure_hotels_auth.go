@@ -5,6 +5,7 @@ package restapi
 import (
 	"auth/internal/restapi/handlers"
 	"crypto/tls"
+	"github.com/h4x4d/go_hsse_hotels/pkg/middlewares"
 	"net/http"
 
 	"auth/internal/restapi/operations"
@@ -44,6 +45,7 @@ func configureAPI(api *operations.HotelsAuthAPI) http.Handler {
 	api.PostLoginHandler = operations.PostLoginHandlerFunc(handler.LoginHandler)
 	api.PostRegisterHandler = operations.PostRegisterHandlerFunc(handler.RegisterHandler)
 	api.PostChangePasswordHandler = operations.PostChangePasswordHandlerFunc(handler.ChangePasswordHandler)
+	api.GetMetricsHandler = operations.GetMetricsHandlerFunc(handlers.MetricsHandler)
 
 	api.PreServerShutdown = func() {}
 
@@ -67,6 +69,8 @@ func configureServer(s *http.Server, scheme, addr string) {
 // The middleware configuration is for the handler executors. These do not apply to the swagger.json document.
 // The middleware executes after routing but before authentication, binding and validation.
 func setupMiddlewares(handler http.Handler) http.Handler {
+	middle := middlewares.NewPrometheusMetrics()
+	handler = middle.ApplyMetrics(handler)
 	return handler
 }
 

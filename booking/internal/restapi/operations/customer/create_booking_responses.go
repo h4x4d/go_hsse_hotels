@@ -102,3 +102,48 @@ func (o *CreateBookingBadRequest) WriteResponse(rw http.ResponseWriter, producer
 		}
 	}
 }
+
+// CreateBookingForbiddenCode is the HTTP code returned for type CreateBookingForbidden
+const CreateBookingForbiddenCode int = 403
+
+/*
+CreateBookingForbidden No access
+
+swagger:response createBookingForbidden
+*/
+type CreateBookingForbidden struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.Error `json:"body,omitempty"`
+}
+
+// NewCreateBookingForbidden creates CreateBookingForbidden with default headers values
+func NewCreateBookingForbidden() *CreateBookingForbidden {
+
+	return &CreateBookingForbidden{}
+}
+
+// WithPayload adds the payload to the create booking forbidden response
+func (o *CreateBookingForbidden) WithPayload(payload *models.Error) *CreateBookingForbidden {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the create booking forbidden response
+func (o *CreateBookingForbidden) SetPayload(payload *models.Error) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *CreateBookingForbidden) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(403)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
+}

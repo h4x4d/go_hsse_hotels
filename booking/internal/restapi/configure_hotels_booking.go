@@ -4,12 +4,16 @@ package restapi
 
 import (
 	"crypto/tls"
+	"fmt"
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/handlers"
+	"github.com/h4x4d/go_hsse_hotels/pkg/client"
+	"github.com/h4x4d/go_hsse_hotels/pkg/middlewares"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
-	"github.com/go-openapi/runtime/middleware"
-
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/customer"
@@ -41,10 +45,17 @@ func configureAPI(api *operations.HotelsBookingAPI) http.Handler {
 	api.JSONProducer = runtime.JSONProducer()
 
 	// Applies when the "api_key" header is set
-	if api.APIKeyAuth == nil {
-		api.APIKeyAuth = func(token string) (*models.User, error) {
-			return nil, errors.NotImplemented("api key auth (api_key) api_key from header param [api_key] has not yet been implemented")
+	manager, err := client.NewClient()
+	if err != nil {
+		log.Fatal(err)
+	}
+	// Applies when the "api_key" header is set
+	api.APIKeyAuth = func(token string) (*models.User, error) {
+		user, err := manager.CheckToken(token)
+		if err != nil {
+			return nil, err
 		}
+		return (*models.User)(user), nil
 	}
 
 	// Set your custom authorizer if needed. Default one is security.Authorized()
@@ -53,26 +64,18 @@ func configureAPI(api *operations.HotelsBookingAPI) http.Handler {
 	// Example:
 	// api.APIAuthorizer = security.Authorized()
 
-	if api.CustomerCreateBookingHandler == nil {
-		api.CustomerCreateBookingHandler = customer.CreateBookingHandlerFunc(func(params customer.CreateBookingParams, principal *models.User) middleware.Responder {
-			return middleware.NotImplemented("operation customer.CreateBooking has not yet been implemented")
-		})
+	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", os.Getenv("POSTGRES_USER"),
+		os.Getenv("POSTGRES_PASSWORD"), "db", os.Getenv("POSTGRES_PORT"), os.Getenv("BOOKING_DB_NAME"))
+	handler, makeErr := handlers.NewHandler(connStr)
+	for makeErr != nil {
+		handler, makeErr = handlers.NewHandler(connStr)
 	}
-	if api.HotelierGetBookingHandler == nil {
-		api.HotelierGetBookingHandler = hotelier.GetBookingHandlerFunc(func(params hotelier.GetBookingParams, principal *models.User) middleware.Responder {
-			return middleware.NotImplemented("operation hotelier.GetBooking has not yet been implemented")
-		})
-	}
-	if api.CustomerGetBookingByIDHandler == nil {
-		api.CustomerGetBookingByIDHandler = customer.GetBookingByIDHandlerFunc(func(params customer.GetBookingByIDParams, principal *models.User) middleware.Responder {
-			return middleware.NotImplemented("operation customer.GetBookingByID has not yet been implemented")
-		})
-	}
-	if api.CustomerUpdateBookingHandler == nil {
-		api.CustomerUpdateBookingHandler = customer.UpdateBookingHandlerFunc(func(params customer.UpdateBookingParams, principal *models.User) middleware.Responder {
-			return middleware.NotImplemented("operation customer.UpdateBooking has not yet been implemented")
-		})
-	}
+	handler.KeyCloak = manager
+
+	api.CustomerCreateBookingHandler = customer.CreateBookingHandlerFunc(handler.CreateBooking)
+	api.CustomerGetBookingByIDHandler = customer.GetBookingByIDHandlerFunc(handler.GetBookingByID)
+	api.CustomerUpdateBookingHandler = customer.UpdateBookingHandlerFunc(handler.UpdateBooking)
+	api.HotelierGetBookingHandler = hotelier.GetBookingHandlerFunc(handler.GetBooking)
 
 	api.PreServerShutdown = func() {}
 
@@ -96,6 +99,8 @@ func configureServer(s *http.Server, scheme, addr string) {
 // The middleware configuration is for the handler executors. These do not apply to the swagger.json document.
 // The middleware executes after routing but before authentication, binding and validation.
 func setupMiddlewares(handler http.Handler) http.Handler {
+	middle := middlewares.NewPrometheusMetrics()
+	handler = middle.ApplyMetrics(handler)
 	return handler
 }
 

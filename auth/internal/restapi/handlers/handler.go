@@ -2,10 +2,14 @@ package handlers
 
 import (
 	"github.com/h4x4d/go_hsse_hotels/pkg/client"
+	"github.com/h4x4d/go_hsse_hotels/pkg/jaeger"
+	"go.opentelemetry.io/otel/trace"
+	"log"
 )
 
 type Handler struct {
 	Client *client.Client
+	tracer trace.Tracer
 }
 
 func NewHandler() (*Handler, error) {
@@ -13,5 +17,11 @@ func NewHandler() (*Handler, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &Handler{cl}, nil
+
+	tracer, err := jaeger.InitTracer("Auth")
+	if err != nil {
+		log.Fatal("init tracer", err)
+	}
+
+	return &Handler{cl, tracer}, nil
 }

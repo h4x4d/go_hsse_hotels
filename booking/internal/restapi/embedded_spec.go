@@ -98,7 +98,23 @@ func init() {
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Booking"
+              "required": [
+                "hotel_id",
+                "date_from",
+                "date_to"
+              ],
+              "properties": {
+                "date_from": {
+                  "type": "string"
+                },
+                "date_to": {
+                  "type": "string"
+                },
+                "hotel_id": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
             }
           }
         ],
@@ -117,6 +133,12 @@ func init() {
           },
           "400": {
             "description": "Incorrect data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "403": {
+            "description": "No access",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -211,13 +233,7 @@ func init() {
           "200": {
             "description": "successful operation",
             "schema": {
-              "type": "object",
-              "properties": {
-                "booking_id": {
-                  "type": "integer",
-                  "format": "int64"
-                }
-              }
+              "$ref": "#/definitions/Booking"
             }
           },
           "400": {
@@ -231,6 +247,22 @@ func init() {
             "schema": {
               "$ref": "#/definitions/Error"
             }
+          }
+        }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "instruments"
+        ],
+        "summary": "Prometheus metrics",
+        "responses": {
+          "200": {
+            "description": "ok"
           }
         }
       }
@@ -251,13 +283,13 @@ func init() {
         },
         "date_from": {
           "type": "string",
-          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-          "example": "2024-12-31"
+          "pattern": "^\\d{2}-\\d{2}-\\d{4}$",
+          "example": "31-12-2024"
         },
         "date_to": {
           "type": "string",
-          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-          "example": "2025-01-11"
+          "pattern": "^\\d{2}-\\d{2}-\\d{4}$",
+          "example": "31-12-2025"
         },
         "full_cost": {
           "type": "integer",
@@ -271,15 +303,14 @@ func init() {
           "description": "status of booking",
           "type": "string",
           "enum": [
-            "Waiting",
-            "Payed",
+            "Unpayed",
+            "Confirming",
             "Confirmed",
-            "Finished"
+            "Canceled"
           ]
         },
         "user_id": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         }
       }
     },
@@ -336,6 +367,9 @@ func init() {
         "name": {
           "type": "string",
           "example": "Radisson"
+        },
+        "user_id": {
+          "type": "string"
         }
       }
     },
@@ -366,6 +400,10 @@ func init() {
     {
       "description": "Hotelier operations",
       "name": "hotelier"
+    },
+    {
+      "description": "Inner operations",
+      "name": "instruments"
     }
   ]
 }`))
@@ -450,7 +488,23 @@ func init() {
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Booking"
+              "required": [
+                "hotel_id",
+                "date_from",
+                "date_to"
+              ],
+              "properties": {
+                "date_from": {
+                  "type": "string"
+                },
+                "date_to": {
+                  "type": "string"
+                },
+                "hotel_id": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
             }
           }
         ],
@@ -469,6 +523,12 @@ func init() {
           },
           "400": {
             "description": "Incorrect data",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "403": {
+            "description": "No access",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -563,13 +623,7 @@ func init() {
           "200": {
             "description": "successful operation",
             "schema": {
-              "type": "object",
-              "properties": {
-                "booking_id": {
-                  "type": "integer",
-                  "format": "int64"
-                }
-              }
+              "$ref": "#/definitions/Booking"
             }
           },
           "400": {
@@ -583,6 +637,22 @@ func init() {
             "schema": {
               "$ref": "#/definitions/Error"
             }
+          }
+        }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "instruments"
+        ],
+        "summary": "Prometheus metrics",
+        "responses": {
+          "200": {
+            "description": "ok"
           }
         }
       }
@@ -603,13 +673,13 @@ func init() {
         },
         "date_from": {
           "type": "string",
-          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-          "example": "2024-12-31"
+          "pattern": "^\\d{2}-\\d{2}-\\d{4}$",
+          "example": "31-12-2024"
         },
         "date_to": {
           "type": "string",
-          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-          "example": "2025-01-11"
+          "pattern": "^\\d{2}-\\d{2}-\\d{4}$",
+          "example": "31-12-2025"
         },
         "full_cost": {
           "type": "integer",
@@ -623,15 +693,14 @@ func init() {
           "description": "status of booking",
           "type": "string",
           "enum": [
-            "Waiting",
-            "Payed",
+            "Unpayed",
+            "Confirming",
             "Confirmed",
-            "Finished"
+            "Canceled"
           ]
         },
         "user_id": {
-          "type": "integer",
-          "format": "int64"
+          "type": "string"
         }
       }
     },
@@ -688,6 +757,9 @@ func init() {
         "name": {
           "type": "string",
           "example": "Radisson"
+        },
+        "user_id": {
+          "type": "string"
         }
       }
     },
@@ -718,6 +790,10 @@ func init() {
     {
       "description": "Hotelier operations",
       "name": "hotelier"
+    },
+    {
+      "description": "Inner operations",
+      "name": "instruments"
     }
   ]
 }`))
