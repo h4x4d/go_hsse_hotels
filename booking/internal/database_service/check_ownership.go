@@ -26,6 +26,9 @@ func (ds *DatabaseService) CheckOwnership(ctx context.Context, BookingID int64, 
 	if err != nil {
 		return false, err
 	}
+	if booking == nil {
+		return false, nil
+	}
 
 	tracer := otel.Tracer("Booking")
 	ctx, span := tracer.Start(ctx, "check ownership db")
