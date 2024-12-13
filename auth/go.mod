@@ -1,4 +1,4 @@
-module auth
+module github.com/h4x4d/go_hsse_hotels/auth
 
 go 1.23.1
 

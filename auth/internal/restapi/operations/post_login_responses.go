@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"auth/internal/models"
+	"github.com/h4x4d/go_hsse_hotels/auth/internal/models"
 )
 
 // PostLoginOKCode is the HTTP code returned for type PostLoginOK

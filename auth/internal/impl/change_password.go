@@ -1,9 +1,9 @@
 package impl
 
 import (
-	"auth/internal/restapi/operations"
 	"context"
 	"github.com/Nerzal/gocloak/v13"
+	"github.com/h4x4d/go_hsse_hotels/auth/internal/restapi/operations"
 	"github.com/h4x4d/go_hsse_hotels/pkg/client"
 )
 

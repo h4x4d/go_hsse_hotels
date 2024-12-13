@@ -205,8 +205,7 @@ definitions:
         type: "string"
         description: "status of booking"
         enum:
-          - "Unpayed"
-          - "Confirming"
+          - "Waiting"
           - "Confirmed"
           - "Canceled"
       user_id:

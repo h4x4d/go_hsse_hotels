@@ -1,11 +1,11 @@
 package handlers
 
 import (
-	"auth/internal/impl"
-	"auth/internal/models"
-	"auth/internal/restapi/operations"
 	"context"
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/h4x4d/go_hsse_hotels/auth/internal/impl"
+	"github.com/h4x4d/go_hsse_hotels/auth/internal/models"
+	"github.com/h4x4d/go_hsse_hotels/auth/internal/restapi/operations"
 )
 
 func (h *Handler) RegisterHandler(api operations.PostRegisterParams) middleware.Responder {

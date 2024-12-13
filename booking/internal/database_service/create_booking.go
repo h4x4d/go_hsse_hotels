@@ -91,7 +91,7 @@ func (ds *DatabaseService) Create(ctx context.Context, dateFrom *string, dateTo 
 		DateTo:   dateTo,
 		HotelID:  hotelID,
 		FullCost: cost,
-		Status:   "Unpayed",
+		Status:   "Waiting",
 		UserID:   userID,
 	}
 

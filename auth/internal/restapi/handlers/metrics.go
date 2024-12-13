@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"auth/internal/restapi/operations"
 	"github.com/go-openapi/runtime/middleware"
+	"github.com/h4x4d/go_hsse_hotels/auth/internal/restapi/operations"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 

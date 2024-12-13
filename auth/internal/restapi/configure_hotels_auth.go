@@ -3,14 +3,14 @@
 package restapi
 
 import (
-	"auth/internal/restapi/handlers"
 	"crypto/tls"
+	"github.com/h4x4d/go_hsse_hotels/auth/internal/restapi/handlers"
 	"github.com/h4x4d/go_hsse_hotels/pkg/middlewares"
 	"net/http"
 
-	"auth/internal/restapi/operations"
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
+	"github.com/h4x4d/go_hsse_hotels/auth/internal/restapi/operations"
 )
 
 //go:generate swagger generate server --target ../../internal --name HotelsAuth --spec ../../api/swagger/auth.yaml --principal models.User

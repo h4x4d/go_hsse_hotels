@@ -303,8 +303,7 @@ func init() {
           "description": "status of booking",
           "type": "string",
           "enum": [
-            "Unpayed",
-            "Confirming",
+            "Waiting",
             "Confirmed",
             "Canceled"
           ]
@@ -693,8 +692,7 @@ func init() {
           "description": "status of booking",
           "type": "string",
           "enum": [
-            "Unpayed",
-            "Confirming",
+            "Waiting",
             "Confirmed",
             "Canceled"
           ]
