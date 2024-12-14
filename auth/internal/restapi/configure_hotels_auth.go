@@ -6,7 +6,9 @@ import (
 	"crypto/tls"
 	"github.com/h4x4d/go_hsse_hotels/auth/internal/restapi/handlers"
 	"github.com/h4x4d/go_hsse_hotels/pkg/middlewares"
+	"log/slog"
 	"net/http"
+	"os"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/runtime"
@@ -28,6 +30,8 @@ func configureAPI(api *operations.HotelsAuthAPI) http.Handler {
 	//
 	// Example:
 	// api.Logger = log.Printf
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	slog.SetDefault(logger)
 
 	api.UseSwaggerUI()
 	// To continue using redoc as your UI, uncomment the following line

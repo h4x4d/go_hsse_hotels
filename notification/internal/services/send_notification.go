@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/h4x4d/go_hsse_hotels/notification/internal/models"
+	"log/slog"
 	"net/http"
 	"os"
 	"strconv"
@@ -42,5 +43,16 @@ func SendNotification(notification models.Notification) error {
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("unexpected response status: %s", resp.Status)
 	}
+
+	// Logging
+	slog.Info(
+		"send notification",
+		slog.Group("notification-properties",
+			slog.String("name", notification.Name),
+			slog.String("text", notification.Text),
+			slog.Int("telegram-id", notification.TelegramID),
+		),
+		slog.Int("status_code", http.StatusOK),
+	)
 	return nil
 }

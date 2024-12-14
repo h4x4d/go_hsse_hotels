@@ -19,7 +19,6 @@ func NewClient() (*Client, error) {
 	client := gocloak.NewClient("http://keycloak:" + clientCfg.Port)
 
 	restyClient := client.RestyClient()
-	restyClient.SetDebug(true)
 	restyClient.SetTLSClientConfig(&tls.Config{InsecureSkipVerify: true})
 	return &Client{
 		Client: client,
