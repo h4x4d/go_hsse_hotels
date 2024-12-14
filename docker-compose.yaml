@@ -111,6 +111,7 @@ services:
       KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
       KC_DB_SCHEMA: public
       KC_FEATURES: preview
+      KC_LOG_LEVEL: ERROR
     env_file:
       - .env
     volumes:
