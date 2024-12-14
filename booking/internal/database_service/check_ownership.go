@@ -8,7 +8,6 @@ import (
 )
 
 func (ds *DatabaseService) CheckOwnership(ctx context.Context, BookingID int64, user *models.User) (bool, error) {
-
 	if user == nil {
 		return false, nil
 	}
