@@ -1,0 +1,20 @@
+syntax="proto3";
+package gen;
+
+service Hotel {
+  rpc GetHotel (HotelRequest) returns (HotelResponse);
+}
+
+message HotelRequest {
+  int64 id = 1;
+}
+
+message HotelResponse {
+  int64 id = 1;
+  string name = 2;
+  string city = 3;
+  string address = 4;
+  int64 hotel_class = 5;
+  int64 cost = 6;
+  string user_id = 7;
+}
