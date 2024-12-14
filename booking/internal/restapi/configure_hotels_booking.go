@@ -6,6 +6,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/handlers"
+	"github.com/h4x4d/go_hsse_hotels/booking/internal/restapi/operations/instruments"
 	"github.com/h4x4d/go_hsse_hotels/pkg/client"
 	"github.com/h4x4d/go_hsse_hotels/pkg/middlewares"
 	"log"
@@ -76,6 +77,7 @@ func configureAPI(api *operations.HotelsBookingAPI) http.Handler {
 	api.CustomerGetBookingByIDHandler = customer.GetBookingByIDHandlerFunc(handler.GetBookingByID)
 	api.CustomerUpdateBookingHandler = customer.UpdateBookingHandlerFunc(handler.UpdateBooking)
 	api.HotelierGetBookingHandler = hotelier.GetBookingHandlerFunc(handler.GetBooking)
+	api.InstrumentsGetMetricsHandler = instruments.GetMetricsHandlerFunc(handlers.MetricsHandler)
 
 	api.PreServerShutdown = func() {}
 
