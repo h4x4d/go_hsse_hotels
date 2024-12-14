@@ -11,6 +11,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
+	"log/slog"
 	"net/http"
 )
 
@@ -27,6 +28,22 @@ func (handler *Handler) GetBooking(params hotelier.GetBookingParams, user *model
 		hotel, hotelErr := client.GetHotelById(ctx, params.HotelID)
 		if hotelErr != nil {
 			if statusCode, ok := status.FromError(hotelErr); ok && statusCode.Code() == codes.NotFound {
+				// Logging
+				slog.Error(
+					"failed get bookings",
+					slog.String("method", "GET"),
+					slog.Group("user-properties",
+						slog.String("user-id", user.UserID),
+						slog.String("role", user.Role),
+						slog.Int("telegram-id", user.TelegramID),
+					),
+					slog.Group("booking-properties",
+						slog.Int64("hotel-id", *params.HotelID),
+					),
+					slog.Int("status_code", http.StatusNotFound),
+					slog.String("error", "Not found"),
+				)
+
 				code := int64(http.StatusNotFound)
 				return &hotelier.GetBookingNotFound{
 					Payload: &models.Error{
@@ -43,11 +60,49 @@ func (handler *Handler) GetBooking(params hotelier.GetBookingParams, user *model
 				return utils.HandleInternalError(errGet)
 			}
 
+			// Logging
+			slog.Info(
+				"get bookings",
+				slog.String("method", "GET"),
+				slog.Group("user-properties",
+					slog.String("user-id", user.UserID),
+					slog.String("role", user.Role),
+					slog.Int("telegram-id", user.TelegramID),
+				),
+				slog.Group("booking-properties",
+					slog.Int64("hotel-id", *params.HotelID),
+				),
+				slog.Int("status_code", hotelier.GetBookingOKCode),
+			)
+
 			result := new(hotelier.GetBookingOK)
 			result.SetPayload(bookings)
 			return result
 		}
 	}
+	if user == nil {
+		user = &models.User{
+			UserID:     "empty",
+			Role:       "empty",
+			TelegramID: 0,
+		}
+	}
+	// Logging
+	slog.Error(
+		"failed get bookings",
+		slog.String("method", "GET"),
+		slog.Group("user-properties",
+			slog.String("user-id", user.UserID),
+			slog.String("role", user.Role),
+			slog.Int("telegram-id", user.TelegramID),
+		),
+		slog.Group("booking-properties",
+			slog.Int64("hotel-id", *params.HotelID),
+		),
+		slog.Int("status_code", hotelier.GetBookingForbiddenCode),
+		slog.String("error", "Not enough rights"),
+	)
+
 	errCode := int64(hotelier.GetBookingForbiddenCode)
 	result := new(hotelier.GetBookingForbidden)
 	result.SetPayload(&models.Error{

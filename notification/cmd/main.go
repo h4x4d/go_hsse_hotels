@@ -4,6 +4,7 @@ import (
 	"github.com/h4x4d/go_hsse_hotels/notification/internal/handlers"
 	"github.com/h4x4d/go_hsse_hotels/notification/internal/server"
 	"log"
+	"log/slog"
 	"os"
 )
 
@@ -16,6 +17,8 @@ func main() {
 		"send_notification": handlers.SendNotificationHandler,
 	}
 
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	slog.SetDefault(logger)
 	notificationServer := server.NewNotificationServer(&[]string{broker}, &topic, &groupID, notifyHandlers)
 
 	if err := notificationServer.Serve(); err != nil {

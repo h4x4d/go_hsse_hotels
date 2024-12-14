@@ -10,6 +10,7 @@ import (
 	"github.com/h4x4d/go_hsse_hotels/pkg/client"
 	"github.com/h4x4d/go_hsse_hotels/pkg/middlewares"
 	"log"
+	"log/slog"
 	"net/http"
 	"os"
 
@@ -36,6 +37,8 @@ func configureAPI(api *operations.HotelsBookingAPI) http.Handler {
 	//
 	// Example:
 	// api.Logger = log.Printf
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	slog.SetDefault(logger)
 
 	api.UseSwaggerUI()
 	// To continue using redoc as your UI, uncomment the following line
