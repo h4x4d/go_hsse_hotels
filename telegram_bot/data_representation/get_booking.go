@@ -11,7 +11,7 @@ func GetBooking(booking *models.Booking) string {
 	result += "ID бронирования: " + "\"" + strconv.FormatInt(booking.BookingID, 10) + "\"" + ";\n"
 	result += "Период брони: " + "\"" + *booking.DateFrom + " - " + *booking.DateTo + "\"" + ";\n"
 	result += "Статус бронирования " + "\"" + booking.Status + "\"" + ";\n"
-	result += "Создан пользователем с ID " + "\"" + booking.UserID + "\"" + ";\n"
+	result += "Создан пользователем с ID " + "\"" + booking.UserID[:12] + "..." + "\"" + ";\n"
 	result += "Относится к отелю с ID " + "\"" + strconv.FormatInt(*booking.HotelID, 10) + "\"" + ";\n"
 
 	return result

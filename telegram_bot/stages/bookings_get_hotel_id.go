@@ -18,9 +18,9 @@ func NewBookingGetHotelIdStage() *BookingsGetHotelIdStage {
 	idInput := InputStage{
 		Message: "Введите ID отеля",
 		Input: func(userInfo *user_info.UserInfo, telegramId int64, hotelId string) error {
-			hotel := userInfo.GetUserHotel(telegramId)
+			booking := userInfo.GetUserBooking(telegramId)
 			var errId error
-			hotel.ID, errId = strconv.ParseInt(hotelId, 10, 64)
+			*booking.HotelID, errId = strconv.ParseInt(hotelId, 10, 64)
 			if errId != nil {
 				return errId
 			}
