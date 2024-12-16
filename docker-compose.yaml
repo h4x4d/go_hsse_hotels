@@ -72,6 +72,18 @@ services:
         condition: service_healthy
       kafka:
         condition: service_healthy
+  telegram:
+    container_name: telegram
+    build:
+      context: ./
+      dockerfile: ./telegram_bot/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
   zookeeper:
     image: confluentinc/cp-zookeeper:7.3.0
     container_name: zookeeper
