@@ -16,6 +16,7 @@ func (cbs *CreateBookingStage) Finish(userInfo *user_info.UserInfo, telegramId i
 	user := userInfo.GetUserData(telegramId)
 	booking := userInfo.GetUserBooking(telegramId)
 	booking.UserID = user.UserID
+	booking.BookingID = 0
 	return apiService.CreateBooking(booking, user)
 }
 

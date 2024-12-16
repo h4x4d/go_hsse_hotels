@@ -15,6 +15,7 @@ func (cbs *CreateHotelStage) Finish(userInfo *user_info.UserInfo, telegramId int
 	user := userInfo.GetUserData(telegramId)
 	hotel := userInfo.GetUserHotel(telegramId)
 	hotel.UserID = user.UserID
+	hotel.ID = 0
 	return apiService.CreateHotel(hotel, user)
 }
 
