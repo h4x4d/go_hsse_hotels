@@ -53,6 +53,7 @@ func main() {
 		} else {
 			if userInfo.UserStageExists(update.Message.From.ID) {
 				userStage := userInfo.GetUserStage(update.Message.From.ID)
+				log.Println(userStage)
 
 				if _, resultInitialStage := userStage.(*stages.InitialStage); resultInitialStage {
 					switch update.Message.Text {
@@ -203,12 +204,16 @@ func main() {
 							} else {
 								msg.Text = data_representation.GetBooking(booking)
 							}
+						} else {
+							bookingsGetBookingIdStage.ConfigureMessage(&msg)
 						}
 					}
 				}
 
-				if bookingsGetHotelIdStage, resultBookingsGetHotelIdStage := userStage.(*stages.BookingsGetHotelIdStage); resultBookingsGetHotelIdStage {
+				bookingsGetHotelIdStage, resultBookingsGetHotelIdStage := userStage.(*stages.BookingsGetHotelIdStage)
+				if resultBookingsGetHotelIdStage {
 					inputError := bookingsGetHotelIdStage.ComputeInput(userInfo, update.Message.From.ID, update.Message.Text)
+					log.Println(inputError)
 					if inputError != nil {
 						newBookingsMenuStage := stages.NewBookingsMenuStage(*currUser.Role)
 						userInfo.SetUserStage(update.Message.From.ID, newBookingsMenuStage)
@@ -223,22 +228,31 @@ func main() {
 
 							userBooking := userInfo.GetUserBooking(update.Message.From.ID)
 							bookings, errGetBooking := apiService.GetBookings(*userBooking.HotelID, currUser)
+							log.Println(errGetBooking)
 							if errGetBooking != nil {
 								msg.Text = "Ошибка при получении бронирований"
 							} else {
-								for _, booking := range bookings {
-									msg.Text = data_representation.GetBooking(&booking)
-									if _, err := bot.Send(msg); err != nil {
-										log.Panic(err)
+								if len(bookings) > 0 {
+									for _, booking := range bookings {
+										msg.Text = data_representation.GetBooking(&booking)
+										if _, err := bot.Send(msg); err != nil {
+											log.Panic(err)
+										}
 									}
+									continue
+								} else {
+									msg.Text = "Бронирований нет"
 								}
-								continue
 							}
+						} else {
+							bookingsGetHotelIdStage.ConfigureMessage(&msg)
 						}
 					}
 				}
 
-				if hotelsGetHotelIdStage, resultHotelsGetHotelIdStage := userStage.(*stages.HotelsGetHotelIdStage); resultHotelsGetHotelIdStage {
+				hotelsGetHotelIdStage, resultHotelsGetHotelIdStage := userStage.(*stages.HotelsGetHotelIdStage)
+				log.Println(resultHotelsGetHotelIdStage)
+				if resultHotelsGetHotelIdStage {
 					inputError := hotelsGetHotelIdStage.ComputeInput(userInfo, update.Message.From.ID, update.Message.Text)
 					if inputError != nil {
 						newHotelsMenuStage := stages.NewHotelsMenuStage(*currUser.Role)
@@ -247,6 +261,7 @@ func main() {
 						msg.Text = "Ошибка при вводе данных. " + msg.Text
 					} else {
 						hotelsGetHotelIdStage.EndStage()
+
 						if hotelsGetHotelIdStage.StagesFinished() {
 							newHotelsMenuStage := stages.NewHotelsMenuStage(*currUser.Role)
 							userInfo.SetUserStage(update.Message.From.ID, newHotelsMenuStage)
@@ -260,7 +275,8 @@ func main() {
 							} else {
 								msg.Text = data_representation.GetHotel(hotel)
 							}
-
+						} else {
+							hotelsGetHotelIdStage.ConfigureMessage(&msg)
 						}
 					}
 				}
@@ -274,6 +290,7 @@ func main() {
 						msg.Text = "Ошибка при вводе данных. " + msg.Text
 					} else {
 						createBookingStage.EndStage()
+
 						if createBookingStage.StagesFinished() {
 							newBookingsMenuStage := stages.NewBookingsMenuStage(*currUser.Role)
 							userInfo.SetUserStage(update.Message.From.ID, newBookingsMenuStage)
@@ -314,13 +331,17 @@ func main() {
 						if errHotels != nil {
 							msg.Text = "Ошибка при получении отелей"
 						} else {
-							for _, hotel := range hotels {
-								msg.Text = data_representation.GetHotel(&hotel)
-								if _, err := bot.Send(msg); err != nil {
-									log.Panic(err)
+							if len(hotels) > 0 {
+								for _, hotel := range hotels {
+									msg.Text = data_representation.GetHotel(&hotel)
+									if _, err := bot.Send(msg); err != nil {
+										log.Panic(err)
+									}
 								}
+								continue
+							} else {
+								msg.Text = "Нет отелей"
 							}
-							continue
 						}
 
 					default:
@@ -337,6 +358,7 @@ func main() {
 						msg.Text = "Ошибка при вводе данных. " + msg.Text
 					} else {
 						createHotelStage.EndStage()
+
 						if createHotelStage.StagesFinished() {
 							newHotelsMenuStage := stages.NewHotelsMenuStage(*currUser.Role)
 							userInfo.SetUserStage(update.Message.From.ID, newHotelsMenuStage)
@@ -356,9 +378,6 @@ func main() {
 						}
 					}
 				}
-
-			} else {
-				continue
 			}
 		}
 		// sending message
