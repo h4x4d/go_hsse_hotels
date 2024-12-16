@@ -222,7 +222,7 @@ func main() {
 							newBookingsMenuStage.ConfigureMessage(&msg)
 
 							userBooking := userInfo.GetUserBooking(update.Message.From.ID)
-							bookings, errGetBooking := apiService.GetBookings(userBooking.BookingID, currUser)
+							bookings, errGetBooking := apiService.GetBookings(*userBooking.HotelID, currUser)
 							if errGetBooking != nil {
 								msg.Text = "Ошибка при получении бронирований"
 							} else {
