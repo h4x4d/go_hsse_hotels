@@ -25,7 +25,7 @@ func NewCreateBookingStage() *CreateBookingStage {
 	createBookingStage.InputStages = *NewInputStages()
 
 	dateFromInput := InputStage{
-		Message: "Введите дату начала (дд:мм:гггг)",
+		Message: "Введите дату начала (дд-мм-гггг)",
 		Input: func(userInfo *user_info.UserInfo, telegramId int64, dateFrom string) error {
 			booking := userInfo.GetUserBooking(telegramId)
 			*booking.DateFrom = dateFrom
