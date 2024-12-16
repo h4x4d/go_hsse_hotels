@@ -1,5 +1,7 @@
 # MTS HSSE Go project. Booking system
 --------
+# BOT LINK: https://t.me/HotelBookingServiceBot
+
 ## Scheme of project
 
 ![scheme](https://github.com/Sinord/final-project/raw/master/components-diagram.png)
