@@ -6,7 +6,6 @@ import (
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/grpc/client"
 	"github.com/h4x4d/go_hsse_hotels/booking/internal/models"
 	"go.opentelemetry.io/otel"
-	"log"
 	"strings"
 	"time"
 )
@@ -56,7 +55,6 @@ func (ds *DatabaseService) CreateBooking(booking *models.Booking) (*int64, error
 	}
 	query += fmt.Sprintf(" (%s) VALUES (%s) RETURNING id", strings.Join(fieldNames, ", "),
 		strings.Join(fields, ", "))
-	log.Println(query)
 	errInsert := ds.pool.QueryRow(context.Background(), query, values...).Scan(&booking.BookingID)
 	if errInsert != nil {
 		return nil, errInsert
